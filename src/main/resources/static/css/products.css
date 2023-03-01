@@ -1,0 +1,185 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html{
+  height: 100%;
+}
+
+body{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: 100%;
+  /* overflow: overlay; */
+}
+
+.main-header{
+  width: 100%;
+  background-color:#333;
+  height: 6vh;
+  /* height: max-content; */
+  min-height: 60px;
+  flex: 0 1 auto;
+
+  position: sticky;
+  top: 0px;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+}
+
+.header-nav{
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+  color: white;
+  height: 100%;
+}
+
+
+.main-footer{
+  width: 100%;
+  background-color:#333;
+  margin-top: auto;
+  height: 6vh;
+  min-height: 60px;
+  flex: 0 1 auto;
+}
+
+.main-content{
+  display: flex;
+  justify-content: center;
+  /* flex-grow: 1; */
+  width: 100%;
+  flex: 1 1 auto;
+
+  /* to make scrollbar only for product section not for all page */
+  /* overflow-y: auto;
+   */
+}
+
+.secondary-nav{
+  background-color:#525252;
+  height: 4vh;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.dropdown{
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  
+}
+
+.dropdown-description{
+  color: beige;
+}
+
+.dropdown-content{
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 100%;
+  /* width: max-content;
+  height: max-content; */
+  border: 2px solid black;
+  color: black;
+}
+
+
+.dropdown:hover .dropdown-content{
+  display: block;
+}
+
+
+
+
+
+
+
+
+
+.products-list{
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+}
+
+
+.product-card{
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  gap: 10px;
+  background-color: aliceblue;
+ 
+
+}
+
+.product-card-content{
+  display: flex;
+  flex-direction: column;
+
+}
+
+.product-details-btn{
+
+  width: 100px;
+  
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #333;
+  text-decoration: none;
+  color: white;
+  /* to space last item from other content */
+  margin-top:  auto;
+  text-align: center;
+
+  /* to push btn to right */
+  margin-left: auto;
+ 
+}
+
+.product-img-container{
+  min-width: 150px;
+  max-width: 150px;
+  max-height:150px;
+}
+
+.product-img-container > img{
+ width: 100%;
+}
+
+
+.product-card:hover{
+  box-shadow: 0px 0px 20px 5px #BFBFBF;
+}
+
+.pagination > ul{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  list-style-type: none;
+}
+
+.pagination > ul > li {
+  padding: 10px;
+  background-color: #333;
+  color: white;
+}
+
+.pagination > ul > li > a {
+ text-decoration: none;
+ color: white;
+}

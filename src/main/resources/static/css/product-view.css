@@ -1,0 +1,168 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html{
+  height: 100%;
+}
+
+body{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: 100%;
+  /* overflow: overlay; */
+}
+
+.main-header{
+  width: 100%;
+  background-color:#333;
+  height: 6vh;
+  /* height: max-content; */
+  min-height: 60px;
+  flex: 0 1 auto;
+
+  position: sticky;
+  top: 0px;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+}
+
+.header-nav{
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+  color: white;
+  height: 100%;
+}
+
+
+.main-footer{
+  width: 100%;
+  background-color:#333;
+  margin-top: auto;
+  height: 6vh;
+  min-height: 60px;
+  flex: 0 1 auto;
+}
+
+.main-content{
+  display: flex;
+  justify-content: center;
+  /* flex-grow: 1; */
+  width: 100%;
+  flex: 1 1 auto;
+
+  /* to make scrollbar only for product section not for all page */
+  /* overflow-y: auto;
+   */
+}
+
+
+.secondary-nav{
+  background-color:#525252;
+  height: 4vh;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.dropdown{
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  
+}
+
+.dropdown-description{
+  color: beige;
+}
+
+.dropdown-content{
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 100%;
+  /* width: max-content;
+  height: max-content; */
+  border: 2px solid black;
+  color: black;
+}
+
+
+.dropdown:hover .dropdown-content{
+  display: block;
+}
+
+
+
+
+
+
+.product-view{
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  padding: 20px;
+}
+
+.product-container{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  box-shadow: 0px 0px 20px 5px #BFBFBF;
+}
+
+.product-images{
+  max-width: 400px;
+  min-width: 400px;
+}
+
+.product-images > img{
+  width: 100%;
+
+}
+
+
+.similar-products-container{
+  display: flex;
+  flex-direction: column;
+  gap:20px;
+  align-items: center;
+  box-shadow: 0px 0px 20px 5px #BFBFBF;
+}
+
+.similar-product-list{
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.similar-product{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 200px;
+  min-width: 200px;
+}
+
+.similar-product-img{
+  display: flex;
+  justify-self: center;
+  max-width: 200px;
+  min-width: 200px;
+  
+}
+
+.similar-product-img > img{
+  width: 100%;
+
+}
+
