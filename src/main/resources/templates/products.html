@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="stylesheet" href="products.css">
+  <link rel="stylesheet" type="text/css"  th:href="@{/css/products.css}">
   <title>Main</title>
 </head>
 
@@ -90,79 +90,32 @@
   <main class="main-content">
     <section class="products-list">
 
-      <div class="product-card">
+      <div class="product-card" th:each="product : ${products}">
         <div class="product-img-container">
-          <img class="product-card-img" src="no-img.png">
+          <img class="product-card-img" th:src="@{|/images/${product.mainThumbnailPath}|}">
         </div>
         <div class="product-card-content">
-          <h3>Title</h3>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore aliquam voluptatum numquam magni eos aliquid quia rerum quidem eligendi? Doloribus?</p>
-          <a href="" class="product-details-btn">Details</a>
-        </div>
-        
-      </div>
+          <h3 th:text="${product.name}"/>
+          <p th:text="${product.shortDescription}"/>
+          <h3 th:text="${product.price}+' $'"/>
+          <a class="product-details-btn" th:href="@{|http://localhost:8080/main/${#strings.toLowerCase(product.category.categoryName)}/${#strings.toLowerCase(product.subcategory.subcategoryName)}/${product.id}|}"  th:text="Description"/>
 
-      <div class="product-card">
-        <div class="product-img-container">
-          <img class="product-card-img" src="no-img.png">
-        </div>
-        <div class="product-card-content">
-          <h3>Title</h3>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore aliquam voluptatum numquam magni eos aliquid quia rerum quidem eligendi? Doloribus?</p>
-          <a href="" class="product-details-btn">Details</a>
         </div>
         
       </div>
 
 
-      <div class="product-card">
-        <div class="product-img-container">
-          <img class="product-card-img" src="no-img.png">
-        </div>
-        <div class="product-card-content">
-          <h3>Title</h3>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore aliquam voluptatum numquam magni eos aliquid quia rerum quidem eligendi? Doloribus?</p>
-          <a href="" class="product-details-btn">Details</a>
-        </div>
-        
-      </div>
-
-
-      <div class="product-card">
-        <div class="product-img-container">
-          <img class="product-card-img" src="no-img.png">
-        </div>
-        <div class="product-card-content">
-          <h3>Title</h3>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore aliquam voluptatum numquam magni eos aliquid quia rerum quidem eligendi? Doloribus?</p>
-          <a href="" class="product-details-btn">Details</a>
-        </div>
-        
-      </div>
-
-
-      <div class="product-card">
-        <div class="product-img-container">
-          <img class="product-card-img" src="no-img.png">
-        </div>
-        <div class="product-card-content">
-          <h3>Title</h3>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore aliquam voluptatum numquam magni eos aliquid quia rerum quidem eligendi? Doloribus?</p>
-          <a href="" class="product-details-btn">Details</a>
-        </div>
-        
-      </div>
-
-      <nav class="pagination">
+      <nav class="pagination" th:if="${totalPages>1}">
         <ul>
-          <li><a href="">&lt;</a></li>
-          <li><a href="">1</a></li>
-          <li><a href="">2</a></li>
-          <li><a href="">3</a></li>
-          <li><a href="">4</a></li>
-          <li><a href="">5</a></li>
-          <li><a href="">...</a></li>
-          <li><a href="">&gt;</a></li>
+          <li th:each="i : ${#numbers.sequence(1,totalPages)}"><a th:href="@{|?page=${i}|}" th:text="${i}"></a></li>
+<!--          <li><a href="">&lt;</a></li>-->
+<!--          <li><a href="">1</a></li>-->
+<!--          <li><a href="">2</a></li>-->
+<!--          <li><a href="">3</a></li>-->
+<!--          <li><a href="">4</a></li>-->
+<!--          <li><a href="">5</a></li>-->
+<!--          <li><a href="">...</a></li>-->
+<!--          <li><a href="">&gt;</a></li>-->
         </ul>
       </nav>
     </section>

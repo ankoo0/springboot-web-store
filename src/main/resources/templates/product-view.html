@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="stylesheet" href="product-view.css">
+
+  <link rel="stylesheet" type="text/css"  th:href="@{/css/product-view.css}">
   <title>Main</title>
 </head>
 
@@ -92,16 +93,16 @@
 
       <div class="product-container">
       <div class="product-images">
-        <img src="no-img.png">
+        <img th:src="@{|/images/${product.mainThumbnailPath}|}">
 
       </div>
 
       <div class="product-description">
 
         <div class="main-description">
-          <h2>Some Product</h2>
-          <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nobis, provident ipsa. Mollitia facilis minus unde corporis dolores libero nisi porro? Fugit recusandae exercitationem voluptates. Reprehenderit similique laudantium velit, dicta minus culpa nulla voluptatum veritatis. Fugit eum unde officia placeat doloremque quis nam exercitationem architecto suscipit quasi nulla enim, cupiditate pariatur totam quae ut esse similique modi laudantium doloribus eligendi necessitatibus est illo. Qui vero fugit dignissimos esse debitis. Ratione, officia odit est distinctio placeat natus voluptates quis eveniet vero impedit autem cum odio aspernatur enim aut iste illum quo deleniti dolorem suscipit. Totam saepe excepturi deleniti itaque mollitia delectus eaque!</p>
-          <h4 class="price">333.99$</h4>
+          <h2 th:text="${product.name}"></h2>
+          <p th:text="${product.fullDescription}"></p>
+          <h4 class="price" th:text="${product.price}"></h4>
           <a href="" class="add-to-cart-btn" >Add to Cart</a>
         </div>
 
@@ -113,22 +114,11 @@
               <th>Value</th>
             </tr>
 
-            <tr>
-              <td>Year</td>
+            <tr th:each="productAttribute : ${product.productAttributes}">
+              <td th:text="${productAttribute.name}"></td>
               <td>2023</td>
             </tr>
-            <tr>
-              <td>Year</td>
-              <td>2023</td>
-            </tr>
-            <tr>
-              <td>Year</td>
-              <td>2023</td>
-            </tr>
-            <tr>
-              <td>Year</td>
-              <td>2023</td>
-            </tr>
+
 
             
           </table>

@@ -26,16 +26,20 @@ public class Product {
     private String mainThumbnailPath;
     @OneToMany(mappedBy = "product")
     private List<ProductImagePath> productImagesPaths;
-
     @OneToMany(mappedBy = "product")
     private List<ProductAttribute> productAttributes;
-
+    @Column(nullable = false)
     private LocalDateTime creationTime;
     @Column(scale =2)
     private Double price;
 
+    @JoinColumn(name = "category_id")
     @ManyToOne
     private ProductCategory category;
+
+    @JoinColumn(name = "subcategory_id")
+    @ManyToOne
+    private ProductSubcategory subcategory;
 
     @ManyToOne
     private ProductDiscount discount;
@@ -89,6 +93,14 @@ public class Product {
         this.productImagesPaths = productImagesPaths;
     }
 
+    public List<ProductAttribute> getProductAttributes() {
+        return productAttributes;
+    }
+
+    public void setProductAttributes(List<ProductAttribute> productAttributes) {
+        this.productAttributes = productAttributes;
+    }
+
     public LocalDateTime getCreationTime() {
         return creationTime;
     }
@@ -105,20 +117,28 @@ public class Product {
         this.price = price;
     }
 
-    public ProductDiscount getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(ProductDiscount discount) {
-        this.discount = discount;
-    }
-
     public ProductCategory getCategory() {
         return category;
     }
 
     public void setCategory(ProductCategory category) {
         this.category = category;
+    }
+
+    public ProductSubcategory getSubcategory() {
+        return subcategory;
+    }
+
+    public void setSubcategory(ProductSubcategory subcategory) {
+        this.subcategory = subcategory;
+    }
+
+    public ProductDiscount getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(ProductDiscount discount) {
+        this.discount = discount;
     }
 
     @Override

@@ -123,6 +123,9 @@ body{
   padding: 10px;
   gap: 10px;
   background-color: aliceblue;
+  border: 1px solid black;
+  border-radius: 5px;
+  height: 200px;
  
 
 }

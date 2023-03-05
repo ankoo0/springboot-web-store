@@ -1,16 +1,16 @@
 package com.project.springbootwebstore.model.entity.product;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Entity
 public class ProductCategory {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String categoryName;
     private String categoryImage;
@@ -28,5 +28,56 @@ public class ProductCategory {
 
     public ProductCategory() {
 
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public String getCategoryImage() {
+        return categoryImage;
+    }
+
+    public void setCategoryImage(String categoryImage) {
+        this.categoryImage = categoryImage;
+    }
+
+    public List<ProductSubcategory> getSubcategories() {
+        return subcategories;
+    }
+
+    public void setSubcategories(List<ProductSubcategory> subcategories) {
+        this.subcategories = subcategories;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductCategory{" +
+                "id=" + id +
+                ", categoryName='" + categoryName + '\'' +
+                ", categoryImage='" + categoryImage + '\'' +
+                ", subcategories=" + subcategories.stream().map(ProductSubcategory::getSubcategoryName).collect(Collectors.toList()) +
+                ", products=" + products.stream().map(p->p.getName()).collect(Collectors.toList()) +
+                '}';
     }
 }
