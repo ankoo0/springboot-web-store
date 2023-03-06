@@ -1,4 +1,4 @@
-package com.project.springbootwebstore.controller;
+package com.project.springbootwebstore.model.repository.controller;
 
 
 import com.project.springbootwebstore.model.entity.product.Product;
@@ -57,7 +57,7 @@ public class ProductsController {
         mov.addObject("products", products);
         mov.addObject("totalPages", productPages.getTotalPages());
         mov.addObject("totalProducts", productPages.getTotalElements());
-
+        mov.addObject("categories", categoryService.getAllCategories());
         return mov;
     }
 
@@ -67,6 +67,7 @@ public class ProductsController {
         Product product = productService.getProductById(productId);
         ModelAndView mov = new ModelAndView("product-view");
         mov.addObject("product", product);
+        mov.addObject("categories", categoryService.getAllCategories());
         return mov;
     }
 

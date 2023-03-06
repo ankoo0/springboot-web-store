@@ -6,83 +6,26 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,900;1,100&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" type="text/css"  th:href="@{/css/products.css}">
+  <link rel="stylesheet" type="text/css"  th:href="@{/css/fragments.css}">
+
+  <script type="text/javascript" defer th:src="@{/js/hamburger.js}"></script>
   <title>Main</title>
 </head>
 
 <body>
 
-  <header class="main-header">
-
-    <nav class="header-nav">
-
-      <div class="header-logo">
-        <h1>E-Commerce</h1>
-      </div>
-
-      <div class="header-search-container">
-        <form class="header-search-form" method="post" action="">
-          <select>
-            <option selected value="">Electronics</option>
-          </select>
-          <input type="text" placeholder="Search here...">
-          <button type="submit"><span>Search</span></button>
-        </form>
-      </div>
-
-      <div class="header-navlinks">
-        <a href="">Account</a>
-        <a href="">Sign In</a>
-        <a href="">Cart</a>
-      </div>
-
-    </nav>
-
-
-    <nav class="secondary-nav">
-
-      <div class="dropdown">
-        <div class="dropdown-description">Electronics</div>
-        <div class="dropdown-content"> <a href="">Account</a>
-          <a href="">Sign In</a>
-          <a href="">Cart</a>
-        </div>
-      </div>
-
-      <div class="dropdown">
-        <div class="dropdown-description">Electronics</div>
-        <div class="dropdown-content"> <a href="">Account</a>
-          <a href="">Sign In</a>
-          <a href="">Cart</a>
-        </div>
-      </div>
-
-      <div class="dropdown">
-        <div class="dropdown-description">Electronics</div>
-        <div class="dropdown-content"> <a href="">Account</a>
-          <a href="">Sign In</a>
-          <a href="">Cart</a>
-        </div>
-      </div>
-
-      <div class="dropdown">
-        <div class="dropdown-description">Electronics</div>
-        <div class="dropdown-content"> <a href="">Account</a>
-          <a href="">Sign In</a>
-          <a href="">Cart</a>
-        </div>
-      </div>
-
-      <div class="dropdown">
-        <div class="dropdown-description">Electronics</div>
-        <div class="dropdown-content"> <a href="">Account</a>
-          <a href="">Sign In</a>
-          <a href="">Cart</a>
-        </div>
-      </div>
-    </nav>
-  </header>
-
+<header th:replace="fragments/fragments.html :: header">
+</header>
+<nav th:replace="fragments/fragments.html :: mobile-menu"></nav>
 
 
 
@@ -98,8 +41,10 @@
           <h3 th:text="${product.name}"/>
           <p th:text="${product.shortDescription}"/>
           <h3 th:text="${product.price}+' $'"/>
-          <a class="product-details-btn" th:href="@{|http://localhost:8080/main/${#strings.toLowerCase(product.category.categoryName)}/${#strings.toLowerCase(product.subcategory.subcategoryName)}/${product.id}|}"  th:text="Description"/>
-
+<!--          <a class="product-details-btn" th:href="@{|${#strings.toLowerCase(product.category.categoryName)}/${#strings.toLowerCase(product.subcategory.subcategoryName)}/${product.id}|}"  th:text="Description"/>-->
+<!--          <a class="product-details-btn" th:href="@{|${product.id}|}"  th:text="Description"/>  this is only /main/electronics/2 no subcategory-->
+<!--          <a class="product-details-btn" th:href="@{|/${product.id}|}"  th:text="Description"/>-->
+          <a class="product-details-btn" th:href="@{|${#strings.toLowerCase(product.subcategory.subcategoryName)}/${product.id}|}"  th:text="Description"/>
         </div>
         
       </div>

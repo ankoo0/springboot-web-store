@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Poppins",sans-serif;
 }
 
 html{
@@ -14,32 +15,11 @@ body{
   align-items: center;
   flex-direction: column;
   min-height: 100%;
+
   /* overflow: overlay; */
 }
 
-.main-header{
-  width: 100%;
-  background-color:#333;
-  height: 6vh;
-  /* height: max-content; */
-  min-height: 60px;
-  flex: 0 1 auto;
 
-  position: sticky;
-  top: 0px;
-  z-index: 999;
-  display: flex;
-  flex-direction: column;
-}
-
-.header-nav{
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  align-items: center;
-  color: white;
-  height: 100%;
-}
 
 
 .main-footer{
@@ -57,54 +37,23 @@ body{
   /* flex-grow: 1; */
   width: 100%;
   flex: 1 1 auto;
-
+  background-color: rgb(246 248 250);
   /* to make scrollbar only for product section not for all page */
   /* overflow-y: auto;
    */
 }
 
-.secondary-nav{
-  background-color:#525252;
-  height: 4vh;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+
+
+
+
+
+
+@media (max-width:480px) {
+  .product-card-content{
+    font-size: 10px;
+  }
 }
-
-.dropdown{
-  position: relative;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  
-}
-
-.dropdown-description{
-  color: beige;
-}
-
-.dropdown-content{
-  display: none;
-  position: absolute;
-  left: 0;
-  top: 100%;
-  /* width: max-content;
-  height: max-content; */
-  border: 2px solid black;
-  color: black;
-}
-
-
-.dropdown:hover .dropdown-content{
-  display: block;
-}
-
-
-
-
-
-
 
 
 
@@ -122,7 +71,7 @@ body{
   flex-direction: row;
   padding: 10px;
   gap: 10px;
-  background-color: aliceblue;
+  background-color: white;
   border: 1px solid black;
   border-radius: 5px;
   height: 200px;
@@ -138,7 +87,7 @@ body{
 
 .product-details-btn{
 
-  width: 100px;
+  width: min-content;
   
   padding: 10px 20px;
   border-radius: 5px;

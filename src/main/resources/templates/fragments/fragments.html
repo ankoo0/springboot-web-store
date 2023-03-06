@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<header class="main-header" th:fragment="header">
+
+    <nav class="header-nav">
+
+        <div class="hamburger-nav">
+            <span class="material-symbols-outlined">menu</span>
+        </div>
+
+        <div class="header-logo-container">
+            <a class="header-logo" th:href="@{/main}"><h1>E-Commerce</h1></a>
+        </div>
+
+        <div class="header-search-container">
+            <form class="header-search-form" method="post" action="">
+                <select>
+                    <option selected value="">All</option>
+                    <option th:each="category : ${categories}" value="" th:text="${category.categoryName}"></option>
+                </select>
+                <input type="text" placeholder="Search here...">
+                <button type="submit"><span>Search</span></button>
+            </form>
+        </div>
+
+        <div class="header-navlinks">
+            <a href="">Account</a>
+            <a href="">Sign In</a>
+            <a href=""><span class="material-symbols-outlined">shopping_bag</span></a>
+        </div>
+
+    </nav>
+
+
+    <nav class="secondary-nav">
+
+        <div class="dropdown" th:each="category : ${categories}">
+            <div class="dropdown-description" th:text="${category.categoryName}"></div>
+            <div class="dropdown-content">
+                <div class="dropdown-subcategory" th:each="subcategory : ${category.subcategories}">
+                    <a th:href="@{|main/${#strings.toLowerCase(category.categoryName)}/${#strings.toLowerCase(subcategory.subcategoryName)}?page=1|}"
+                       th:text="${subcategory.subcategoryName}"/>
+                </div>
+
+            </div>
+        </div>
+
+
+    </nav>
+</header>
+
+<nav class="mobile-menu" th:fragment="mobile-menu">
+    <div class="close-menu-btn">
+        <span class="material-symbols-outlined">close</span>
+    </div>
+    <p>loradfljsdlfjshd;ljjhdfg;jldfhg</p>
+    <p>loradfljsdlfjshd;ljjhdfg;jldfhg</p>
+    <a href=""><span class="material-symbols-outlined">shopping_bag</span></a>
+</nav>
+
+</body>
+</html>
