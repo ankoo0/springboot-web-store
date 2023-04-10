@@ -16,7 +16,4 @@ public class ProductSubcategoryService {
 
     }
 
-//    public ProductSubcategory getSubcategoryByName(String subcategoryName){
-//        return subcategoryRepository.findBy(subcategoryName);
-//    }
 }

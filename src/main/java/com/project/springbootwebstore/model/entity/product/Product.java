@@ -2,7 +2,14 @@ package com.project.springbootwebstore.model.entity.product;
 
 import org.hibernate.Hibernate;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -32,6 +39,10 @@ public class Product {
     private LocalDateTime creationTime;
     @Column(scale =2)
     private Double price;
+    @Column(nullable = false)
+    private Long quantity;
+    @Column(columnDefinition = "real default 0.0")
+    private Long rating;
 
     @JoinColumn(name = "category_id")
     @ManyToOne
@@ -43,6 +54,8 @@ public class Product {
 
     @ManyToOne
     private ProductDiscount discount;
+
+
 
 
     public Long getId() {
@@ -90,6 +103,7 @@ public class Product {
     }
 
     public void setProductImagesPaths(List<ProductImagePath> productImagesPaths) {
+
         this.productImagesPaths = productImagesPaths;
     }
 

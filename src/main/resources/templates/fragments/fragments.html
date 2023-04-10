@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Fragments</title>
 </head>
 <body>
 
@@ -20,18 +20,25 @@
 
         <div class="header-search-container">
             <form class="header-search-form" method="post" action="">
-                <select>
+                <select class="select-category">
                     <option selected value="">All</option>
-                    <option th:each="category : ${categories}" value="" th:text="${category.categoryName}"></option>
+                    <option th:each="category : ${categories}" th:value="${category.categoryName}" th:text="${category.categoryName}">
+<!--                        <span class="material-symbols-outlined">devices</span>-->
+<!--                        <p ></p>-->
+                    </option>
                 </select>
-                <input type="text" placeholder="Search here...">
-                <button type="submit"><span>Search</span></button>
+                <input class="search-input" type="text" placeholder="Search here...">
+                <button class="search-submit-btn" type="submit">
+                    <span class="material-symbols-outlined">
+                    search
+                    </span>
+                </button>
             </form>
         </div>
 
         <div class="header-navlinks">
-            <a href="">Account</a>
-            <a href="">Sign In</a>
+            <a href=""><span class="material-symbols-outlined">person</span></a>
+<!--            <a href="">Sign In</a>-->
             <a href=""><span class="material-symbols-outlined">shopping_bag</span></a>
         </div>
 
@@ -59,10 +66,67 @@
     <div class="close-menu-btn">
         <span class="material-symbols-outlined">close</span>
     </div>
-    <p>loradfljsdlfjshd;ljjhdfg;jldfhg</p>
-    <p>loradfljsdlfjshd;ljjhdfg;jldfhg</p>
-    <a href=""><span class="material-symbols-outlined">shopping_bag</span></a>
+        <ul class="mobile-categories" >
+            <li class="mobile-category-item" th:each="category : ${categories}">
+                <div class="mobile-category-main">
+                    <img th:src="|/images/categories/${category.categoryImage}|">
+                    <div th:text="${category.categoryName}"></div>
+                    <span class="material-symbols-outlined">
+                        expand_more
+                    </span>
+                </div>
+
+                <ul class="mobile-subcategory-list">
+                    <li class="mobile-subcategory" th:each="subcategory : ${category.subcategories}"  >
+                        <a class="mobile-subcategory-name" th:href="@{|main/${#strings.toLowerCase(category.categoryName)}/${#strings.toLowerCase(subcategory.subcategoryName)}?page=1|}"
+                           th:text="${subcategory.subcategoryName}"/>
+                    </li>
+                </ul>
+            </li>
+        </ul>
 </nav>
+
+<nav class="mobile-bottom-menu" th:fragment="mobile-bottom-menu">
+    <div class="bottom-link">
+        <a class="bottom-link" th:href="@{/main}"><span class="material-symbols-outlined">home</span><p>Home</p></a>
+    </div>
+    <div class="bottom-link">
+        <a class="bottom-link" href=""><span class="material-symbols-outlined">favorite</span><p>Favorites</p></a>
+    </div>
+    <div class="bottom-link">
+        <a class="bottom-link" href=""><span class="material-symbols-outlined">bar_chart</span><p>Compare</p></a>
+    </div>
+    <div class="bottom-link">
+        <a class="bottom-link" href=""><span class="material-symbols-outlined">shopping_bag</span><p>Cart</p></a>
+    </div>
+
+
+
+
+</nav>
+
+<div class="overlay-blurred" th:fragment="overlay-blurred"></div>
+
+<section class="review-modal" th:fragment="review-modal">
+
+    <div class="close-review-container">
+        <span id="modal-close-btn" class="material-symbols-outlined">close</span>
+    </div>
+    <div class="user-reviews" >
+        <div class="review" th:each="i : ${#numbers.sequence(1,5)}">
+            <div class="review-image-set">
+                <img class="review-img"  th:each="i : ${#numbers.sequence(1,5)}" th:src="@{/images/hfw.jpg}">
+            </div>
+
+            <p>Aliquam semper consectetur quam eget lacinia. Nunc vehicula aliquet velit, sit amet consequat purus. Ut quis sem turpis. Morbi sit amet suscipit ante, et congue sapien. Pellentesque ullamcorper malesuada dui, rhoncus aliquet neque iaculis eget. Vivamus cursus dui quis odio gravida sollicitudin. Vivamus hendrerit ex at mi ultrices ultricies. Proin vel dolor eu libero scelerisque lacinia. Nullam vel nunc vel ante molestie tempus. Etiam quis odio at velit sollicitudin vulputate.</p>
+            <div class="user-rating"></div>
+            <div class="rate-review">
+                <span class="material-symbols-outlined">thumb_up</span>
+                <span class="material-symbols-outlined">thumb_down</span>
+            </div>
+        </div>
+    </div>
+</section>
 
 </body>
 </html>

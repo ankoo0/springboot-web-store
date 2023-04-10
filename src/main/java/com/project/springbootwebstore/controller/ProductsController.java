@@ -1,4 +1,4 @@
-package com.project.springbootwebstore.model.repository.controller;
+package com.project.springbootwebstore.controller;
 
 
 import com.project.springbootwebstore.model.entity.product.Product;
@@ -17,6 +17,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Collections;
 import java.util.List;
+
+//TODO: reviews, table constraints, security, signup/login, confirmation of email, pagination, clean code, separate controllers, slider size, hamburger, favorites, crud for products
 
 @Controller
 @RequestMapping("/main")
@@ -45,13 +47,6 @@ public class ProductsController {
         System.out.println(subcategory1);
         Page<Product> productPages = productService.getProductPages(page, 5, subcategory1.getId());
         List<Product> products = productPages.getContent();
-
-        System.out.println("==================================");
-//        products.forEach(System.out::println);
-        productPages.stream().forEach(System.out::println);
-        System.out.println(productPages.getTotalPages());
-        System.out.println(productPages.getTotalElements());
-        System.out.println("==================================");
         ModelAndView mov = new ModelAndView("products");
         mov.addObject("currentPage", page);
         mov.addObject("products", products);

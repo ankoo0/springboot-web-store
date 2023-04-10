@@ -14,6 +14,7 @@ public class ProductCategory {
     private Long id;
     private String categoryName;
     private String categoryImage;
+
     @OneToMany(mappedBy = "productCategory")
     private List<ProductSubcategory> subcategories = new ArrayList<>();
 
@@ -77,7 +78,7 @@ public class ProductCategory {
                 ", categoryName='" + categoryName + '\'' +
                 ", categoryImage='" + categoryImage + '\'' +
                 ", subcategories=" + subcategories.stream().map(ProductSubcategory::getSubcategoryName).collect(Collectors.toList()) +
-                ", products=" + products.stream().map(p->p.getName()).collect(Collectors.toList()) +
+                ", products=" + products.stream().map(Product::getName).collect(Collectors.toList()) +
                 '}';
     }
 }

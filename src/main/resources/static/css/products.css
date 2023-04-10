@@ -50,20 +50,42 @@ body{
 
 
 @media (max-width:480px) {
-  .product-card-content{
+  body{
     font-size: 10px;
   }
 }
 
 
+@media (max-width:480px) {
+  .product-card {
+    width: 100%;
+    border-bottom: 1px solid #9E9E9E;
+    border-top: 1px solid #9E9E9E;
+  }
+}
+
+  @media (max-width:480px){
+    .product-card:hover{
+      box-shadow: none;
+    }
+  }
+
+@media (min-width:481px) {
+  .products-list{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 80%;
+  }
+  }
 
 .products-list{
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-
+  width: 100%;
+  padding: 0;
+  gap: 0;
 }
+
 
 
 .product-card{
@@ -72,9 +94,13 @@ body{
   padding: 10px;
   gap: 10px;
   background-color: white;
-  border: 1px solid black;
-  border-radius: 5px;
+  /*border: 1px solid black;*/
+  /*border: 1px solid;*/
+  /*border-bottom: #9E9E9E;*/
+  /*border-top: #9E9E9E;*/
+  /*border-radius: 5px;*/
   height: 200px;
+  width: 100%;
  
 
 }
@@ -85,23 +111,37 @@ body{
 
 }
 
-.product-details-btn{
+/*.product-details-btn{*/
 
-  width: min-content;
-  
-  padding: 10px 20px;
-  border-radius: 5px;
-  background-color: #333;
+/*  width: min-content;*/
+/*  */
+/*  padding: 10px 20px;*/
+/*  border-radius: 5px;*/
+/*  background-color: #333;*/
+/*  text-decoration: none;*/
+/*  color: white;*/
+/*  !* to space last item from other content *!*/
+/*  margin-top:  auto;*/
+/*  text-align: center;*/
+
+/*  !* to push btn to right *!*/
+/*  margin-left: auto;*/
+/* */
+/*}*/
+
+.product-title > a {
   text-decoration: none;
-  color: white;
-  /* to space last item from other content */
-  margin-top:  auto;
-  text-align: center;
+  color: #333333;
 
-  /* to push btn to right */
-  margin-left: auto;
- 
+
 }
+
+.product-link:hover > h3{
+  color: orange;
+  cursor: context-menu;
+}
+
+
 
 .product-img-container{
   min-width: 150px;
@@ -115,7 +155,7 @@ body{
 
 
 .product-card:hover{
-  box-shadow: 0px 0px 20px 5px #BFBFBF;
+  box-shadow: 0 0 20px 5px #BFBFBF;
 }
 
 .pagination > ul{
@@ -128,6 +168,7 @@ body{
 .pagination > ul > li {
   padding: 10px;
   background-color: #333;
+  border-radius: 50%;
   color: white;
 }
 

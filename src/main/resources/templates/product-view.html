@@ -7,17 +7,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,900;1,100&display=swap" rel="stylesheet">
 
+
   <link rel="stylesheet" type="text/css"  th:href="@{/css/product-view.css}">
   <link rel="stylesheet" type="text/css"  th:href="@{/css/fragments.css}">
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"/>
+
+
+
   <script type="text/javascript" defer th:src="@{/js/hamburger.js}"></script>
+  <script type="text/javascript" defer th:src="@{/js/rating-modal.js}"></script>
   <title th:text="${product.name}"></title>
 </head>
 
@@ -26,26 +31,64 @@
 <header th:replace="fragments/fragments.html :: header">
 </header>
 <nav th:replace="fragments/fragments.html :: mobile-menu"></nav>
-
-
+<nav th:replace="fragments/fragments.html :: mobile-bottom-menu"></nav>
+<section th:replace="fragments/fragments.html :: review-modal"></section>
+<div th:replace="fragments/fragments.html :: overlay-blurred"></div>
 
 
   <main class="main-content">
     <section class="product-view">
 
       <div class="product-container">
+      <h2 th:text="${product.name}"></h2>
+
+
+
       <div class="product-images">
-        <img th:src="@{|/images/${product.mainThumbnailPath}|}">
+        <!-- Slider main container -->
+        <div class="swiper">
+          <!-- Additional required wrapper -->
+          <div class="swiper-wrapper">
+            <!-- Slides -->
+            <div class="swiper-slide"><img th:src="@{|/images/${product.mainThumbnailPath}|}"></div>
+            <div class="swiper-slide"><img th:src="@{|/images/${product.mainThumbnailPath}|}"></div>
+            <div class="swiper-slide"><img th:src="@{|/images/${product.mainThumbnailPath}|}"></div>
+            <div class="swiper-slide"><img th:src="@{|/images/${product.mainThumbnailPath}|}"></div>
+          </div>
+          <!-- If we need pagination -->
+          <div class="swiper-pagination"></div>
+
+          <!-- If we need navigation buttons -->
+          <div class="swiper-button-prev"></div>
+          <div class="swiper-button-next"></div>
+
+        </div>
+
+
+        <!--        <span class="material-symbols-outlined">-->
+<!--          arrow_back_ios-->
+<!--        </span>-->
+<!--        <div class="carousel">-->
+<!--          <img th:src="@{|/images/${product.mainThumbnailPath}|}">-->
+<!--          <img th:src="@{|/images/${product.mainThumbnailPath}|}">-->
+<!--          <img th:src="@{|/images/${product.mainThumbnailPath}|}">-->
+<!--          <img th:src="@{|/images/${product.mainThumbnailPath}|}">-->
+<!--        </div>-->
+
+
+<!--        <span class="material-symbols-outlined">-->
+<!--          arrow_forward_ios-->
+<!--        </span>-->
 
       </div>
 
       <div class="product-description">
 
         <div class="main-description">
-          <h2 th:text="${product.name}"></h2>
           <p th:text="${product.fullDescription}"></p>
           <h4 class="price" th:text="${product.price}"></h4>
           <a href="" class="add-to-cart-btn" >Add to Cart</a>
+          <button class="rating-btn">see reviews...</button>
         </div>
 
         <div class="product-properties">
@@ -57,8 +100,8 @@
             </tr>
 
             <tr th:each="productAttribute : ${product.productAttributes}">
-              <td th:text="${productAttribute.name}"></td>
-              <td>2023</td>
+              <td th:text="${productAttribute.attributeName}"></td>
+              <td th:text="${productAttribute.attributeValue}"></td>
             </tr>
 
 
@@ -131,7 +174,8 @@
   <footer class="main-footer">
 
   </footer>
-
+<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+<script th:src="@{|/js/swiper-init.js|}"></script>
 </body>
 
 </html>
