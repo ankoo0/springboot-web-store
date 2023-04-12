@@ -56,7 +56,7 @@ public class Product {
     private ProductDiscount discount;
 
 
-
+    
 
     public Long getId() {
         return id;

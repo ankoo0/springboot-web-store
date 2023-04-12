@@ -165,11 +165,31 @@ body{
   list-style-type: none;
 }
 
-.pagination > ul > li {
+.pagination-item {
   padding: 10px;
+  height:30px;
+  width: 30px;
   background-color: #333;
-  border-radius: 50%;
+  border-radius: 100%;
   color: white;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5px;
+}
+
+.pagination-item-active {
+  padding: 10px;
+  height:30px;
+  width: 30px;
+  background-color: darkred;
+  border-radius: 100%;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5px;
 }
 
 .pagination > ul > li > a {

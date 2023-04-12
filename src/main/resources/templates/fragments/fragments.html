@@ -16,30 +16,31 @@
 
         <div class="header-logo-container">
             <a class="header-logo" th:href="@{/main}"><h1>E-Commerce</h1></a>
-        </div>
-
-        <div class="header-search-container">
-            <form class="header-search-form" method="post" action="">
-                <select class="select-category">
-                    <option selected value="">All</option>
-                    <option th:each="category : ${categories}" th:value="${category.categoryName}" th:text="${category.categoryName}">
-<!--                        <span class="material-symbols-outlined">devices</span>-->
-<!--                        <p ></p>-->
-                    </option>
-                </select>
-                <input class="search-input" type="text" placeholder="Search here...">
-                <button class="search-submit-btn" type="submit">
+            <div class="header-search-container">
+                <form class="header-search-form" method="post" action="">
+                    <select class="select-category">
+                        <option selected value="">All</option>
+                        <option th:each="category : ${categories}" th:value="${category.categoryName}" th:text="${category.categoryName}">
+                            <!--                        <span class="material-symbols-outlined">devices</span>-->
+                            <!--                        <p ></p>-->
+                        </option>
+                    </select>
+                    <input class="search-input" type="text" placeholder="Search here...">
+                    <button class="search-submit-btn" type="submit">
                     <span class="material-symbols-outlined">
                     search
                     </span>
-                </button>
-            </form>
+                    </button>
+                </form>
+            </div>
         </div>
 
+
+
         <div class="header-navlinks">
-            <a href=""><span class="material-symbols-outlined">person</span></a>
+            <a th:href="@{main/account}"><span class="material-symbols-outlined">person</span></a>
 <!--            <a href="">Sign In</a>-->
-            <a href=""><span class="material-symbols-outlined">shopping_bag</span></a>
+            <a th:href="@{main/cart}"><span class="material-symbols-outlined">shopping_bag</span><span class="cart-notification">1</span></a>
         </div>
 
     </nav>
@@ -91,13 +92,13 @@
         <a class="bottom-link" th:href="@{/main}"><span class="material-symbols-outlined">home</span><p>Home</p></a>
     </div>
     <div class="bottom-link">
-        <a class="bottom-link" href=""><span class="material-symbols-outlined">favorite</span><p>Favorites</p></a>
+        <a class="bottom-link" th:href="@{/main/favorites}"><span class="material-symbols-outlined">favorite</span><p>Favorites</p></a>
     </div>
     <div class="bottom-link">
         <a class="bottom-link" href=""><span class="material-symbols-outlined">bar_chart</span><p>Compare</p></a>
     </div>
     <div class="bottom-link">
-        <a class="bottom-link" href=""><span class="material-symbols-outlined">shopping_bag</span><p>Cart</p></a>
+        <a class="bottom-link" th:href="@{/main/cart}"><span class="material-symbols-outlined">shopping_bag</span><p>Cart</p></a>
     </div>
 
 
