@@ -7,6 +7,7 @@ import com.project.springbootwebstore.model.entity.product.ProductSubcategory;
 import com.project.springbootwebstore.model.service.ProductCategoryService;
 import com.project.springbootwebstore.model.service.ProductService;
 import com.project.springbootwebstore.model.service.ProductSubcategoryService;
+import com.project.springbootwebstore.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,10 @@ public class ProductsController {
 
     @Autowired
     ProductSubcategoryService subcategoryService;
+
+    @Autowired
+    UserService userService;
+
 
     //прочитать заголовки
     @GetMapping(value = "/get-headers")
@@ -68,6 +73,7 @@ public class ProductsController {
 
     @GetMapping
     public ModelAndView mainView() {
+        System.out.println(userService.getUserByUsername("admin"));
         ModelAndView modelAndView = new ModelAndView("index");
         modelAndView.addObject("categories", categoryService.getAllCategories());
         categoryService.getAllCategories().forEach(System.out::println);

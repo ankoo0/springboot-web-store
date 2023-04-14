@@ -20,5 +20,15 @@ const swiper = new Swiper('.swiper', {
         el: '.swiper-scrollbar',
     },
 
+    zoom: {
+        maxRatio: 1.5,
+        minRatio: 1
+    },
+
+
 
 });
+
+swiper.on("slideChangeTransitionStart", swiper.zoom.out);
+// And when transition has finished scale it up.
+swiper.on("slideChangeTransitionEnd", swiper.zoom.in);

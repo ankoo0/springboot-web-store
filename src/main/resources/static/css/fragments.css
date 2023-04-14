@@ -139,6 +139,7 @@
     flex-direction: column;
     list-style-type: none;
 
+
 }
 
 
@@ -244,6 +245,7 @@
     display: flex;
     align-items: center;
 
+
 }
 
 .dropdown-description{
@@ -257,16 +259,19 @@
 }
 
 .dropdown:hover .dropdown-content{
-    display: block;
+    visibility: visible;
+    opacity: 100%;
 }
 
 .dropdown-content{
-    display: none;
+    visibility: hidden;
     position: absolute;
     left: 0;
     top: 100%;
     background-color: white;
     width: 160px;
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
     /*color: #333333;*/
     /* width: max-content;
     height: max-content; */
@@ -304,8 +309,8 @@
 .review-modal {
 
     display: none;
-    height: 80%;
-    width: 80%;
+    height: 90%;
+    width: 90%;
 
     border-radius: 20px;
     background-color: white;
@@ -333,6 +338,56 @@
     border-top: 1px solid black;
     border-bottom: 1px solid black;
 }
+
+.close-review-container{
+    position: sticky;
+    top: 0;
+    background-color:white;
+    box-shadow: 0 2px 5px -2px #383838;
+}
+
+.review-user-info{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    border-bottom: 1px solid #333333;
+}
+
+.review-user-avatar{
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    border: 1px solid #333333;
+}
+
+.review-user-avatar > img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    border-radius: 100%;
+}
+
+.review-rating{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+.review-rating > span{
+    color: gold;
+}
+
+
+
+
+
+.empty-rating-star{
+    color: #333333;
+}
+
 
 .review-image-set{
     display: grid;

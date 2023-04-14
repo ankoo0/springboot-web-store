@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,900;1,100&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css"  th:href="@{/css/signup.css}">
+    <link rel="stylesheet" type="text/css"  th:href="@{/css/fragments.css}">
+
+
+    <title>Sign Up</title>
+</head>
+
+<body>
+
+<section class="signup-container">
+    <form class="signup-form" th:action="@{/sign-up}" method="post">
+        <div><label>Username: </label><input type="text" name="username" placeholder="username"></div>
+        <div><label>First Name: </label><input type="text" name="firstName" placeholder="firstName"></div>
+        <div><label>Last Name: </label><input type="text" name="lastName" placeholder="lastName"></div>
+        <div><label>E-Mail: </label><input type="email" name="email" placeholder="email"></div>
+        <div><label>Password: </label><input type="password" name="password" placeholder="password"></div>
+        <div><label>Repeat Password: </label><input type="password" name="passwordRepeat" placeholder="password"></div>
+        <div><button name="submit" type="submit" >Register</button></div>
+    </form>
+    <div><a th:href="@{/login}">Already have an account? Sign-in</a></div>
+</section>
+
+
+</body>
+
+</html>
