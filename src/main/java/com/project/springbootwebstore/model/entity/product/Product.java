@@ -1,9 +1,18 @@
 package com.project.springbootwebstore.model.entity.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.project.springbootwebstore.model.entity.users.Order;
 import org.hibernate.Hibernate;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -14,7 +23,9 @@ public class Product {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty("id")
+
 //    @Column(columnDefinition = "BIGSERIAL")
     private Long id;
     @Column(name = "product_name",nullable = false)
@@ -26,8 +37,10 @@ public class Product {
     @Column(nullable = false)
     private String mainThumbnailPath;
     @OneToMany(mappedBy = "product")
+    @JsonIgnore
     private List<ProductImagePath> productImagesPaths;
     @OneToMany(mappedBy = "product")
+    @JsonIgnore
     private List<ProductAttribute> productAttributes;
     @Column(nullable = false)
     private LocalDateTime creationTime;
@@ -40,19 +53,33 @@ public class Product {
 
     @JoinColumn(name = "category_id")
     @ManyToOne
+    @JsonIgnore
     private ProductCategory category;
 
     @JoinColumn(name = "subcategory_id")
     @ManyToOne
+    @JsonIgnore
     private ProductSubcategory subcategory;
 
     @ManyToOne
+    @JsonIgnore
     private ProductDiscount discount;
 
     @ManyToMany
+    @JsonIgnore
     private List<Order> ordersWithProduct;
 
-    
+    @JsonProperty("quantity")
+   private Long quantityCart;
+
+    public Product(Long id, Long quantityCart) {
+        this.id = id;
+        this.quantityCart = quantityCart;
+    }
+
+    public Product() {
+
+    }
 
     public Long getId() {
         return id;
@@ -176,5 +203,13 @@ public class Product {
                 "price = " + price + ", " +
                 "category = " + category + ", " +
                 "discount = " + discount + ")";
+    }
+
+    public Long getQuantityCart() {
+        return quantityCart;
+    }
+
+    public void setQuantityCart(Long quantityCart) {
+        this.quantityCart = quantityCart;
     }
 }

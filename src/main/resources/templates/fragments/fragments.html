@@ -20,12 +20,13 @@
                 <form class="header-search-form" method="post" action="">
                     <select class="select-category">
                         <option selected value="">All</option>
-                        <option th:each="category : ${categories}" th:value="${category.categoryName}" th:text="${category.categoryName}">
+                        <option th:each="category : ${categories}" th:value="${category.categoryName}"
+                                th:text="${category.categoryName}">
                             <!--                        <span class="material-symbols-outlined">devices</span>-->
                             <!--                        <p ></p>-->
                         </option>
                     </select>
-                    <input class="search-input" type="text" placeholder="Search here...">
+                    <input class="input" type="text" placeholder="Search here...">
                     <button class="search-submit-btn" type="submit">
                     <span class="material-symbols-outlined">
                     search
@@ -36,11 +37,15 @@
         </div>
 
 
-
         <div class="header-navlinks">
-            <a th:href="@{main/account}"><span class="material-symbols-outlined">person</span></a>
-<!--            <a href="">Sign In</a>-->
-            <a th:href="@{main/cart}"><span class="material-symbols-outlined">shopping_bag</span><span class="cart-notification">1</span></a>
+            <div class="navlink-wrapper">
+                <a th:href="@{main/account}"><span class="material-symbols-outlined">person</span></a>
+            </div>
+            <!--            <a href="">Sign In</a>-->
+            <div class="navlink-wrapper">
+                <a th:href="@{main/cart}"><span class="material-symbols-outlined">shopping_bag</span></a>
+                <span class="notification cart">0</span>
+            </div>
         </div>
 
     </nav>
@@ -67,44 +72,70 @@
     <div class="close-menu-btn">
         <span class="material-symbols-outlined">close</span>
     </div>
-        <ul class="mobile-categories" >
-            <li class="mobile-category-item" th:each="category : ${categories}">
-                <div class="mobile-category-main">
-                    <img th:src="|/images/categories/${category.categoryImage}|">
-                    <div th:text="${category.categoryName}"></div>
-                    <span class="material-symbols-outlined">
+    <ul class="mobile-categories">
+        <li class="mobile-category-item" th:each="category : ${categories}">
+            <div class="mobile-category-main">
+                <img th:src="|/images/categories/${category.categoryImage}|">
+                <div th:text="${category.categoryName}"></div>
+                <span class="material-symbols-outlined">
                         expand_more
                     </span>
-                </div>
+            </div>
 
-                <ul class="mobile-subcategory-list">
-                    <li class="mobile-subcategory" th:each="subcategory : ${category.subcategories}"  >
-                        <a class="mobile-subcategory-name" th:href="@{|main/${#strings.toLowerCase(category.categoryName)}/${#strings.toLowerCase(subcategory.subcategoryName)}?page=1|}"
-                           th:text="${subcategory.subcategoryName}"/>
-                    </li>
-                </ul>
-            </li>
-        </ul>
+            <ul class="mobile-subcategory-list">
+                <li class="mobile-subcategory" th:each="subcategory : ${category.subcategories}">
+                    <a class="mobile-subcategory-name"
+                       th:href="@{|main/${#strings.toLowerCase(category.categoryName)}/${#strings.toLowerCase(subcategory.subcategoryName)}?page=1|}"
+                       th:text="${subcategory.subcategoryName}"/>
+                </li>
+            </ul>
+        </li>
+    </ul>
 </nav>
 
 <nav class="mobile-bottom-menu" th:fragment="mobile-bottom-menu">
     <div class="bottom-link">
-        <a class="bottom-link" th:href="@{/main}"><span class="material-symbols-outlined">home</span><p>Home</p></a>
+        <a class="bottom-link" th:href="@{/main}"><span class="material-symbols-outlined">home</span>
+            <p>Home</p></a>
     </div>
     <div class="bottom-link">
-        <a class="bottom-link" th:href="@{/main/favorites}"><span class="material-symbols-outlined">favorite</span><p>Favorites</p></a>
+        <a class="bottom-link" th:href="@{/main/favorites}"><span class="material-symbols-outlined">favorite</span>
+            <p>Favorites</p></a>
     </div>
     <div class="bottom-link">
-        <a class="bottom-link" href=""><span class="material-symbols-outlined">bar_chart</span><p>Compare</p></a>
+        <a class="bottom-link" href=""><span class="material-symbols-outlined">bar_chart</span>
+            <p>Compare</p></a>
     </div>
     <div class="bottom-link">
-        <a class="bottom-link" th:href="@{/main/cart}"><span class="material-symbols-outlined">shopping_bag</span><p>Cart</p></a>
+        <a class="bottom-link" th:href="@{/main/cart}"><span class="material-symbols-outlined">shopping_bag</span>
+            <p>Cart</p></a>
     </div>
-
-
-
-
 </nav>
+
+
+<section class="mobile-search-modal" th:fragment="mobile-search-modal">
+    <div class="search-container">
+        <input class="search-input" type="text" placeholder="Search here...">
+        <button class="search-submit-btn" type="submit">
+                    <span class="material-symbols-outlined">
+                    search
+                    </span>
+        </button>
+        <button class="close-search-btn"><span class="material-symbols-outlined">
+                    close
+                    </span></button>
+    </div>
+
+    <div class="found-categories">
+        <div class="search-category">
+            <div class="search-category-img"><img src="" alt="category"/></div>
+            <h4 class="search-category-title"></h4>
+
+        </div>
+
+    </div>
+
+</section>
 
 <div class="overlay-blurred" th:fragment="overlay-blurred"></div>
 
@@ -113,7 +144,7 @@
     <div class="close-review-container">
         <span id="modal-close-btn" class="material-symbols-outlined">close</span>
     </div>
-    <div class="user-reviews" >
+    <div class="user-reviews">
         <div class="review" th:each="i : ${#numbers.sequence(1,5)}">
             <div class="review-user-info">
                 <div class="review-user-avatar">
@@ -128,10 +159,14 @@
                 <span class="material-symbols-outlined empty-rating-star">star</span>
             </div>
             <div class="review-image-set">
-                <img class="review-img"  th:each="i : ${#numbers.sequence(1,5)}" th:src="@{/images/hfw.jpg}">
+                <img class="review-img" th:each="i : ${#numbers.sequence(1,5)}" th:src="@{/images/hfw.jpg}">
             </div>
 
-            <p>Aliquam semper consectetur quam eget lacinia. Nunc vehicula aliquet velit, sit amet consequat purus. Ut quis sem turpis. Morbi sit amet suscipit ante, et congue sapien. Pellentesque ullamcorper malesuada dui, rhoncus aliquet neque iaculis eget. Vivamus cursus dui quis odio gravida sollicitudin. Vivamus hendrerit ex at mi ultrices ultricies. Proin vel dolor eu libero scelerisque lacinia. Nullam vel nunc vel ante molestie tempus. Etiam quis odio at velit sollicitudin vulputate.</p>
+            <p>Aliquam semper consectetur quam eget lacinia. Nunc vehicula aliquet velit, sit amet consequat purus. Ut
+                quis sem turpis. Morbi sit amet suscipit ante, et congue sapien. Pellentesque ullamcorper malesuada dui,
+                rhoncus aliquet neque iaculis eget. Vivamus cursus dui quis odio gravida sollicitudin. Vivamus hendrerit
+                ex at mi ultrices ultricies. Proin vel dolor eu libero scelerisque lacinia. Nullam vel nunc vel ante
+                molestie tempus. Etiam quis odio at velit sollicitudin vulputate.</p>
             <div class="user-rating"></div>
             <div class="rate-review">
                 <span class="material-symbols-outlined">thumb_up</span>

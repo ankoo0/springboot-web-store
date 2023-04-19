@@ -43,10 +43,12 @@
               <h3  th:text="${product.name}"/>
             </a>
           </div>
-
+<!--th:text="${#numbers.formatDecimal(${discountPrice},1,3)}"-->
           <p th:text="${product.shortDescription}"/>
-          <h3 th:text="${product.price}+' $'"/>
+          <h4 th:with="discountPrice=${product.price}-${(product.price/100) * product.discount.discountPercent}" th:if="${product.discount.discountPercent} !=0" th:text="${#numbers.formatDecimal(discountPrice,1,2)} + '$'" ></h4>
+          <h3 style="text-decoration: line-through" th:text="${product.price}+' $'"/>
           <a class="bottom-link" href=""><span class="material-symbols-outlined">favorite</span></a>
+          <button th:attr="data-id=${product.id},data-quantity=0" class="add-to-cart-btn"><span class="material-symbols-outlined">shopping_bag</span>add to cart</button>
 <!--          <a class="product-details-btn" th:href="@{|${#strings.toLowerCase(product.category.categoryName)}/${#strings.toLowerCase(product.subcategory.subcategoryName)}/${product.id}|}"  th:text="Description"/>-->
 <!--          <a class="product-details-btn" th:href="@{|${product.id}|}"  th:text="Description"/>  this is only /main/electronics/2 no subcategory-->
 <!--          <a class="product-details-btn" th:href="@{|/${product.id}|}"  th:text="Description"/>-->
@@ -76,6 +78,7 @@
 
   </footer>
 
+<script type="text/javascript" th:src="@{/js/add-to-cart.js}"></script>
 </body>
 
 </html>

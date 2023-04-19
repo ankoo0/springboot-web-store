@@ -26,6 +26,8 @@
   </header>
   <nav th:replace="fragments/fragments.html :: mobile-menu"></nav>
 
+  <section th:replace="fragments/fragments.html :: mobile-search-modal"></section>
+
   <nav th:replace="fragments/fragments.html :: mobile-bottom-menu"></nav>
 
 
@@ -45,6 +47,7 @@
   </footer>
 
   <script type="text/javascript" th:src="@{/js/hamburger.js}"></script>
+  <script type="text/javascript" th:src="@{/js/search.js}"></script>
 </body>
 
 </html>

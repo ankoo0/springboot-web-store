@@ -37,7 +37,11 @@ body{
     width: 100%;
     flex: 1 1 auto;
 
-    /* to make scrollbar only for product section not for all page */
-    /* overflow-y: auto;
-     */
+
+}
+
+.cart-item{
+    display: flex;
+    flex-direction: row;
+
 }

@@ -1,6 +1,9 @@
 package com.project.springbootwebstore.controller;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.project.springbootwebstore.model.entity.product.Product;
 import com.project.springbootwebstore.model.entity.product.ProductCategory;
 import com.project.springbootwebstore.model.entity.product.ProductSubcategory;
@@ -14,12 +17,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.text.MessageFormat;
+import java.util.*;
 
 //TODO: reviews, table constraints, security, signup/login, confirmation of email, pagination, clean code, separate controllers, slider size, hamburger, favorites, crud for products
 
@@ -27,17 +33,41 @@ import java.util.Map;
 @RequestMapping("/main")
 public class ProductsController {
 
-    @Autowired
     ProductService productService;
-
-    @Autowired
     ProductCategoryService categoryService;
-
-    @Autowired
     ProductSubcategoryService subcategoryService;
+    UserService userService;
 
     @Autowired
-    UserService userService;
+    public ProductsController(ProductService productService, ProductCategoryService categoryService, ProductSubcategoryService subcategoryService, UserService userService) {
+        this.productService = productService;
+        this.categoryService = categoryService;
+        this.subcategoryService = subcategoryService;
+        this.userService = userService;
+    }
+
+    @PostMapping("/cart-items")
+    public @ResponseBody List<Product> cartItems(@RequestBody String some) throws IOException {
+        System.out.println(some);
+        ObjectMapper objectMapper = new ObjectMapper();
+        TypeFactory typeFactory = objectMapper.getTypeFactory();
+        List<JsonProduct> someClassList = objectMapper.readValue(some, typeFactory.constructCollectionType(List.class, JsonProduct.class));
+        someClassList.forEach(System.out::println);
+        List<Product> responseProducts = new ArrayList<>();
+        for (JsonProduct jProd: someClassList) {
+            Product product = productService.getProductById(jProd.getId());
+            responseProducts.add(product);
+        }
+        System.out.println("================================");
+        responseProducts.forEach(System.out::println);
+//        return ResponseEntity.ok().body("{call : success}");
+        Product p = productService.getProductById(1L);
+        byte[] byteData = Files.readAllBytes(Paths.get("C:\\Users\\PC\\Desktop\\My Projects\\springboot-web-store\\src\\main\\resources\\static\\images\\iphone14.jpg"));
+        String base64String = Base64.getEncoder().encodeToString(byteData);
+        String img = "/images/iphone14.jpg";
+        System.out.println(base64String);
+        return responseProducts;
+    }
 
 
     //прочитать заголовки
