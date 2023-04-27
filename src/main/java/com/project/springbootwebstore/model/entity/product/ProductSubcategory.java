@@ -1,5 +1,9 @@
 package com.project.springbootwebstore.model.entity.product;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +16,10 @@ public class ProductSubcategory {
     private Long id;
     private String subcategoryName;
     @ManyToOne
+
+    @JsonIgnore
     private ProductCategory productCategory;
+
 
     @OneToMany(mappedBy = "productSubcategory")
     private List<ProductAttribute> productAttributes;

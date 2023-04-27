@@ -115,23 +115,26 @@
 
 <section class="mobile-search-modal" th:fragment="mobile-search-modal">
     <div class="search-container">
-        <input class="search-input" type="text" placeholder="Search here...">
-        <button class="search-submit-btn" type="submit">
+        <form method="get" action="/main/all">
+            <input class="search-input" name="q" type="text" placeholder="Search here...">
+            <button class="search-submit-btn" type="submit">
                     <span class="material-symbols-outlined">
                     search
                     </span>
-        </button>
+            </button>
+        </form>
+
         <button class="close-search-btn"><span class="material-symbols-outlined">
                     close
                     </span></button>
     </div>
 
-    <div class="found-categories">
-        <div class="search-category">
-            <div class="search-category-img"><img src="" alt="category"/></div>
-            <h4 class="search-category-title"></h4>
+    <div class="found-subcategories">
 
-        </div>
+
+    </div>
+
+    <div class="search-preview">
 
     </div>
 

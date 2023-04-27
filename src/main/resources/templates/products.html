@@ -64,7 +64,7 @@
         <ul>
           <li class="pagination-item" th:if="${currentPage!=1}"><a th:with="prevPage=${currentPage}-${1}" th:href="@{|?page=${prevPage}|}">&lt;</a></li>
 
-          <li th:each="i : ${#numbers.sequence(1,totalPages)}" th:class="${currentPage == i} ? 'pagination-item-active' : 'pagination-item'"><a th:href="@{|?page=${i}|}" th:text="${i}" ></a></li>
+          <li th:each="i : ${#numbers.sequence(1,totalPages)}" th:class="${currentPage == i} ? 'pagination-item-active' : 'pagination-item'"><a th:with="queryText=${query.equals('')} ? ''  : ${'&q=' +query}" th:href="@{|?page=${i + queryText} |}" th:text="${i}" ></a></li>
                     <li class="pagination-item" th:if="${currentPage!=totalPages}"><a th:with="nextPage=${currentPage}+${1}" th:href="@{|?page=${nextPage}|}">&gt;</a></li>
         </ul>
       </nav>

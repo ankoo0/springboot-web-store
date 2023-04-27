@@ -13,12 +13,21 @@ import com.project.springbootwebstore.model.service.ProductSubcategoryService;
 import com.project.springbootwebstore.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.Base64Utils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
@@ -44,6 +53,24 @@ public class ProductsController {
         this.categoryService = categoryService;
         this.subcategoryService = subcategoryService;
         this.userService = userService;
+    }
+
+    @GetMapping("/all")
+    public ModelAndView allSearchResults (@RequestParam(name = "q", required = false) Optional<String> query,@RequestParam(name = "page",defaultValue = "1") int page){
+        ModelAndView modelAndView = new ModelAndView("products");
+        Page<Product> productPages = productService.search(query.orElse(""), PageRequest.of(page-1,2));
+        List<Product> products = productPages.getContent();
+        System.out.println(products.size());
+        productPages.forEach(System.out::println);
+        System.out.println(productPages.getTotalPages());
+        System.out.println("======================");
+        modelAndView.addObject("query", query.orElse(""));
+        modelAndView.addObject("currentPage", page);
+        modelAndView.addObject("products", products);
+        modelAndView.addObject("totalPages", productPages.getTotalPages());
+        modelAndView.addObject("totalProducts", productPages.getTotalElements());
+        modelAndView.addObject("categories", categoryService.getAllCategories());
+        return modelAndView;
     }
 
     @PostMapping("/cart-items")
@@ -117,7 +144,7 @@ public class ProductsController {
         Page<Product> productPages = productService.getProductPages(page, 2, subcategory1.getId());
         List<Product> products = productPages.getContent();
         ModelAndView mov = new ModelAndView("products");
-
+        mov.addObject("query", "");
         mov.addObject("currentPage", page);
         mov.addObject("products", products);
         mov.addObject("totalPages", productPages.getTotalPages());
