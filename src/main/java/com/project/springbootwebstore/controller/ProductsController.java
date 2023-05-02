@@ -4,6 +4,7 @@ package com.project.springbootwebstore.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.project.springbootwebstore.model.dto.ProductDto;
 import com.project.springbootwebstore.model.entity.product.Product;
 import com.project.springbootwebstore.model.entity.product.ProductCategory;
 import com.project.springbootwebstore.model.entity.product.ProductSubcategory;
@@ -42,10 +43,10 @@ import java.util.*;
 @RequestMapping("/main")
 public class ProductsController {
 
-    ProductService productService;
-    ProductCategoryService categoryService;
-    ProductSubcategoryService subcategoryService;
-    UserService userService;
+   private final ProductService productService;
+   private final ProductCategoryService categoryService;
+   private final ProductSubcategoryService subcategoryService;
+   private final UserService userService;
 
     @Autowired
     public ProductsController(ProductService productService, ProductCategoryService categoryService, ProductSubcategoryService subcategoryService, UserService userService) {
@@ -58,8 +59,8 @@ public class ProductsController {
     @GetMapping("/all")
     public ModelAndView allSearchResults (@RequestParam(name = "q", required = false) Optional<String> query,@RequestParam(name = "page",defaultValue = "1") int page){
         ModelAndView modelAndView = new ModelAndView("products");
-        Page<Product> productPages = productService.search(query.orElse(""), PageRequest.of(page-1,2));
-        List<Product> products = productPages.getContent();
+        Page<ProductDto> productPages = productService.search(query.orElse(""), PageRequest.of(page-1,2));
+        List<ProductDto> products = productPages.getContent();
         System.out.println(products.size());
         productPages.forEach(System.out::println);
         System.out.println(productPages.getTotalPages());
@@ -74,21 +75,21 @@ public class ProductsController {
     }
 
     @PostMapping("/cart-items")
-    public @ResponseBody List<Product> cartItems(@RequestBody String some) throws IOException {
+    public @ResponseBody List<ProductDto> cartItems(@RequestBody String some) throws IOException {
         System.out.println(some);
         ObjectMapper objectMapper = new ObjectMapper();
         TypeFactory typeFactory = objectMapper.getTypeFactory();
         List<JsonProduct> someClassList = objectMapper.readValue(some, typeFactory.constructCollectionType(List.class, JsonProduct.class));
         someClassList.forEach(System.out::println);
-        List<Product> responseProducts = new ArrayList<>();
+        List<ProductDto> responseProducts = new ArrayList<>();
         for (JsonProduct jProd: someClassList) {
-            Product product = productService.getProductById(jProd.getId());
+            ProductDto product = productService.getProductById(jProd.getId());
             responseProducts.add(product);
         }
         System.out.println("================================");
         responseProducts.forEach(System.out::println);
 //        return ResponseEntity.ok().body("{call : success}");
-        Product p = productService.getProductById(1L);
+        ProductDto p = productService.getProductById(1L);
         byte[] byteData = Files.readAllBytes(Paths.get("C:\\Users\\PC\\Desktop\\My Projects\\springboot-web-store\\src\\main\\resources\\static\\images\\iphone14.jpg"));
         String base64String = Base64.getEncoder().encodeToString(byteData);
         String img = "/images/iphone14.jpg";
@@ -96,13 +97,13 @@ public class ProductsController {
         return responseProducts;
     }
 
-
-    //прочитать заголовки
-    @GetMapping(value = "/get-headers")
-    public ResponseEntity<?> getHeaders(@RequestHeader Map<String, String> headers){//представляет заголовки ввиде мапы,
-        //где ключ это наименование заголовка, а значение мапы - это значение заголовка
-        return ResponseEntity.ok(headers);
-    }
+//
+//    //прочитать заголовки
+//    @GetMapping(value = "/get-headers")
+//    public ResponseEntity<?> getHeaders(@RequestHeader Map<String, String> headers){//представляет заголовки ввиде мапы,
+//        //где ключ это наименование заголовка, а значение мапы - это значение заголовка
+//        return ResponseEntity.ok(headers);
+//    }
 
     @GetMapping(value = "/cart")
     public ModelAndView cartView(){
@@ -138,12 +139,27 @@ public class ProductsController {
     }
 
     @GetMapping("/{category}/{subcategory}")
-    public ModelAndView subcategoryView(@RequestParam(name = "page") int page, @PathVariable(name = "category") String category, @PathVariable(name = "subcategory") String subcategory) {
-        ProductSubcategory subcategory1 = subcategoryService.getSubcategoryByName(subcategory);
-        System.out.println(subcategory1);
-        Page<Product> productPages = productService.getProductPages(page, 2, subcategory1.getId());
-        List<Product> products = productPages.getContent();
+    public ModelAndView subcategoryView(
+            @RequestParam(name = "order", required = false) String order,
+            @RequestParam(name = "sortBy", required = false) String sortBy,
+            @RequestParam(name = "q", required = false) String query,
+            @RequestParam(name = "page") int page,
+            @PathVariable(name = "category") String category,
+            @PathVariable(name = "subcategory") String subcategoryName) {
+        ProductSubcategory subcategory = subcategoryService.getSubcategoryByName(subcategoryName);
+        Page<ProductDto> productPages;
+        // map filter gri sort by query page and other put inside db query @RequestParam Map<String,String> map,
+//        map.entrySet().forEach(System.out::println);
+        System.out.println(page);
+        if (query!=null){
+           productPages = productService.getProductPagesByQuery(page, 5, subcategory.getId(),query);
+        } else {
+            productPages = productService.getProductPages(page, 5, subcategory.getId());
+        }
+        List<ProductDto> products = productPages.getContent();
         ModelAndView mov = new ModelAndView("products");
+        mov.addObject("sortBy",sortBy);
+        mov.addObject("order",order);
         mov.addObject("query", "");
         mov.addObject("currentPage", page);
         mov.addObject("products", products);
@@ -151,12 +167,13 @@ public class ProductsController {
         mov.addObject("totalProducts", productPages.getTotalElements());
         mov.addObject("categories", categoryService.getAllCategories());
         return mov;
+
     }
 
 
     @GetMapping("/{category}/{subcategory}/{productId}")
     public ModelAndView productView(@PathVariable(name = "category") String category, @PathVariable(name = "subcategory") String subcategory, @PathVariable(name = "productId") Long productId) {
-        Product product = productService.getProductById(productId);
+        ProductDto product = productService.getProductById(productId);
         ModelAndView mov = new ModelAndView("product-view");
         mov.addObject("product", product);
         mov.addObject("categories", categoryService.getAllCategories());

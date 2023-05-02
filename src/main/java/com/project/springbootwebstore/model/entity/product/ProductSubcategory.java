@@ -27,6 +27,9 @@ public class ProductSubcategory {
     @OneToMany(mappedBy = "subcategory")
     private List<Product> products = new ArrayList<>();
 
+    private String subcategoryImage;
+
+
 
 
     public ProductSubcategory() {
@@ -80,6 +83,15 @@ public class ProductSubcategory {
 
     public void setProducts(List<Product> products) {
         this.products = products;
+    }
+
+
+    public String getSubcategoryImage() {
+        return subcategoryImage;
+    }
+
+    public void setSubcategoryImage(String subcategoryImage) {
+        this.subcategoryImage = subcategoryImage;
     }
 
     @Override

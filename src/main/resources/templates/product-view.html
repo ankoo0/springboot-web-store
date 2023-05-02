@@ -101,8 +101,8 @@
             </tr>
 
             <tr th:each="productAttribute : ${product.productAttributes}">
-              <td th:text="${productAttribute.attributeName}"></td>
-              <td th:text="${productAttribute.attributeValue}"></td>
+              <td th:text="${productAttribute.key}"></td>
+              <td th:text="${productAttribute.value}"></td>
             </tr>
 
 

@@ -1,13 +1,6 @@
 package com.project.springbootwebstore;
 
-import com.project.springbootwebstore.model.repository.SearchRepositoryImpl;
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.codecs.simpletext.SimpleTextCodec;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.FSDirectory;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -18,7 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @SpringBootApplication
-@EnableJpaRepositories(repositoryBaseClass = SearchRepositoryImpl.class)
+//@EnableJpaRepositories(repositoryBaseClass = SearchRepositoryImpl.class)
 public class SpringbootWebStoreApplication {
 	private static ConfigurableApplicationContext applicationContext;
 

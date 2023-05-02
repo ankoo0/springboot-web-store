@@ -71,6 +71,11 @@ function createProductCarts(productsJson){
                             <p>${product.price} </p>
                             <img  style="max-height: 200px; max-width: 200px" src="/images/${product.mainThumbnailPath}" alt="item">
                             <button data-itemid="${product.id}" class="delete-btn">remove</button>
+                            <div style="display: flex">
+                            <button>+</button>
+                            <input>
+                            <button>-</button>
+                            </div>
                         </div>
                         `);
     }

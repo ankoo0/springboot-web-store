@@ -15,35 +15,54 @@
         </div>
 
         <div class="header-logo-container">
-            <a class="header-logo" th:href="@{/main}"><h1>E-Commerce</h1></a>
-            <div class="header-search-container">
-                <form class="header-search-form" method="post" action="">
-                    <select class="select-category">
-                        <option selected value="">All</option>
-                        <option th:each="category : ${categories}" th:value="${category.categoryName}"
-                                th:text="${category.categoryName}">
-                            <!--                        <span class="material-symbols-outlined">devices</span>-->
-                            <!--                        <p ></p>-->
-                        </option>
-                    </select>
-                    <input class="input" type="text" placeholder="Search here...">
-                    <button class="search-submit-btn" type="submit">
+            <a class="header-logo" th:href="@{/main}"><img th:src="@{/images/Logo_v5.svg}" class="main-logo"/></a>
+
+        </div>
+        <div class="header-search-container">
+            <form class="header-search-form" method="post" action="">
+                <!--                    <select class="select-category">-->
+                <!--                        <option selected value="">All</option>-->
+                <!--                        <option th:each="category : ${categories}" th:value="${category.categoryName}"-->
+                <!--                                th:text="${category.categoryName}">-->
+                <!--                            &lt;!&ndash;                        <span class="material-symbols-outlined">devices</span>&ndash;&gt;-->
+                <!--                            &lt;!&ndash;                        <p ></p>&ndash;&gt;-->
+                <!--                        </option>-->
+                <!--                    </select>-->
+                <input class="input" type="text" placeholder="Search here...">
+                <button class="search-submit-btn" type="submit">
                     <span class="material-symbols-outlined">
                     search
                     </span>
-                    </button>
-                </form>
-            </div>
+                </button>
+            </form>
         </div>
 
-
         <div class="header-navlinks">
+            <!--            <div class="navlink-wrapper">-->
+            <!--                <a th:href="@{main/account}"><span class="material-symbols-outlined">person</span></a>-->
+            <!--            </div>-->
+            <!--            &lt;!&ndash;            <a href="">Sign In</a>&ndash;&gt;-->
+            <!--            <div class="navlink-wrapper">-->
+            <!--                <a th:href="@{main/cart}"><span class="material-symbols-outlined">shopping_bag</span></a>-->
+            <!--                <span class="notification cart">0</span>-->
+            <!--            </div>-->
+
             <div class="navlink-wrapper">
-                <a th:href="@{main/account}"><span class="material-symbols-outlined">person</span></a>
+                <a th:href="@{main/account}"><span class="material-symbols-outlined">person</span>
+                <p>Account</p></a>
             </div>
-            <!--            <a href="">Sign In</a>-->
-            <div class="navlink-wrapper">
-                <a th:href="@{main/cart}"><span class="material-symbols-outlined">shopping_bag</span></a>
+            <div class="navlink-wrapper desktop">
+                <a th:href="@{/main/favorites}"><span class="material-symbols-outlined">favorite</span>
+                    <p>Favorites</p></a>
+                <span class="notification favorites">0</span>
+            </div>
+            <div class="navlink-wrapper desktop">
+                <a th:href="@{/main/compare}"><span class="material-symbols-outlined">bar_chart</span>
+                    <p>Compare</p></a>
+            </div>
+            <div class="navlink-wrapper desktop">
+                <a th:href="@{/main/cart}"><span class="material-symbols-outlined">shopping_bag</span>
+                    <p>Cart</p></a>
                 <span class="notification cart">0</span>
             </div>
         </div>
@@ -57,8 +76,8 @@
             <div class="dropdown-description" th:text="${category.categoryName}"></div>
             <div class="dropdown-content">
                 <div class="dropdown-subcategory" th:each="subcategory : ${category.subcategories}">
-                    <a th:href="@{|main/${#strings.toLowerCase(category.categoryName)}/${#strings.toLowerCase(subcategory.subcategoryName)}?page=1|}"
-                       th:text="${subcategory.subcategoryName}"/>
+                    <a th:href="@{|main/${#strings.toLowerCase(category.categoryName)}/${#strings.toLowerCase(subcategory)}?page=1|}"
+                       th:text="${subcategory}"/>
                 </div>
 
             </div>
@@ -85,8 +104,8 @@
             <ul class="mobile-subcategory-list">
                 <li class="mobile-subcategory" th:each="subcategory : ${category.subcategories}">
                     <a class="mobile-subcategory-name"
-                       th:href="@{|main/${#strings.toLowerCase(category.categoryName)}/${#strings.toLowerCase(subcategory.subcategoryName)}?page=1|}"
-                       th:text="${subcategory.subcategoryName}"/>
+                       th:href="@{|main/${#strings.toLowerCase(category.categoryName)}/${#strings.toLowerCase(subcategory)}?page=1|}"
+                       th:text="${subcategory}"/>
                 </li>
             </ul>
         </li>
@@ -94,21 +113,23 @@
 </nav>
 
 <nav class="mobile-bottom-menu" th:fragment="mobile-bottom-menu">
-    <div class="bottom-link">
+    <div class="bottom-link-wrapper">
         <a class="bottom-link" th:href="@{/main}"><span class="material-symbols-outlined">home</span>
             <p>Home</p></a>
     </div>
-    <div class="bottom-link">
+    <div class="bottom-link-wrapper">
         <a class="bottom-link" th:href="@{/main/favorites}"><span class="material-symbols-outlined">favorite</span>
             <p>Favorites</p></a>
+        <span class="notification favorites">0</span>
     </div>
-    <div class="bottom-link">
+    <div class="bottom-link-wrapper">
         <a class="bottom-link" href=""><span class="material-symbols-outlined">bar_chart</span>
             <p>Compare</p></a>
     </div>
-    <div class="bottom-link">
+    <div class="bottom-link-wrapper">
         <a class="bottom-link" th:href="@{/main/cart}"><span class="material-symbols-outlined">shopping_bag</span>
             <p>Cart</p></a>
+        <span class="notification cart">0</span>
     </div>
 </nav>
 

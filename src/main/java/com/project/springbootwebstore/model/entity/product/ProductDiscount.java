@@ -10,7 +10,7 @@ public class ProductDiscount {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Integer discountPercent;
+    private Long discountPercent;
     @OneToMany(mappedBy = "discount")
     private List<Product> products;
 ////    @OneToOne
@@ -25,11 +25,11 @@ public class ProductDiscount {
         this.id = id;
     }
 
-    public Integer getDiscountPercent() {
+    public Long getDiscountPercent() {
         return discountPercent;
     }
 
-    public void setDiscountPercent(Integer discountPercent) {
+    public void setDiscountPercent(Long discountPercent) {
         this.discountPercent = discountPercent;
     }
 

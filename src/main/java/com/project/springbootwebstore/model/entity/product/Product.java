@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.project.springbootwebstore.model.entity.users.Order;
 import org.hibernate.Hibernate;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,7 +20,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Indexed
+//@Indexed
 //@Table(name = "product")
 public class Product {
 
@@ -34,13 +32,13 @@ public class Product {
 //    @Column(columnDefinition = "BIGSERIAL")
     private Long id;
     @Column(name = "product_name",nullable = false)
-    @FullTextField(name = "name")
+//    @FullTextField(name = "name")
     private String name;
     @Column(nullable = false)
-    @FullTextField(name = "shortDescription")
+//    @FullTextField(name = "shortDescription")
     private String shortDescription;
     @Column(nullable = false)
-    @FullTextField(name = "fullDescription")
+//    @FullTextField(name = "fullDescription")
     private String fullDescription;
     @Column(nullable = false)
     private String mainThumbnailPath;

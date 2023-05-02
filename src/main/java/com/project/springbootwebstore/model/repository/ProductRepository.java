@@ -16,16 +16,15 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ProductRepository extends SearchRepository<Product,Long> {
+public interface ProductRepository extends JpaRepository<Product,Long> {
 
    @Query(value = "select count(id) from product where document @@ plainto_tsquery(?1) and subcategory_id=?2", nativeQuery = true)
    Long countAllBySubcategory(@Param("query") String query,@Param("subcategoryId")Long subcategoryId);
-
    @Query(value = "select * from product where document @@ plainto_tsquery(?1)", nativeQuery = true)
    Page<Product> getAllByName(@Param("query") String query,Pageable pageable);
-   Page<Product> findAllBySubcategoryId(Pageable productPages,Long subcategoryId);
-//   List<Product> findAllBySubcategoryId(Long subcategoryId);
 
-//   @Query(value = "SELECT * FROM product WHERE category_id = (select * from )", nativeQuery = true)
-//   List<Product> findAllBySubcategory(ProductSubcategory subcategory);
+   Page<Product> findAllBySubcategoryId(Pageable productPages,Long subcategoryId);
+   @Query(value = "select * from product where document @@ plainto_tsquery(?1) and subcategory_id=?2", nativeQuery = true)
+   Page<Product> findAllBySubcategoryIdAndQuery(Pageable productPages, @Param("query")String query,@Param("subcategoryId")Long subcategoryId);
+
 }

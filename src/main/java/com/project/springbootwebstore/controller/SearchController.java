@@ -2,6 +2,8 @@ package com.project.springbootwebstore.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project.springbootwebstore.model.dto.ProductDto;
+import com.project.springbootwebstore.model.dto.ProductSubcategoryDto;
 import com.project.springbootwebstore.model.entity.product.Product;
 import com.project.springbootwebstore.model.entity.product.ProductSubcategory;
 import com.project.springbootwebstore.model.service.ProductService;
@@ -26,15 +28,15 @@ public class SearchController {
 
 
     @PostMapping("/count")
-    public Map<Long,ProductSubcategory> getOccurrences(@RequestBody(required = false) Query query){
-        Map<Long,ProductSubcategory> map = productService.countProductOcurrencies(query.getQuery());
+    public Map<Long, ProductSubcategoryDto> getOccurrences(@RequestBody(required = false) Query query){
+        Map<Long,ProductSubcategoryDto> map = productService.countProductOcurrencies(query.getQuery());
 
         return map;
     };
 
 
     @PostMapping(consumes= MediaType.APPLICATION_JSON_VALUE)
-    public List<Product> search(@RequestBody(required = false) Query query) throws JsonProcessingException {
+    public List<ProductDto> search(@RequestBody(required = false) Query query) throws JsonProcessingException {
 //       Map<ProductSubcategory, Long> map = productService.countProductOcurrencies(query.getQuery());
 //        System.out.println(map);
 //        String json = new ObjectMapper().writeValueAsString(map);

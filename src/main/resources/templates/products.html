@@ -30,45 +30,70 @@
 
 
   <main class="main-content">
-    <section class="products-list">
-      <h1 th:text="${products.size}"></h1>
-
-      <div class="product-card" th:if="${products.size>0}" th:each="product : ${products}">
-        <div class="product-img-container">
-          <img class="product-card-img" th:src="@{|/images/${product.mainThumbnailPath}|}">
-        </div>
-        <div class="product-card-content">
-          <div class="product-title">
-            <a class="product-link" th:href="@{|${#strings.toLowerCase(product.subcategory.subcategoryName)}/${product.id}|}">
-              <h3  th:text="${product.name}"/>
-            </a>
+    <section class="products-view-content">
+      <section class="product-filtering"></section>
+      <section class="products-list">
+        <div class="sorting-container">
+         <span class="material-symbols-outlined">sync_alt</span>By Relevance
+          <div class="sorting-parameters">
+            <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()},query=${query==null ? '' : 'q='+query +'&'}" th:href="${#httpServletRequest.getRequestURL().toString() + '?' + query + 'page=' + currentPage +  '&sortBy=relevance'}">By Relevance</a>
+            <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}" th:href="${#httpServletRequest.getRequestURL().toString()  + '?' + query + 'page=' + currentPage + '&sortBy=price&order=asc'}">By Price (low-high)</a>
+            <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}" th:href="${#httpServletRequest.getRequestURL().toString()  + '?' + query + 'page=' + currentPage + '&sortBy=price&order=desc'}">By Price (high-low)</a>
+            <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}" th:href="${#httpServletRequest.getRequestURL().toString()  + '?' + query + 'page=' + currentPage + '&sortBy=rating'}">By Rating</a>
+            <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}" th:href="${#httpServletRequest.getRequestURL().toString()  + '?' + query + 'page=' + currentPage + '&sortBy=arrivals'}">New Arrivals</a>
           </div>
-<!--th:text="${#numbers.formatDecimal(${discountPrice},1,3)}"-->
-          <p th:text="${product.shortDescription}"/>
-          <h4 th:with="discountPrice=${product.price}-${(product.price/100) * product.discount.discountPercent}" th:if="${product.discount.discountPercent} !=0" th:text="${#numbers.formatDecimal(discountPrice,1,2)} + '$'" ></h4>
-          <h3 style="text-decoration: line-through" th:text="${product.price}+' $'"/>
-          <a class="bottom-link" href=""><span class="material-symbols-outlined">favorite</span></a>
-          <button th:attr="data-id=${product.id},data-quantity=0" class="add-to-cart-btn"><span class="material-symbols-outlined">shopping_bag</span>add to cart</button>
-<!--          <a class="product-details-btn" th:href="@{|${#strings.toLowerCase(product.category.categoryName)}/${#strings.toLowerCase(product.subcategory.subcategoryName)}/${product.id}|}"  th:text="Description"/>-->
-<!--          <a class="product-details-btn" th:href="@{|${product.id}|}"  th:text="Description"/>  this is only /main/electronics/2 no subcategory-->
-<!--          <a class="product-details-btn" th:href="@{|/${product.id}|}"  th:text="Description"/>-->
-<!--          <a class="product-details-btn" th:href="@{|${#strings.toLowerCase(product.subcategory.subcategoryName)}/${product.id}|}"  th:text="Description"/>-->
         </div>
 
+        <h1 th:text="${products.size}"></h1>
 
-        
-      </div>
-      <div th:if="${products.size==0}"><h2>Sorry, but nothing matched your search terms. Please, try again with some different keywords</h2></div>
+        <div class="product-card" th:if="${products.size>0}" th:each="product : ${products}">
+          <div class="product-img-container">
+            <img class="product-card-img" th:src="@{|/images/${product.mainThumbnailPath}|}">
+          </div>
+          <div class="product-card-content">
+            <div class="product-title">
+              <a class="product-link" th:href="@{|${#strings.toLowerCase(product.subcategory)}/${product.id}|}">
+                <h3  th:text="${product.name}"/>
+              </a>
+            </div>
+            <div class="product-available">
+              <div class="light"></div>
+              <div class="status">in Stock</div>
+            </div>
+            <!--th:text="${#numbers.formatDecimal(${discountPrice},1,3)}"-->
+            <p th:text="${product.shortDescription}"/>
+            <h4 th:with="discountPrice=${product.price}-${(product.price/100) * product.discount}" th:if="${product.discount} !=0" th:text="${#numbers.formatDecimal(discountPrice,1,2)} + '$'" ></h4>
+            <h3 style="text-decoration: line-through" th:text="${product.price}+' $'"/>
+            <button th:attr="data-id=${product.id}" class="add-to-favorites-btn"><span class="material-symbols-outlined">favorite</span></button>
 
-      <nav class="pagination" th:if="${totalPages>1}">
-        <ul>
-          <li class="pagination-item" th:if="${currentPage!=1}"><a th:with="prevPage=${currentPage}-${1}" th:href="@{|?page=${prevPage}|}">&lt;</a></li>
+            <button th:attr="data-id=${product.id},data-quantity=0" class="add-to-cart-btn">Add to cart</button>
+            <!--          <a class="product-details-btn" th:href="@{|${#strings.toLowerCase(product.category.categoryName)}/${#strings.toLowerCase(product.subcategory.subcategoryName)}/${product.id}|}"  th:text="Description"/>-->
+            <!--          <a class="product-details-btn" th:href="@{|${product.id}|}"  th:text="Description"/>  this is only /main/electronics/2 no subcategory-->
+            <!--          <a class="product-details-btn" th:href="@{|/${product.id}|}"  th:text="Description"/>-->
+            <!--          <a class="product-details-btn" th:href="@{|${#strings.toLowerCase(product.subcategory.subcategoryName)}/${product.id}|}"  th:text="Description"/>-->
+          </div>
 
-          <li th:each="i : ${#numbers.sequence(1,totalPages)}" th:class="${currentPage == i} ? 'pagination-item-active' : 'pagination-item'"><a th:with="queryText=${query.equals('')} ? ''  : ${'&q=' +query}" th:href="@{|?page=${i + queryText} |}" th:text="${i}" ></a></li>
-                    <li class="pagination-item" th:if="${currentPage!=totalPages}"><a th:with="nextPage=${currentPage}+${1}" th:href="@{|?page=${nextPage}|}">&gt;</a></li>
-        </ul>
-      </nav>
+
+
+        </div>
+        <div th:if="${products.size==0}"><h2>Sorry, but nothing matched your search terms. Please, try again with some different keywords</h2></div>
+
+
+      </section>
     </section>
+
+
+    <nav class="pagination" th:if="${totalPages>1}">
+      <ul>
+        <li class="pagination-item" th:if="${currentPage!=1}"><a th:with="prevPage=${currentPage}-${1}" th:href="@{|?page=${prevPage}|}">&lt;</a></li>
+
+        <li th:each="i : ${#numbers.sequence(1,totalPages)}" th:class="${currentPage == i} ? 'pagination-item-active' : 'pagination-item'"><a th:with="query=${query.equals('')} ? ''  : ${'q=' +query},nextPage=${'&page=' +i}, sortBy=${sortBy==null ? '' : '&sortBy='+sortBy},order=${order==null ? '' : '&order='+order}, url=${#httpServletRequest.requestURI + '?' + query + nextPage + sortBy  + order}" th:href="${url}" th:text="${i}" ></a></li>
+        <li class="pagination-item" th:if="${currentPage!=totalPages}"><a th:with="nextPage=${'page=' +(currentPage+1)}, sortBy=${sortBy==null ? '' : '&sortBy='+sortBy},order=${order==null ? '' : '&order='+order}, url=${#httpServletRequest.requestURI + '?' + nextPage + sortBy  + order}"  th:href="${url}">&gt;</a></li>
+
+        <!--        <li class="pagination-item" th:if="${currentPage!=totalPages}"><a th:with="nextPage=${currentPage+1},url=${#request.getRequestURL()+'?'+#request.getQueryString()},urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromHttpUrl(url.toString()).replaceQueryParam('page',nextPage).toUriString()}"  th:text="${urlBuilder}" th:href="@{${urlBuilder}}">&gt;</a></li>-->
+      </ul>
+    </nav>
+
   </main>
 
 
@@ -77,8 +102,9 @@
   <footer class="main-footer">
 
   </footer>
-
+<!--<script type="text/javascript" th:src="@{/js/add-to-favorites.js}"></script>-->
 <script type="text/javascript" th:src="@{/js/add-to-cart.js}"></script>
+<script type="text/javascript" th:src="@{/js/sorting.js}"></script>
 </body>
 
 </html>
