@@ -6,10 +6,12 @@ import javax.persistence.*;
 public class ProductAttribute {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String attributeName;
     private String attributeValue;
+    @Column(columnDefinition = "description text")
+    private String description;
 
     @ManyToOne
     private Product product;

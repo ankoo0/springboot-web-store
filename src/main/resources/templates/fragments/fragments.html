@@ -20,32 +20,15 @@
         </div>
         <div class="header-search-container">
             <form class="header-search-form" method="post" action="">
-                <!--                    <select class="select-category">-->
-                <!--                        <option selected value="">All</option>-->
-                <!--                        <option th:each="category : ${categories}" th:value="${category.categoryName}"-->
-                <!--                                th:text="${category.categoryName}">-->
-                <!--                            &lt;!&ndash;                        <span class="material-symbols-outlined">devices</span>&ndash;&gt;-->
-                <!--                            &lt;!&ndash;                        <p ></p>&ndash;&gt;-->
-                <!--                        </option>-->
-                <!--                    </select>-->
+
                 <input class="input" type="text" placeholder="Search here...">
                 <button class="search-submit-btn" type="submit">
-                    <span class="material-symbols-outlined">
-                    search
-                    </span>
+                    <span class="material-symbols-outlined">search</span>
                 </button>
             </form>
         </div>
 
         <div class="header-navlinks">
-            <!--            <div class="navlink-wrapper">-->
-            <!--                <a th:href="@{main/account}"><span class="material-symbols-outlined">person</span></a>-->
-            <!--            </div>-->
-            <!--            &lt;!&ndash;            <a href="">Sign In</a>&ndash;&gt;-->
-            <!--            <div class="navlink-wrapper">-->
-            <!--                <a th:href="@{main/cart}"><span class="material-symbols-outlined">shopping_bag</span></a>-->
-            <!--                <span class="notification cart">0</span>-->
-            <!--            </div>-->
 
             <div class="navlink-wrapper">
                 <a th:href="@{main/account}"><span class="material-symbols-outlined">person</span>
@@ -70,22 +53,23 @@
     </nav>
 
 
-    <nav class="secondary-nav">
 
+</header>
+<nav class="secondary-nav" th:fragment="secondary-nav">
+
+    <div class="category-dropdowns">
         <div class="dropdown" th:each="category : ${categories}">
-            <div class="dropdown-description" th:text="${category.categoryName}"></div>
+            <div class="dropdown-description" ><h4 th:text="${category.categoryName}"></h4><span class="dropdown-arrow">&gt;</span></div>
             <div class="dropdown-content">
                 <div class="dropdown-subcategory" th:each="subcategory : ${category.subcategories}">
-                    <a th:href="@{|main/${#strings.toLowerCase(category.categoryName)}/${#strings.toLowerCase(subcategory)}?page=1|}"
+                    <a th:href="'/main/' + ${#strings.toLowerCase(category.categoryName)} +'/' +${#strings.toLowerCase(subcategory)} +'?page=1'"
                        th:text="${subcategory}"/>
                 </div>
-
             </div>
         </div>
+    </div>
 
-
-    </nav>
-</header>
+</nav>
 
 <nav class="mobile-menu" th:fragment="mobile-menu">
     <div class="close-menu-btn">
@@ -96,9 +80,7 @@
             <div class="mobile-category-main">
                 <img th:src="|/images/categories/${category.categoryImage}|">
                 <div th:text="${category.categoryName}"></div>
-                <span class="material-symbols-outlined">
-                        expand_more
-                    </span>
+                <span class="material-symbols-outlined">expand_more</span>
             </div>
 
             <ul class="mobile-subcategory-list">
@@ -115,20 +97,24 @@
 <nav class="mobile-bottom-menu" th:fragment="mobile-bottom-menu">
     <div class="bottom-link-wrapper">
         <a class="bottom-link" th:href="@{/main}"><span class="material-symbols-outlined">home</span>
-            <p>Home</p></a>
+            <p>Home</p>
+        </a>
     </div>
     <div class="bottom-link-wrapper">
         <a class="bottom-link" th:href="@{/main/favorites}"><span class="material-symbols-outlined">favorite</span>
-            <p>Favorites</p></a>
+            <p>Favorites</p>
+        </a>
         <span class="notification favorites">0</span>
     </div>
     <div class="bottom-link-wrapper">
         <a class="bottom-link" href=""><span class="material-symbols-outlined">bar_chart</span>
-            <p>Compare</p></a>
+            <p>Compare</p>
+        </a>
     </div>
     <div class="bottom-link-wrapper">
         <a class="bottom-link" th:href="@{/main/cart}"><span class="material-symbols-outlined">shopping_bag</span>
-            <p>Cart</p></a>
+            <p>Cart</p>
+        </a>
         <span class="notification cart">0</span>
     </div>
 </nav>
@@ -139,15 +125,12 @@
         <form method="get" action="/main/all">
             <input class="search-input" name="q" type="text" placeholder="Search here...">
             <button class="search-submit-btn" type="submit">
-                    <span class="material-symbols-outlined">
-                    search
-                    </span>
+                    <span class="material-symbols-outlined">search</span>
             </button>
         </form>
 
-        <button class="close-search-btn"><span class="material-symbols-outlined">
-                    close
-                    </span></button>
+        <button class="close-search-btn"><span class="material-symbols-outlined">close</span>
+        </button>
     </div>
 
     <div class="found-subcategories">

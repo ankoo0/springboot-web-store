@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.project.springbootwebstore.model.entity.users.Order;
 import org.hibernate.Hibernate;
+//import org.hibernate.Hibernate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -77,6 +78,9 @@ public class Product {
 
     @JsonProperty("quantity")
    private Long quantityCart;
+
+    @Column(insertable = false, updatable = false)
+    private String document;
 
     public Product(Long id, Long quantityCart) {
         this.id = id;
@@ -217,5 +221,14 @@ public class Product {
 
     public void setQuantityCart(Long quantityCart) {
         this.quantityCart = quantityCart;
+    }
+
+
+    public Long getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Long quantity) {
+        this.quantity = quantity;
     }
 }

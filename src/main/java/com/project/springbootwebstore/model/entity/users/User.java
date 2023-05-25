@@ -3,6 +3,8 @@ package com.project.springbootwebstore.model.entity.users;
 
 //import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -141,10 +143,10 @@ public class User {
         this.dislikedReviews = dislikedReviews;
     }
 
-//    public List<SimpleGrantedAuthority> getAuthorities(){
-//        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-//        authorities.add(new SimpleGrantedAuthority(this.role));
-//
-//        return authorities;
-//    }
+    public List<SimpleGrantedAuthority> getAuthorities(){
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(this.role));
+
+        return authorities;
+    }
 }

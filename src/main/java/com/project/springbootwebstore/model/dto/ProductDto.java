@@ -205,4 +205,16 @@ public class ProductDto {
     public String getCreationDate() {
         return creationDate;
     }
+
+
+    @Override
+    public String toString() {
+        return "ProductDto{" +
+                "name='" + name + '\'' +
+                ", price=" + price +
+                ", rating=" + rating +
+                ", discount=" + discount +
+                ", creationDate='" + creationDate + '\'' +
+                '}';
+    }
 }
