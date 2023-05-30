@@ -71,6 +71,8 @@
 
 
             <div class="product-card" th:if="${products.size>0}" th:each="product : ${products}">
+
+                <div th:if="${product.discount>0}" class="discount-badge"><span class="material-symbols-outlined">local_fire_department</span><p th:text="'-' + ${product.discount} + '%'"></p></div>
                 <div class="product-img-container">
                     <img class="product-card-img" th:src="@{|/images/${product.mainThumbnailPath}|}">
                 </div>
@@ -82,14 +84,29 @@
                         </a>
                     </div>
                     <div class="product-available">
-                        <div th:if="${product.quantity>10}" class="bulb-sufficient"></div>
-                        <div th:if="${product.quantity<=10 &&product.quantity!=0 }" class="bulb-shortage"></div>
-                        <div th:if="${product.quantity==0}" class="bulb-none"></div>
+                        <div th:if="${product.quantity>10}" class="bulb sufficient"></div>
+                        <div th:if="${product.quantity<=10 &&product.quantity!=0 }" class="bulb shortage"></div>
+                        <div th:if="${product.quantity==0}" class="bulb none"></div>
 
-                        <div th:if="${product.quantity>10}" class="status-sufficient">in Stock</div>
+                        <div th:if="${product.quantity>10}" class="status-sufficient">Available</div>
                         <div th:if="${product.quantity<=10 &&product.quantity!=0 }" class="status-shortage"
-                             th:text="'Only ' + ${product.quantity} + ' items left, order soon'"></div>
+                             th:text="'Only ' + ${product.quantity} + ' left, order soon'"></div>
                         <div th:if="${product.quantity==0}" class="status-none">Out of stock</div>
+                    </div>
+
+                    <div th:with="math=${T(java.lang.Math)},whole=${math.floor(product.rating)}, remainder=${product.rating - whole}" style="display:flex; flex-direction:row;" class="product-rating">
+<!--                        th:with="fullRating=${(int)product.rating/}"-->
+<!--                        <h3 th:text="${product.rating + ' ' +whole + ' ' + remainder}"></h3>-->
+                        <div class="rating-container" style=" width: 20px; height: 20px;" th:each="i : ${#numbers.sequence(1,5)}">
+
+                            <img th:if="${i<=whole}" style=" display:block; filter: invert(80%) sepia(47%) saturate(2884%) hue-rotate(0deg) brightness(109%) contrast(107%); height: auto; width: 100%" src="/ui/rating/star_full.svg"/>
+                            <img th:if="${i - whole ==1 && remainder>0 }" style=" display:block; filter: invert(80%) sepia(47%) saturate(2884%) hue-rotate(0deg) brightness(109%) contrast(107%); height: auto; width: 100%" src="/ui/rating/star_half.svg"/>
+                            <img th:if="${(i - whole ==1) && !(remainder>0) }" style=" display:block; filter: invert(80%) sepia(47%) saturate(2884%) hue-rotate(0deg) brightness(109%) contrast(107%); height: auto; width: 100%" src="/ui/rating/star_empty.svg"/>
+                            <img th:if="${i - whole>1}" style=" display:block; filter: invert(80%) sepia(47%) saturate(2884%) hue-rotate(0deg) brightness(109%) contrast(107%); height: auto; width: 100%" src="/ui/rating/star_empty.svg"/>
+                            <!--                            <img style=" display:block; filter: invert(80%) sepia(47%) saturate(2884%) hue-rotate(0deg) brightness(109%) contrast(107%); height: auto; width: 100%" src="/ui/rating/star_half.svg"/>-->
+
+                        </div>
+                        <span th:text="${product.rating}"></span>
                     </div>
                     <!--th:text="${#numbers.formatDecimal(${discountPrice},1,3)}"-->
                     <p th:text="${product.shortDescription}"/>
@@ -100,21 +117,28 @@
                             <p th:if="${iStat.index <3}" th:text="${attribute.value}"></p>
                         </div>
                     </div>
-                    <h4 th:with="discountPrice=${product.price}-${(product.price/100) * product.discount}"
-                        th:if="${product.discount} !=0"
-                        th:text="${#numbers.formatDecimal(discountPrice,1,2)} + '$'"></h4>
-                    <h3 style="text-decoration: line-through" th:text="${product.price}+' $'"/>
-                    <button th:attr="data-id=${product.id}" class="add-to-favorites-btn"><span
-                            class="material-symbols-outlined">favorite</span></button>
 
-                    <button th:attr="data-id=${product.id},data-quantity=0" class="add-to-cart-btn">Add to cart</button>
+<!--                    <h3 style="text-decoration: line-through" th:text="${product.price}+' $'"/>-->
+
+
+
                     <!--          <a class="product-details-btn" th:href="@{|${#strings.toLowerCase(product.category.categoryName)}/${#strings.toLowerCase(product.subcategory.subcategoryName)}/${product.id}|}"  th:text="Description"/>-->
                     <!--          <a class="product-details-btn" th:href="@{|${product.id}|}"  th:text="Description"/>  this is only /main/electronics/2 no subcategory-->
                     <!--          <a class="product-details-btn" th:href="@{|/${product.id}|}"  th:text="Description"/>-->
                     <!--          <a class="product-details-btn" th:href="@{|${#strings.toLowerCase(product.subcategory.subcategoryName)}/${product.id}|}"  th:text="Description"/>-->
                 </div>
 
+                <div class="product-actions">
+                    <h2 th:class="${product.discount} >0 ? 'price discount' : 'price'" th:text="${#numbers.formatDecimal(product.price,1,2)} + '$'"></h2>
+                    <button th:attr="data-id=${product.id},data-quantity=0" class="add-to-cart-btn">Add to cart</button>
+                    <div class="secondary-actions">
+                        <button th:attr="data-id=${product.id}" class="add-to-favorites-btn"><span
+                                class="material-symbols-outlined">favorite</span></button>
+                        <button th:attr="data-id=${product.id}" class="add-to-comparison-btn"><span
+                                class="material-symbols-outlined">bar_chart</span></button>
+                    </div>
 
+                </div>
             </div>
             <div th:if="${products.size==0}"><h2>Sorry, but nothing matched your search terms. Please, try again with
                 some different keywords</h2></div>

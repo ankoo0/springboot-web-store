@@ -1,10 +1,9 @@
 package com.project.springbootwebstore.model.entity.product;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.project.springbootwebstore.model.entity.users.Order;
+import com.project.springbootwebstore.model.entity.users.Review;
 import org.hibernate.Hibernate;
 //import org.hibernate.Hibernate;
 import javax.persistence.Column;
@@ -56,7 +55,10 @@ public class Product {
     @Column(nullable = false)
     private Long quantity;
     @Column(columnDefinition = "real default 0.0")
-    private Long rating;
+    private Double rating;
+
+    @OneToMany(mappedBy = "product")
+    private List<Review> reviews;
 
     @JoinColumn(name = "category_id")
     @ManyToOne
@@ -88,6 +90,7 @@ public class Product {
     }
 
     public Product() {
+
 
     }
 
@@ -186,6 +189,14 @@ public class Product {
 
     public void setDiscount(ProductDiscount discount) {
         this.discount = discount;
+    }
+
+    public Double getRating() {
+        return rating;
+    }
+
+    public void setRating(Double rating) {
+        this.rating = rating;
     }
 
     @Override

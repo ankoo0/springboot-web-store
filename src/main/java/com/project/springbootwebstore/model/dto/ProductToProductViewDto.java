@@ -1,29 +1,45 @@
 package com.project.springbootwebstore.model.dto;
 
+import java.util.List;
 import java.util.Map;
 
-public  final class ProductToProductViewDto {
+public final class ProductToProductViewDto {
 
     private final Long id;
     private final String name;
     private final String fullDescription;
-    private final String shortDescription;
     private final String mainThumbnailPath;
+    private final List<String> productImagesPaths;
     private final Double price;
+    private final Double rating;
     private final Long quantity;
-    private final Long rating;
+    private final String category;
+    private final String subcategory;
     private final Long discount;
     private final Map<String, String> productAttributes;
 
-    public ProductToProductViewDto(Long id, String name, String fullDescription, String shortDescription, String mainThumbnailPath, Double price, Long quantity, Long rating, Long discount, Map<String, String> productAttributes) {
+    public ProductToProductViewDto(Long id,
+                                   String name,
+                                   String fullDescription,
+                                   String mainThumbnailPath,
+                                   List<String> productImagesPaths,
+                                   Double price,
+                                   Double rating,
+                                   Long quantity,
+                                   String category,
+                                   String subcategory,
+                                   Long discount,
+                                   Map<String, String> productAttributes) {
         this.id = id;
         this.name = name;
         this.fullDescription = fullDescription;
-        this.shortDescription = shortDescription;
         this.mainThumbnailPath = mainThumbnailPath;
-        this.price = price;
-        this.quantity = quantity;
+        this.productImagesPaths=productImagesPaths;
         this.rating = rating;
+        this.quantity=quantity;
+        this.category = category;
+        this.subcategory = subcategory;
+        this.price= discount > 0 ? Double.valueOf(price - ((price / 100) * discount)) : price;
         this.discount = discount;
         this.productAttributes = productAttributes;
     }
@@ -40,24 +56,32 @@ public  final class ProductToProductViewDto {
         return fullDescription;
     }
 
-    public String getShortDescription() {
-        return shortDescription;
-    }
-
     public String getMainThumbnailPath() {
         return mainThumbnailPath;
+    }
+
+    public List<String> getProductImagesPaths() {
+        return productImagesPaths;
     }
 
     public Double getPrice() {
         return price;
     }
 
+    public Double getRating() {
+        return rating;
+    }
+
     public Long getQuantity() {
         return quantity;
     }
 
-    public Long getRating() {
-        return rating;
+    public String getCategory() {
+        return category;
+    }
+
+    public String getSubcategory() {
+        return subcategory;
     }
 
     public Long getDiscount() {

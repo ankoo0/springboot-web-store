@@ -38,7 +38,7 @@ cartBtnArray.forEach((button) => {
             // alert(btn)
         } else {
             btn.classList.add('added')
-            button.innerHTML='Remove from cart'
+            button.innerHTML='In Cart'
             // if (itemIndex > -1) {
             //     cart[itemIndex].quantity++;
             // } else {
@@ -117,7 +117,7 @@ function initCartButtons(cartButtons){
        const index =  cartButtons.findIndex(b=>parseInt(b.dataset.id)===cart[i].id);
         if (index>-1){
             cartButtons[index].classList.add('added')
-            cartButtons[index].innerHTML = 'Remove from cart'
+            cartButtons[index].innerHTML = 'In Cart'
         }
     }
 }

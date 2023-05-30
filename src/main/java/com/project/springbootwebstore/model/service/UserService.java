@@ -15,8 +15,6 @@ public class UserService {
     private UserRepository userRepository;
 
 
-
-
     public Optional<User> getUserByUsername(String username){
 //        System.out.println(username);
 //         System.out.println(Role.valueOf(username));

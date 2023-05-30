@@ -1,4 +1,4 @@
-package com.project.springbootwebstore.model.repository;
+package com.project.springbootwebstore.model.repository.sql;
 
 import org.hibernate.QueryException;
 import org.hibernate.dialect.function.SQLFunction;

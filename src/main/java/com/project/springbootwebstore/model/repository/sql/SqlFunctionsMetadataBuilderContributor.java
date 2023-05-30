@@ -1,4 +1,4 @@
-package com.project.springbootwebstore.model.repository;
+package com.project.springbootwebstore.model.repository.sql;
 
 import org.hibernate.boot.MetadataBuilder;
 import org.hibernate.boot.spi.MetadataBuilderContributor;

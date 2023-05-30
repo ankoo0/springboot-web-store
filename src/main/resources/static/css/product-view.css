@@ -255,7 +255,7 @@ tr:hover {
 .tabs{
     /* position: relative; */
     width: 100%;
-    height: 300px;
+    height: 2000px;
     display: flex;
     justify-content: space-between;
     flex-direction: column;
@@ -267,19 +267,20 @@ tr:hover {
 
 }
 
-.tab-head{
+.tab-head {
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: flex-start;
+    gap: 100px;
     align-items: center;
-    height: 20%;
+    height: 100px;
     position: relative;
     border-bottom: 1px solid rgb(185, 185, 185);
 }
 
 .tab-body{
     position: relative;
-    height: 80%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -290,11 +291,11 @@ tr:hover {
 
 }
 
-.tab-nav{
+.tab-nav {
     padding: 10px;
-    background-color: rgb(199, 214, 241);
+    background-color: rgb(232 232 232);
     border-radius: 25px;
-    width: 70px;
+    width: 150px;
     text-align: center;
     color: rgb(58, 59, 59);
 }
@@ -308,6 +309,8 @@ tr:hover {
     transform: translate(0);
     left: -10px;
     transition: all 0.3s;
+    padding: 10px;
+    gap: 10px;
     /* gap: 2; */
 }
 
@@ -324,11 +327,11 @@ tr:hover {
 
 .tab-indicator{
     position: absolute;
-    background-color: rgb(109, 103, 143);
+    background-color: orange;
     border-radius: 5px;
     width: 80px;
     height: 6px;
-    top: 95%;
+    top: 97%;
     transition: all 0.3s;
 }
 
@@ -339,25 +342,94 @@ tr:hover {
 
 
 .review-modal {
-
-
-    /*height: f%;*/
     width: 1312px;
-
     border-radius: 20px;
     background-color: white;
     z-index: 111;
     overflow: auto;
-    /*position: fixed;*/
-    /*left: 50%;*/
-    /*top: 50%;*/
-    /*transform: translate(-50%, -50%);*/
+    padding: 0 20px;
+    /* position: fixed; */
+    /* left: 50%; */
+    /* top: 50%; */
+    /* transform: translate(-50%, -50%); */
 }
 
-.review{
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
+
+.review {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    background-color: white;
+    /* border: 1px solid black; */
+    /* border: 1px solid; */
+    /* border-bottom: #9E9E9E; */
+    /* border-top: #9E9E9E; */
+    /* border-radius: 5px; */
+    /* height: 200px; */
+    width: 90%;
+    border-radius: 10px;
+    box-shadow: 0 0 15px 0 #bfbfbf;
+    /* opacity: 0; */
+    transform: translateY(100px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
 }
+
+
+.review.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.loader-container{
+    width: 100px;
+    height: 100px;
+    position: relative;
+}
+
+.loader-outer{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 100px;
+    height: 100px;
+    border: 6px solid;
+    border-color: orange transparent orange transparent;
+    border-radius: 50%;
+    animation: spin-outer 1s ease infinite;
+}
+
+@keyframes spin-outer {
+    to{
+      transform:  rotate(360deg);
+    }
+}
+
+
+
+.loader-inner{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 80px;
+    height: 80px;
+    border: 6px solid;
+    border-color: orange transparent orange transparent;
+    border-radius: 50%;
+    animation: spin-inner 1s ease infinite;
+}
+
+@keyframes spin-inner {
+    to{
+        transform:  rotate(-360deg);
+    }
+}
+
 
 .close-review-container{
     position: sticky;
@@ -394,13 +466,27 @@ tr:hover {
     justify-content: center;
     align-items: center;
     flex-direction: row;
+    width: fit-content;
 }
 
-.review-rating > span{
-    color: gold;
+.review-rating > img{
+    height: auto;
+    width: 100%;
+    object-fit: contain;
 }
 
+.review-img-container{
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: filter 0.3s;
 
+}
+
+.review-img-container:hover{
+    filter: opacity(1.2);
+}
 
 
 
@@ -410,13 +496,168 @@ tr:hover {
 
 
 .review-image-set{
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    width: fit-content;
+    flex-direction: row;
+    gap: 10px;
+    /*grid-template-columns: repeat(2, 1fr);*/
 }
 
 .review-img{
-    height: 100px;
-    width: 100px;
-    object-fit: cover;
+    height: auto;
+    width: 100%;
+    object-fit: contain;
 }
 
+.user-reviews{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+.sorting-container {
+    position: relative;
+    /* width: 200px; */
+    padding: 5px;
+    border: 1px solid #cbc9c5;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    user-select: none;
+}
+
+.sorting-parameters {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 32px;
+    left: 0;
+    width: 200px;
+    border: 1px solid #cbc9c5;
+    background: white;
+    padding: 5px;
+    border-radius: 5px;
+    margin-top: 5px;
+    z-index: 10;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0.5s ease, opacity 0.5s ease, transform 0.5s ease;
+}
+
+.sorting-parameters.show{
+
+    /*animation: fade-in 300ms;*/
+    visibility: visible;
+    transform: translateY(0);
+}
+
+
+
+.sorting-parameters > a {
+    text-decoration: none;
+    color: #333333;
+}
+
+.sorting-parameters > a:hover {
+    color: orange;
+}
+
+.sorting-container > span {
+    transition: all 0.2s linear;
+    transform: rotateZ(90deg);
+    /*transform: rotateZ(90deg);*/
+}
+
+.sorting-container > span.active{
+    transform: rotateZ(270deg);
+}
+
+
+.add-to-favorites-btn {
+    background: none;
+    border: none;
+    width: fit-content;
+
+}
+
+.add-to-favorites-btn:hover {
+    color: red;
+}
+
+.add-to-cart-btn {
+    width: 100px;
+    height: 40px;
+    border-radius: 5px;
+    border: 1px solid transparent;
+    background: #1fd133;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    box-shadow: 0 0 4px 1px #1fd133;
+    transition: all 0.3s;
+}
+
+.add-to-cart-btn:hover {
+    opacity: 0.7;
+}
+
+.added {
+    border: 1px solid #ff4f4f;
+    background: white;
+    color: #ff4f4f;
+    box-shadow: none;
+}
+
+.product-actions {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    width: 60%;
+    align-self: center;
+    height: 300px;
+    box-shadow: 0px 2px 18px 3px rgba(181,181,181,1);
+    border-radius: 30px;
+    padding: 10px;
+    margin: auto;
+}
+
+.main-actions{
+    display: flex;
+    flex-direction: column;
+}
+
+.product-description{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+
+.notify-close {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.close-notify-btn{
+    border: 1px solid transparent;
+    background: none;
+    border-radius: 50%;
+    transition: all 0.3s;
+    padding: 4px;
+    cursor: pointer;
+    user-select: none;
+}
+.close-notify-btn:hover{
+    background-color: #e1e1e1;
+}
+
+.close-notify-btn>span{
+    display: block;
+}

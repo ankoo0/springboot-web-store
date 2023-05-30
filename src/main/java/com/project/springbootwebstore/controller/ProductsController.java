@@ -5,14 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.project.springbootwebstore.model.dto.ProductDto;
+import com.project.springbootwebstore.model.dto.ProductToListViewDto;
+import com.project.springbootwebstore.model.dto.ProductToProductViewDto;
 import com.project.springbootwebstore.model.entity.product.Product;
 import com.project.springbootwebstore.model.entity.product.ProductCategory;
 import com.project.springbootwebstore.model.entity.product.ProductSubcategory;
-import com.project.springbootwebstore.model.service.ProductAttributeService;
-import com.project.springbootwebstore.model.service.ProductCategoryService;
-import com.project.springbootwebstore.model.service.ProductService;
-import com.project.springbootwebstore.model.service.ProductSubcategoryService;
-import com.project.springbootwebstore.model.service.UserService;
+import com.project.springbootwebstore.model.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -52,27 +50,33 @@ import java.util.stream.Collectors;
 @RequestMapping("/main")
 public class ProductsController {
 
+
+
    private final ProductService productService;
    private final ProductCategoryService categoryService;
    private final ProductSubcategoryService subcategoryService;
    private final ProductAttributeService attributeService;
    private final UserService userService;
+   private final ReviewService reviewService;
 
-    @Autowired
-    public ProductsController(ProductAttributeService attributeService, ProductService productService, ProductCategoryService categoryService, ProductSubcategoryService subcategoryService, UserService userService) {
+   @Autowired
+    public ProductsController(ProductService productService, ProductCategoryService categoryService, ProductSubcategoryService subcategoryService, ProductAttributeService attributeService, UserService userService, ReviewService reviewService) {
         this.productService = productService;
         this.categoryService = categoryService;
         this.subcategoryService = subcategoryService;
+        this.attributeService = attributeService;
         this.userService = userService;
-        this.attributeService=attributeService;
+        this.reviewService = reviewService;
     }
+
+
 
     @GetMapping("/all")
     public ModelAndView allSearchResults (@RequestParam(name = "q", required = false) Optional<String> query,@RequestParam(name = "page",defaultValue = "1") int page){
         ModelAndView modelAndView = new ModelAndView("products");
 
-        Page<ProductDto> productPages = productService.search(query.orElse(""), PageRequest.of(page-1,2));
-        List<ProductDto> products = productPages.getContent();
+        Page<ProductToListViewDto> productPages = productService.search(query.orElse(""), PageRequest.of(page-1,2));
+        List<ProductToListViewDto> products = productPages.getContent();
 
         modelAndView.addObject("query", query.orElse(""));
         modelAndView.addObject("currentPage", page);
@@ -84,14 +88,14 @@ public class ProductsController {
     }
 
     @PostMapping("/cart-items")
-    public @ResponseBody List<ProductDto> cartItems(@RequestBody String some) throws IOException {
+    public @ResponseBody List<ProductToListViewDto> cartItems(@RequestBody String some) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         TypeFactory typeFactory = objectMapper.getTypeFactory();
         List<JsonProduct> someClassList = objectMapper.readValue(some, typeFactory.constructCollectionType(List.class, JsonProduct.class));
 
-        List<ProductDto> responseProducts = new ArrayList<>();
+        List<ProductToListViewDto> responseProducts = new ArrayList<>();
         for (JsonProduct jProd: someClassList) {
-            ProductDto product = productService.getProductById(jProd.getId());
+            ProductToListViewDto product = productService.getSingleListViewProduct(jProd.getId());
             responseProducts.add(product);
         }
 
@@ -160,7 +164,7 @@ public class ProductsController {
             @PathVariable(name = "category") String category,
             @PathVariable(name = "subcategory") String subcategoryName
             ) {
-        Page<ProductDto> productPages;
+        Page<ProductToListViewDto> productPages;
 
         params.forEach((e1,e2)-> System.out.println(e1 + "-" +e2 + " " + subcategoryName));
 
@@ -171,7 +175,7 @@ public class ProductsController {
 
         String parameters = getFilterParamsString(map);
             productPages = productService.getProductPages(map,subcategoryName);
-        List<ProductDto> products = productPages.getContent();
+        List<ProductToListViewDto> products = productPages.getContent();
         query = query ==null ? "" : query;
 
         mov.addObject("parameters",parameters);
@@ -202,10 +206,12 @@ public class ProductsController {
 
     @GetMapping("/{category}/{subcategory}/{productId}")
     public ModelAndView productView(@PathVariable(name = "category") String category, @PathVariable(name = "subcategory") String subcategory, @PathVariable(name = "productId") Long productId) {
-        ProductDto product = productService.getProductById(productId);
+        ProductToProductViewDto product = productService.getProductById(productId);
+        Long productReviewsCount = reviewService.getProductReviewsCount(productId);
         ModelAndView mov = new ModelAndView("product-view");
         mov.addObject("product", product);
         mov.addObject("categories", categoryService.getAllCategories());
+        mov.addObject("reviewCount",productReviewsCount);
         return mov;
     }
 

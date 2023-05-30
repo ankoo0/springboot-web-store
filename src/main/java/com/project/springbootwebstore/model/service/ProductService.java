@@ -2,6 +2,10 @@ package com.project.springbootwebstore.model.service;
 
 import com.project.springbootwebstore.model.dto.ProductDto;
 import com.project.springbootwebstore.model.dto.ProductSubcategoryDto;
+import com.project.springbootwebstore.model.dto.ProductToListViewDto;
+import com.project.springbootwebstore.model.dto.ProductToProductViewDto;
+import com.project.springbootwebstore.model.dto.mappers.ProductToListViewDtoMapper;
+import com.project.springbootwebstore.model.dto.mappers.ProductToProductViewDtoMapper;
 import com.project.springbootwebstore.model.entity.product.*;
 import com.project.springbootwebstore.model.repository.CustomProductRepository;
 import com.project.springbootwebstore.model.repository.ProductRepository;
@@ -20,40 +24,33 @@ import java.util.stream.Collectors;
 @Service
 public class ProductService {
 
-    //    private static final List<String> SEARCHABLE_FIELDS = List.of("name", "shortDescription", "fullDescription") ;
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
+    private final CustomProductRepository customProductRepository;
+    private final ProductSubcategoryService subcategoryService;
+    private final ProductToListViewDtoMapper productToListViewDtoMapper;
+    private final ProductToProductViewDtoMapper productToProductViewDtoMapper;
 
     @Autowired
-    CustomProductRepository customProductRepository;
+    public ProductService(ProductRepository productRepository, CustomProductRepository customProductRepository, ProductSubcategoryService subcategoryService, ProductToListViewDtoMapper productToListViewDtoMapper, ProductToProductViewDtoMapper productToProductViewDtoMapper) {
+        this.productRepository = productRepository;
+        this.customProductRepository = customProductRepository;
+        this.subcategoryService = subcategoryService;
+        this.productToListViewDtoMapper = productToListViewDtoMapper;
+        this.productToProductViewDtoMapper = productToProductViewDtoMapper;
+    }
 
-    @Autowired
-    private ProductSubcategoryService subcategoryService;
 
 
-    public ProductDto getProductById(Long id) {
+
+
+    public ProductToProductViewDto getProductById(Long id) {
         Product product = productRepository.findById(id).orElseThrow();
-        return new ProductDto.Builder()
-                .setId(product.getId())
-                .setCategory(product.getCategory().getCategoryName())
-                .setCreationDate(product.getCreationTime().toString())
-                .setFullDescription(product.getFullDescription())
-                .setPrice(product.getPrice())
-                .setDiscount(product.getDiscount().getDiscountPercent())
-                .setMainThumbnailPath(product.getMainThumbnailPath())
-                .setName(product.getName())
-                .setProductImagesPaths(product.getProductImagesPaths()
-                        .stream()
-                        .map(ProductImagePath::getImagePath)
-                        .collect(Collectors.toList()))
-                .setShortDescription(product.getShortDescription())
-                .setProductAttributes(product.getProductAttributes()
-                        .stream()
-                        .collect(Collectors.toMap(ProductAttribute::getAttributeName,
-                                ProductAttribute::getAttributeValue)))
-                .setSubcategory(product.getSubcategory().getSubcategoryName())
-                .setQuantity(product.getQuantityCart())
-                .build();
+        return productToProductViewDtoMapper.apply(product);
+    }
+
+    public ProductToListViewDto getSingleListViewProduct(Long id) {
+        Product product = productRepository.findById(id).orElseThrow();
+        return productToListViewDtoMapper.apply(product);
     }
 
 //    public List<Product> getBySubcategoryId(Long subcategoryId){
@@ -95,7 +92,7 @@ public class ProductService {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    public Page<ProductDto> getProductPages(Map<String,String[]> parameters, String subcategoryName) {
+    public Page<ProductToListViewDto> getProductPages(Map<String,String[]> parameters, String subcategoryName) {
 
         Map <String, String[]> filter = parameters.entrySet()
                 .stream()
@@ -160,132 +157,12 @@ public class ProductService {
         System.out.println("zzzzzz");
         productPage.getContent().forEach(System.out::println);
 
-
-//        productRepository.findAllBySubcategoryIdAndQuery(pageable,parameters.get("q")[0],subcategory.getId()).getContent().forEach(System.out::println);
-
-
-
-
-
-//        ProductSubcategory subcategory = subcategoryService.getSubcategoryByName(subcategoryName);
-
-
-
-
-//        String sortBy = parameters.get("");
-
-
-       
-//        Page<Product> productPage = hasQuery ? ;
-//        if (hasQuery) {
-//
-//            if (hasSorting) {
-//                if (hasOrder) {
-//                    switch (parameters.get("order")) {
-//                        case ("asc") -> {
-//                            productPages = PageRequest.of(pageNumber - 1, pageSize, Sort.by(Sort.Direction.ASC, sortBy));
-//                            productPage = productRepository.findAllBySubcategoryIdAndQuery(productPages, query, subcategoryId);
-//                        }
-//                        case ("desc") -> {
-//                            productPages = PageRequest.of(pageNumber - 1, pageSize, Sort.by(Sort.Direction.DESC, sortBy));
-//                            productPage = productRepository.findAllBySubcategoryIdAndQuery(productPages, query, subcategoryId);
-//                        }
-//                        default -> throw new IllegalArgumentException();
-//                    }
-//                } else {
-//                    productPages = PageRequest.of(pageNumber - 1, pageSize, Sort.by(Sort.Direction.DESC, sortBy));
-//                    productPage = productRepository.findAllBySubcategoryIdAndQuery(productPages, query, subcategoryId);
-//                    System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-//                }
-//            } else {
-//                productPages = PageRequest.of(pageNumber - 1, pageSize);
-//                productPage = productRepository.findAllBySubcategoryIdAndQuery(productPages, query, subcategoryId);
-//                System.out.println("eeeeeeeeeeeeeeeeeeeeeeeee");
-//            }
-//        } else {
-//            if (hasSorting) {
-//                if (hasOrder) {
-//                    switch (order) {
-//                        case ("asc") -> {
-//                            productPages = PageRequest.of(pageNumber - 1, pageSize, Sort.by(Sort.Direction.ASC, sortBy));
-//                            productPage = productRepository.findAllBySubcategoryId(productPages, subcategoryId);
-//                        }
-//                        case ("desc") -> {
-//                            productPages = PageRequest.of(pageNumber - 1, pageSize, Sort.by(Sort.Direction.DESC, sortBy));
-//                            productPage = productRepository.findAllBySubcategoryId(productPages, subcategoryId);
-//                        }
-//                        default -> throw new IllegalArgumentException();
-//                    }
-//                } else {
-//                    // relevance and arrivals
-//                    productPages = PageRequest.of(pageNumber - 1, pageSize, Sort.by(Sort.Direction.DESC, sortBy));
-//                    productPage = productRepository.findAllBySubcategoryId(productPages, subcategoryId);
-//                    System.out.println("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv");
-//                }
-//            } else {
-//                productPages = PageRequest.of(pageNumber - 1, pageSize);
-//                productPage = productRepository.findAllBySubcategoryId(productPages, subcategoryId);
-//            }
-//        }
-//        Pageable productPages = PageRequest.of(pageNumber - 1, pageSize, Sort.by(Sort.Direction.ASC, "price"));
-//
-// productPages = PageRequest.of(1-1,pageSize);
-//      productPage = productRepository.findAllBySubcategoryId(productPages, subcategory.getId());
         return productPage
-                .map(p -> new ProductDto.Builder()
-                        .setId(p.getId())
-                        .setCategory(p.getCategory().getCategoryName())
-                        .setCreationDate(p.getCreationTime().toString())
-                        .setFullDescription(p.getFullDescription())
-                        .setPrice(p.getPrice())
-                        .setDiscount(p.getDiscount().getDiscountPercent())
-                        .setMainThumbnailPath(p.getMainThumbnailPath())
-                        .setName(p.getName())
-                        .setProductImagesPaths(p.getProductImagesPaths()
-                                .stream()
-                                .map(ProductImagePath::getImagePath)
-                                .collect(Collectors.toList()))
-                        .setShortDescription(p.getShortDescription())
-                        .setProductAttributes(p.getProductAttributes()
-                                .stream()
-                                .collect(Collectors.toMap(ProductAttribute::getAttributeName,
-                                        ProductAttribute::getAttributeValue)))
-                        .setSubcategory(p.getSubcategory().getSubcategoryName())
-                        .setQuantity(p.getQuantity())
-                        .build());
+                .map(productToListViewDtoMapper);
     }
 
 
-    private Page<ProductDto> getByQuery(){
 
-        throw new UnsupportedOperationException();
-    }
-
-    private Page<ProductDto> getByQueryAndFilter(int pageNumber, int pageSize, Long subcategoryId, String sort, String order, Map<String,String[]> filter){
-        throw new UnsupportedOperationException();
-    }
-
-    private Page<ProductDto> getBySubcategory(int pageNumber, int pageSize, Long subcategoryId, String sort, String order, Map<String,String[]> filter){
-
-        if (filter.size()>0){
-            return getBySubcategoryAndFilter(pageNumber,pageSize,subcategoryId,sort,order,filter);
-        } else if (sort!=null){
-            if (order!=null){
-
-            } else {
-
-            }
-        } else {
-
-        }
-
-
-        throw new UnsupportedOperationException();
-    }
-
-    private Page<ProductDto> getBySubcategoryAndFilter(int pageNumber, int pageSize, Long subcategoryId, String sort, String order, Map<String,String[]> filter){
-        throw new UnsupportedOperationException();
-    }
 
     public Page<ProductDto> getProductPagesByQuery(int pageNumber, int pageSize, Long subcategoryId, String query) {
         // -1 because pagination counts from 0
@@ -321,45 +198,10 @@ public class ProductService {
     }
 
 
-    public Page<ProductDto> search(String query, Pageable pageable) {
+    public Page<ProductToListViewDto> search(String query, Pageable pageable) {
         Page<Product> pages = productRepository.getAllByName(query, pageable);
-        return pages
-                .map(p -> new ProductDto.Builder()
-                        .setId(p.getId())
-                        .setCategory(p.getCategory().getCategoryName())
-                        .setCreationDate(p.getCreationTime().toString())
-                        .setFullDescription(p.getFullDescription())
-                        .setPrice(p.getPrice())
-                        .setDiscount(p.getDiscount().getDiscountPercent())
-                        .setMainThumbnailPath(p.getMainThumbnailPath())
-                        .setName(p.getName())
-                        .setProductImagesPaths(p.getProductImagesPaths()
-                                .stream()
-                                .map(ProductImagePath::getImagePath)
-                                .collect(Collectors.toList()))
-                        .setShortDescription(p.getShortDescription())
-                        .setProductAttributes(p.getProductAttributes()
-                                .stream()
-                                .collect(Collectors.toMap(ProductAttribute::getAttributeName,
-                                        ProductAttribute::getAttributeValue)))
-                        .setSubcategory(p.getSubcategory().getSubcategoryName())
-                        .setQuantity(p.getQuantityCart())
-                        .build());
+        return pages.map(productToListViewDtoMapper);
     }
 
-//    public List<Product> searchProducts(String text, List<String> fields, int limit) {
-//        System.out.println("text");
-//        System.out.println(fields);
-//        System.out.println(limit);
-//        List<String> fieldsToSearchBy = fields.isEmpty() ? SEARCHABLE_FIELDS : fields;
-//
-//        boolean containsInvalidField = fieldsToSearchBy.stream(). anyMatch(f -> !SEARCHABLE_FIELDS.contains(f));
-//
-//        if(containsInvalidField) {
-//            throw new IllegalArgumentException();
-//        }
-//
-//        return productRepository.searchBy(
-//                text, limit, fieldsToSearchBy.toArray(new String[0]));
-//    }
+
 }
