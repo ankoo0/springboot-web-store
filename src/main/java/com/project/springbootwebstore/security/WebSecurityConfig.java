@@ -5,34 +5,21 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
-
-//    @Bean
-//    @Primary
-////    @Qualifier("customDataSource")
-//    DataSource dataSource() {
-//        return DataSourceBuilder.create()
-//                .url("jdbc:postgresql://localhost:5432/springboot-web-store")
-//                .username("postgres")
-//                .password("admin").build();
-//    }
-
-////    private final CustomUserDetailsService userDetailsService;
-//    private final DataSource dataSource;
-//    @Autowired
-//    public WebSecurityConfig( DataSource dataSource) {
-////        this.userDetailsService = userDetailsService;
-//        this.dataSource=dataSource;
-//        System.out.println(dataSource.toString());
-//    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -49,15 +36,16 @@ public class WebSecurityConfig {
                 .authorizeRequests().antMatchers(
                         "/main/account/**",
                         "/main/cart/**",
-                        "/main/favorites/**"
+                        "/main/favorites/**",
+                        "/admin/**"
                 ).authenticated()
                 .and()
-//                .formLogin(withDefaults())
                 .formLogin().loginPage("/login").usernameParameter("username").passwordParameter("password").permitAll()
+                .defaultSuccessUrl("/")
+                .successHandler(new RefererAuthenticationSuccessHandler())
                 .and()
                 .logout().logoutRequestMatcher( new AntPathRequestMatcher("/logout"))
                 .invalidateHttpSession(true)
-//                .deleteCookies()
                 .logoutSuccessUrl("/main")
                 .and()
                 .authenticationProvider(authenticationProvider())
@@ -66,34 +54,24 @@ public class WebSecurityConfig {
     }
 
 
+    private static class RefererAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+        @Override
+        public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+            String referer = request.getHeader("Referer");
+            if (referer != null) {
+                getRedirectStrategy().sendRedirect(request, response, referer);
+            } else {
+                super.onAuthenticationSuccess(request, response, authentication);
+            }
+        }
+    }
+
+
     @Bean
    protected UserDetailsService userDetailsService(){
         return new CustomUserDetailsService();
     }
 
-//    @Bean
-//    @Primary
-//    public DataSource primaryDataSource() {
-//        DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
-//        dataSourceBuilder.url("jdbc:postgresql://localhost:5432/springboot-web-store");
-//        dataSourceBuilder.username("postgres");
-//        dataSourceBuilder.password("admin");
-//        return dataSourceBuilder.build();
-//    }
-
-
-//    @Autowired
-//    public void configureGlobal(AuthenticationManagerBuilder auth, DataSource customDataSource)
-//            throws Exception {
-//        auth.jdbcAuthentication()
-//                .dataSource(customDataSource)
-//                .usersByUsernameQuery("select username,password,enabled "
-//                        + "from _user "
-//                        + "where username = ?")
-//                .authoritiesByUsernameQuery("select username,role "
-//                        + "from _user "
-//                        + "where username = ?");
-//    }
 
     @Bean
     protected PasswordEncoder passwordEncoder(){
@@ -107,17 +85,5 @@ public class WebSecurityConfig {
         provider.setUserDetailsService(userDetailsService());
         return provider;
     }
-
-//    @Bean
-//    public UserDetailsService users() {
-//        UserDetails userDetails = User.builder()
-//                .username("u")
-//                .password("{noop}p")
-//                .authorities("ROLE USER")
-//                .build();
-////        JdbcUserDetailsManager users = new JdbcUserDetailsManager(dataSource);
-////        users.createUser(user);
-//        return new InMemoryUserDetailsManager(userDetails);
-//    }
 
 }

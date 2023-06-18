@@ -1,17 +1,11 @@
 package com.project.springbootwebstore;
 
 
-import com.project.springbootwebstore.model.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
 
 @SpringBootApplication
 //@EnableJpaRepositories(repositoryBaseClass = SearchRepositoryImpl.class)

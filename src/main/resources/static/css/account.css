@@ -19,7 +19,57 @@ body{
 }
 
 
+.account-content-container{
+    display: grid;
+    grid-template-columns: 0.5fr 0.5fr;
+    grid-template-rows: repeat(3,100px);
+    grid-gap: 20px;
+    width: 60%;
+/*    on mobile width = 100*/
+}
 
+.account-content {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+}
+
+.action-img-container > img{
+    display: block;
+    width: 32px;
+    filter: invert(28%) sepia(18%) saturate(307%) hue-rotate(197deg) brightness(92%) contrast(88%);
+}
+
+.account-action {
+    border: 1px solid #bfbfbf;
+    border-radius: 15px;
+    transition: all 0.3s;
+    background: white;
+    box-shadow: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #424767;
+}
+
+.account-action:hover {
+    transform: scale(1.01);
+    box-shadow: 0 0 14px 3px rgb(34 60 80 / 20%);
+}
+
+.action-link {
+    text-decoration: none;
+    color: gray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
 
 .main-footer{
     width: 100%;

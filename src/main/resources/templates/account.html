@@ -31,7 +31,77 @@
 
 
 <main class="main-content">
-  <section>
+  <section class="account-content">
+    <div class="account-header"><h2 th:text="${'Welcome Back ' + #authentication.getName()}"></h2></div>
+
+    <div class="account-content-container">
+
+      <div class="account-action">
+        <a class="action-link" href="/account/data">
+          <div class="action-img-container">
+            <img th:src="@{/images/account/manage_account.svg}"/>
+          </div>
+          <p>
+            Personal Info
+          </p>
+        </a>
+      </div>
+
+      <div class="account-action">
+          <a class="action-link" href="/account/wallet">
+            <div class="action-img-container">
+              <img th:src="@{/images/account/balance_wallet.svg}"/>
+            </div>
+            <p>
+              Balance
+            </p>
+          </a>
+      </div>
+
+      <div class="account-action">
+        <a class="action-link" href="/account/promocodes">
+          <div class="action-img-container">
+            <img th:src="@{/images/account/promo.svg}"/>
+          </div>
+          <p>
+            Promocodes
+          </p>
+        </a>
+      </div>
+
+      <div class="account-action">
+        <a class="action-link" href="/account/orders">
+          <div class="action-img-container">
+            <img th:src="@{/images/account/orders.svg}"/>
+          </div>
+          <p>
+            Orders
+          </p>
+        </a>
+      </div>
+
+      <div class="account-action">
+        <a class="action-link" href="/account/password">
+          <div class="action-img-container">
+            <img th:src="@{/images/account/password.svg}"/>
+          </div>
+          <p>
+            Change Password
+          </p>
+        </a>
+      </div>
+
+      <div class="account-action">
+        <a class="action-link" href="/account/signout">
+          <div class="action-img-container">
+            <img th:src="@{/images/account/signout.svg}"/>
+          </div>
+          <p>
+            Sign-Out
+          </p>
+        </a>
+      </div>
+
 
     <!--      <h1 th:text="${categories}"></h1>-->
 

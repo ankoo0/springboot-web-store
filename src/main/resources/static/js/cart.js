@@ -1,13 +1,10 @@
 const items = JSON.parse(window.localStorage.getItem("cart")) || [];
 
-window.onload = () => {
-    initShoppingCart();
+initShoppingCart();
 
-
-}
 
 function initShoppingCart() {
-    fetch('/main/cart-items', {
+    fetch('/cart/items', {
         method: 'post',
         headers: {
             'Accept': 'application/json',
@@ -15,15 +12,42 @@ function initShoppingCart() {
         },
         body: JSON.stringify(items)
     }).then(res => res.json())
-        .then(function (res) {
-            console.log(res);
+        .then( res => {
+            alert(JSON.stringify(res));
             createProductCarts(res)
             createRemoveButtons();
             createIncrementButtons()
             createDecrementButtons()
+            cardsInitAnimation()
+            changeTotalPrice()
 
         });
 //src="data:image/png;base64,${json.img}
+}
+
+function cardsInitAnimation(){
+    let productCards = document.querySelectorAll('.cart-item')
+    productCards.forEach((card, index) => {
+        setTimeout(() => {
+            card.classList.add('show');
+        }, index * 100);
+    });
+}
+
+function changeTotalPrice(){
+    const prices = document.querySelectorAll('.price-container > .price')
+
+    let totalSum = 0;
+    prices.forEach(price =>{
+        const priceText = price.textContent;
+        const priceValue = parseFloat(priceText.replace('$', ''));
+        totalSum += priceValue;
+        alert(totalSum)
+    })
+
+    alert(document.querySelector('.total-pricing > h4').innerHTML)
+    document.querySelector('.total-pricing > h4').innerHTML='Total: ' + parseFloat(totalSum).toFixed(2) + ' $'
+
 }
 
 
@@ -33,16 +57,16 @@ function createIncrementButtons() {
         btn.addEventListener("click", () => {
             const itemId = parseInt(btn.dataset.itemid);
             const selector = ".quantity-input[data-itemid=" + "\"" + itemId + "\"" + "]";
-            const quantityinput = document.querySelector(selector)
-            let quantity = parseInt(quantityinput.value);
-            if (quantity + 1 > 99) {
-                quantityinput.value = "99";
+            const quantityInput = document.querySelector(selector)
+            let quantity = parseInt(quantityInput.value);
+            if ((quantity + 1) > 99) {
+                quantityInput.value = "99";
             } else {
-                quantityinput.value = (quantity + 1).toString();
+                quantityInput.value = (quantity + 1).toString();
                 changeQuantity(true, itemId)
             }
 
-            console.log(incrementButtons)
+            changeItemPrice(itemId)
         })
     })
 }
@@ -54,16 +78,16 @@ function createDecrementButtons() {
         btn.addEventListener("click", () => {
             const itemId = parseInt(btn.dataset.itemid);
             const selector = ".quantity-input[data-itemid=" + "\"" + itemId + "\"" + "]";
-            const quantityinput = document.querySelector(selector)
-            let quantity = parseInt(quantityinput.value);
-            if (quantity - 1 < 1) {
-                quantityinput.value = "1";
+            const quantityInput = document.querySelector(selector)
+            let quantity = parseInt(quantityInput.value);
+            if ((quantity - 1) < 1) {
+                quantityInput.value = "1";
             } else {
-                quantityinput.value = (quantity - 1).toString();
+                quantityInput.value = (quantity - 1).toString();
                 changeQuantity(false, itemId)
             }
 
-            console.log(decrementButtons)
+            changeItemPrice(itemId)
         })
     })
 }
@@ -81,9 +105,7 @@ function changeQuantity(isIncremental, itemId) {
         }
     } else {
         for (let i = 0; i < items.length; i++) {
-
             if (items[i].id === itemId) {
-                // alert(!(parseInt(items[i].quantity)<=1))
                 if ((parseInt(items[i].quantity) > 1)) {
                     items[i].quantity = parseInt(items[i].quantity) - 1;
                     window.localStorage.setItem("cart", JSON.stringify(items))
@@ -103,34 +125,26 @@ function createRemoveButtons() {
     });
     removeButtons.forEach(button => {
         button.addEventListener("click", function () {
-            console.log("hello")
             const itemId = parseInt(button.dataset.itemid)
-            console.log(itemId)
-            // const storageIndex = items.find(item=>item.id===itemId).id;
             for (let i = 0; i < items.length; i++) {
-                console.log(items[i].id);
                 if (items[i].id === itemId) {
                     items.splice(i, 1)
                     window.localStorage.setItem("cart", JSON.stringify(items));
-                    const itemCard = document.getElementById(itemId.toString());
 
-                    itemCard.classList.add('removing')
-                    // itemCard.parentNode.removeChild(itemCard);
-                    itemCard.addEventListener('transitionend', () => {
-                        itemCard.remove();
-                        // setTimeout(()=>{},30)
-                        // cards.forEach(card => {
-                        //     card.style.width = `calc(${100 / cards.length}% - 10px)`;
-                        // });
-                    });
-                    console.log(itemId)
-                    console.log(items)
+                    removeItem(itemId)
+
                 }
             }
-
-
         })
     })
+}
+
+function removeItem(itemId){
+    const itemCard = document.getElementById(itemId.toString());
+    itemCard.classList.add('removing')
+    itemCard.addEventListener('transitionend', () => {
+        itemCard.remove();
+    });
 }
 
 
@@ -165,17 +179,33 @@ function createProductCarts(productsJson) {
                             </div>
                              
                              <div class="price-container">
-                             <h4>${product.price} $</h4>
+                             <span class="price" style="transition: all 0.3s;" data-itemid="${product.id}" >${product.price} $</span>
                              </div>
                         </div>
                  `);
-
-        productCards = document.querySelectorAll('.cart-item')
-        productCards.forEach((card, index) => {
-            setTimeout(() => {
-                card.classList.add('show');
-            }, index * 100);
-        });
     }
 }
+
+function changeItemPrice(itemId){
+
+    const item = items.find(item => item.id === itemId);
+
+    fetch('/cart/price', {
+        method: 'post',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(item)
+    }).then(res => res.json())
+        .then(res=>{
+            const selector = ".price[data-itemid=" + "\"" + itemId + "\"" + "]";
+            const price = document.querySelector(selector)
+            price.innerHTML=JSON.stringify(res) + ' $';
+            changeTotalPrice()
+        })
+
+}
+
+// order - all cart json verify empty json
 

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Product</title>
+</head>
+<body style="display: flex;  justify-content: center; align-items: center; height: 100%">
+<form  style="display: flex; flex-direction: column;  justify-content: center; align-items: center;" action="/admin/add-product" method="post" >
+<!--    add img inputs and form validation-->
+    <label for="title">Title</label>
+    <input id="title" class="product-input">
+    <label for="description">Description</label>
+    <input id="description" class="product-input">
+    <label for="price">Title</label>
+    <input id="price" class="product-input">
+    <label for="quantity">Quantity</label>
+    <input id="quantity" class="product-input">
+    <button type="submit">Add Product</button>
+</form>
+
+</body>
+</html>

@@ -1,6 +1,6 @@
-let path = window.location.pathname;
-let subcategory = path.substring(1, path.length).split('/')[2]
-let filterForm = document.querySelector('.filtering-form')
+const path = window.location.pathname;
+const subcategory = path.substring(1, path.length).split('/')[2]
+const filterForm = document.querySelector('.filtering-form')
 let productCards = document.querySelectorAll('.product-card')
 const queryString = window.location.search;
 
@@ -12,30 +12,6 @@ productCards.forEach((card, index) => {
 });
 
 
-const shrinkHeader = ()=>{
-    let scrollPosition = 0;
-    console.log(scrollPosition)
-    const header = document.querySelector('.main-header')
-    const secondaryNav = document.querySelector('.secondary-nav')
-    const categories = document.querySelector('.category-dropdowns')
-    window.addEventListener('scroll',()=>{
-        if(scrollPosition < window.pageYOffset) {
-            categories.classList.toggle('shrink',true)
-            secondaryNav.classList.toggle('shrink',true)
-            header.classList.toggle('shrink',true)
-            scrollPosition=window.pageYOffset
-            console.log('down' + scrollPosition)
-        } else {
-            categories.classList.toggle('shrink',false)
-            secondaryNav.classList.toggle('shrink',false)
-            header.classList.toggle('shrink',false)
-            scrollPosition=window.pageYOffset
-            console.log('up' + scrollPosition)
-        }
-    })
-}
-shrinkHeader()
-
 function convertParamsToMap(paramsArray) {
     const paramsMap = {};
     paramsArray.forEach(paramString => {
@@ -46,28 +22,27 @@ function convertParamsToMap(paramsArray) {
             paramsMap[key] = [value];
         }
     });
+
     return paramsMap;
 }
 
 
 function decodeURL() {
     let map;
-    const paramsArray = decodeURIComponent(queryString).substring(1).replaceAll('+',' ').split("&").filter(p => !p.includes("page") && !p.includes("order") && !p.includes("sortBy") && !p.includes("q"))
+    const paramsArray = decodeURIComponent(queryString).substring(1).replaceAll('+', ' ').split("&").filter(p => !p.includes("page") && !p.includes("order") && !p.includes("sortBy") && !p.includes("q"))
     paramsArray.forEach(p => {
         const param = p.split("=")
         const key = param[0]
         const value = param[1]
-       map = convertParamsToMap(paramsArray)
+        map = convertParamsToMap(paramsArray)
     })
-    // alert(paramsArray)
-    // alert(JSON.stringify(map))
 
     return map;
 }
 
-function initFilterState(){
-
-}
+// function initFilterState() {
+//
+// }
 
 
 fetch('/main/filter', {
@@ -80,8 +55,6 @@ fetch('/main/filter', {
     // add query if present
 
 }).then(res => res.json()).then(res => {
-    // alert(JSON.stringify(res))
-    let filter = ``;
 
     createFilter(res)
 
@@ -96,6 +69,16 @@ fetch('/main/filter', {
         })
     })
 
+    const attrInfoBadgesArray = document.querySelectorAll('.attribute-info-badge')
+
+    attrInfoBadgesArray.forEach((badge) => {
+        badge.addEventListener('click', () => {
+
+            badge.querySelector('.attribute-info').classList.toggle('show')
+        })
+    })
+
+
     checkboxes.forEach(ch => {
         ch.addEventListener('click', {})
     })
@@ -103,7 +86,7 @@ fetch('/main/filter', {
 
 function createFilter(attrJSON) {
     let filter = ``;
-    filter+= `<h3>Apply filters:</h3>`
+    filter += `<h3>Apply filters:</h3>`
     const hiddenPagination = `<input name="page" value="1" class="checkbox" checked type="hidden"/>`
     filter += hiddenPagination
     for (const attrName in attrJSON) {
@@ -112,7 +95,6 @@ function createFilter(attrJSON) {
 
     filter += createSubmitBtn()
     filterForm.innerHTML = filter
-
 }
 
 function createSubmitBtn() {
@@ -123,72 +105,68 @@ function createAttributesContainer(checkboxesData, attrName) {
     const attrContainer = document.createElement('div')
     attrContainer.classList.add('attr-container')
 
+    const attributeValuesContainer = document.createElement('div')
+    attributeValuesContainer.classList.add('attribute-values')
+
     const header = createHeader(attrName, null)
     const attributeValueSet = createAttributeValueSet(checkboxesData, attrName);
-    if (attributeValueSet.length < 6) {
-        attrContainer.innerHTML = header + attributeValueSet
-        return attrContainer.outerHTML
-    } else {
+
+    // if (attributeValueSet.length < 6) {
+        attributeValuesContainer.innerHTML=attributeValueSet.join('');
+
+        attrContainer.innerHTML = header + attributeValuesContainer.outerHTML
+
+    // } else {
         // const expandAttrBtn =   `<div class="check-set-btn">All ${attributeValueSet.length} variants</div>`
 
-        const attrMenu = createAttributeMenu(attributeValueSet)
-        const expandAttrBtn = createExpandBtn(attrMenu, attributeValueSet.length)
+        // const attrMenu = createAttributeMenu(attributeValueSet)
+        // const expandAttrBtn = createExpandBtn(attrMenu, attributeValueSet.length)
         // expandAttrBtn attrMenu
-        const firstAttributes = attributeValueSet.slice(0, 6).join('')
-        attrContainer.innerHTML = header + firstAttributes + expandAttrBtn
-        return attrContainer.outerHTML
-    }
-
+        // const firstAttributes = attributeValueSet.join('')
+        // alert(firstAttributes)
+        //.slice(0, 6)
+        // attrContainer.innerHTML = header + firstAttributes
+        // + expandAttrBtn
+        // return attrContainer.outerHTML
+    // }
+    return attrContainer.outerHTML
 }
 
 function createHeader(attrName, attrDescription) {
-    return `<div class="attribute-header"><h4>${attrName}</h4><div class="attribute-info-badge">?</div></div>`
+    return `<div class="attribute-header"><h4>${attrName}</h4><div class="attribute-info-badge">?<div class="attribute-info">lorem ipsum dfgsjdfgeayfgdhscbvsdvhbsdfhsbfhshgfaagehfe</div></div></div>`
 }
 
-function createExpandBtn(attrMenu, length) {
-    const expandBtn = document.createElement('div')
-    expandBtn.innerHTML = `All ${length} variants` + attrMenu
-    expandBtn.classList.add('check-set-btn')
-    return expandBtn.outerHTML
-}
+// function createExpandBtn(attrMenu, length) {
+//     const expandBtn = document.createElement('div')
+//     expandBtn.innerHTML = `All ${length} variants` + attrMenu
+//     expandBtn.classList.add('check-set-btn')
+//     return expandBtn.outerHTML
+// }
 
 
-function createAttributeMenu(attributeValueSet) {
-    const attrMenu = document.createElement('div')
-    // attrMenu.style.visibility = 'hidden'
-    attrMenu.innerHTML = attributeValueSet.join('')
-    attrMenu.classList.add('check-div')
-    return attrMenu.outerHTML
-}
+// function createAttributeMenu(attributeValueSet) {
+//     const attrMenu = document.createElement('div')
+//     // attrMenu.style.visibility = 'hidden'
+//     attrMenu.innerHTML = attributeValueSet.join('')
+//     attrMenu.classList.add('check-div')
+//     return attrMenu.outerHTML
+// }
 
 function createAttributeValueSet(checkboxesData, attrName) {
-    // alert("p")
-    // alert(checkboxesData)
-    const checkboxes = [];
 
+    const checkboxes = [];
+    let initMap = decodeURL()
 
     for (let i = 0; i < checkboxesData.length; i++) {
-        //[${i}]
-        let initMap = decodeURL()
 
         let isChecked = false
 
-        if (typeof initMap !== "undefined" &&  initMap.hasOwnProperty(attrName)){
-           initMap[attrName].find(e=> e===checkboxesData[i]) ? isChecked=true: isChecked=false
+        if (typeof initMap !== "undefined" && initMap.hasOwnProperty(attrName)) {
+            initMap[attrName].find(e => e === checkboxesData[i]) ? isChecked = true : isChecked = false
         }
-
-
         // incorrect id output
-        const checkbox = `<div class="check-container"><input name="${attrName}" value="${checkboxesData[i]}" class="checkbox" id="${attrName + "-" + i}" type="checkbox" ${isChecked ? 'checked' : ''} /> <label for="${attrName}">${checkboxesData[i]}</label></div>`
+        const checkbox = `<div class="check-container"><input name="${attrName}" value="${checkboxesData[i]}" class="filter-checkbox" id="${attrName + "-" + i}" type="checkbox" ${isChecked ? 'checked' : ''} /> <label for="${attrName}">${checkboxesData[i]}</label></div>`
         checkboxes.push(checkbox)
     }
-    // return checkboxesData.map((i) => {
-    //     let temp = 1;
-    //     const checkbox = `<div><input name="${attrName}[]" value="${checkboxesData}" class="checkbox" id="${attrName + temp}" type="checkbox" /> <label for="${attrName + temp}">${i}</label></div>`
-    //     temp+=1;
-    //     return checkbox
-    // })
-
     return checkboxes;
-
 }

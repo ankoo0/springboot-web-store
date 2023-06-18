@@ -31,9 +31,9 @@
 
 
 <main class="main-content">
-    <section>
-
-        <!--      <h1 th:text="${categories}"></h1>-->
+    <section class="favorites-section">
+        <div class="favorites-header"><h3>Your favorite products</h3></div>
+        <div class="favorites-list"></div>
 
     </section>
 </main>
@@ -44,7 +44,7 @@
 <footer class="main-footer">
 
 </footer>
-
+<script type="text/javascript" th:src="@{/js/favorites.js}"></script>
 <script type="text/javascript" th:src="@{/js/hamburger.js}"></script>
 </body>
 

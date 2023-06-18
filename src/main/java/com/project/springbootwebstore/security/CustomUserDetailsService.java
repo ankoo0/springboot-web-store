@@ -1,7 +1,6 @@
 package com.project.springbootwebstore.security;
 
-import com.project.springbootwebstore.model.repository.UserRepository;
-import com.project.springbootwebstore.model.service.UserService;
+import com.project.springbootwebstore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;

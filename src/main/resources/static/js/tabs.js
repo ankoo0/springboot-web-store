@@ -1,13 +1,16 @@
 const tabs = Array.from(document.querySelectorAll('.tab-nav')) || []
 const underline = document.querySelector('.tab-indicator')
 const contentContainer = document.querySelector('.tab-overflow')
-const content = Array.from(document.querySelectorAll('.tab-content')) || [];
+const content = Array.from(document.querySelectorAll('.tab-content')) || []
 const tabBody = document.querySelector('.tab-body')
 
 
 let lastIndex =0;
+// alert(tabBody.clientWidth)
+
 
 tabs.forEach((tab,index)=>{
+    const tabWidth = tabBody.clientWidth
 
     if(index===0){
         tab.classList.toggle('active')
@@ -25,7 +28,6 @@ tabs.forEach((tab,index)=>{
             t.classList.remove('active')
         })
 
-
         const style = contentContainer.style.transform
         const currentTranslate = +(style.replace(/[^\d.]/g, ''));
 
@@ -36,13 +38,13 @@ tabs.forEach((tab,index)=>{
         } else if (index>lastIndex){
             const step = index-lastIndex
             const flipSign = Math.abs(step)
-            const offset = 1312* flipSign
+            const offset = tabWidth* flipSign
             const newTranslate = currentTranslate+offset
             contentContainer.style.transform = `translate(-${newTranslate}px)`
         } else if(index<lastIndex){
             const step = index-lastIndex
             const flipSign = Math.abs(step)
-            const offset = 1312* flipSign
+            const offset = tabWidth* flipSign
             const newTranslate = currentTranslate-offset
             contentContainer.style.transform = `translate(-${newTranslate}px)`
         }

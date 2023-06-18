@@ -3,7 +3,7 @@ package com.project.springbootwebstore.security;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import com.project.springbootwebstore.model.entity.users.User;
+import com.project.springbootwebstore.entity.users.User;
 
 import java.util.Collection;
 import java.util.List;

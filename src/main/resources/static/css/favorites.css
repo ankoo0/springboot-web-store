@@ -41,3 +41,95 @@ body{
     /* overflow-y: auto;
      */
 }
+
+
+.add-to-cart-btn{
+    display: flex;
+    /* text-align: center; */
+    /* justify-content: center; */
+    /* align-items: center; */
+    background: none;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+
+.delete-btn{
+    display: flex;
+    /* text-align: center; */
+    /* justify-content: center; */
+    /* align-items: center; */
+    background: none;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+
+
+.delete-btn:hover{
+    color: red;
+}
+
+.add-to-favorites-btn:hover{
+    color:red;
+}
+
+.btn-separator{
+    height: auto;
+    width: 1px;
+    background-color: #d7d7d7;
+}
+
+
+
+
+.favorites-section {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    width: 70%;
+}
+
+
+.favorites-list{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+.product-img-container {
+    height: 100%;
+    justify-content: center;
+    display: flex;
+}
+
+.product-img-container > img {
+    object-fit: contain;
+    width: 200px;
+    height: 100%;
+}
+
+.fav-item {
+    border-radius: 10px;
+    padding: 10px;
+    width: 100%;
+    height: 200px;
+    display: flex;
+    flex-direction: row;
+    box-shadow: 0 0 14px 2px rgba(163,160,163,1);
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.fav-item.show{
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.5s;
+}
+
+.fav-item.removing {
+    transform: translateX(-100%);
+    opacity: 0;
+}

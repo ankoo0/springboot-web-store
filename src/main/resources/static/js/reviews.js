@@ -42,19 +42,19 @@ function createReviewRating(rating) {
     let ratingElement = ``;
     for (let i = 1; i <= 5; i++) {
         if (i <= whole) {
-            const ratingPart = `<img style=" display:block; filter: invert(80%) sepia(47%) saturate(2884%) hue-rotate(0deg) brightness(109%) contrast(107%); height: auto; width: 100%" src="/ui/rating/star_full.svg"/>`
+            const ratingPart = `<img src="/ui/rating/star_full.svg"/>`
             ratingElement += ratingPart;
         }
         if (i - whole === 1 && remainder > 0) {
-            const ratingPart = `<img style=" display:block; filter: invert(80%) sepia(47%) saturate(2884%) hue-rotate(0deg) brightness(109%) contrast(107%); height: auto; width: 100%" src="/ui/rating/star_half.svg"/>`
+            const ratingPart = `<img src="/ui/rating/star_half.svg"/>`
             ratingElement += ratingPart;
         }
         if (i - whole === 1 && !remainder > 0){
-            const ratingPart = `<img style=" display:block; filter: invert(80%) sepia(47%) saturate(2884%) hue-rotate(0deg) brightness(109%) contrast(107%); height: auto; width: 100%" src="/ui/rating/star_empty.svg"/>`
+            const ratingPart = `<img src="/ui/rating/star_empty.svg"/>`
             ratingElement += ratingPart;
         }
         if (i - whole >=2) {
-            const ratingPart = `<img style=" display:block; filter: invert(80%) sepia(47%) saturate(2884%) hue-rotate(0deg) brightness(109%) contrast(107%); height: auto; width: 100%" src="/ui/rating/star_empty.svg"/>`
+            const ratingPart = `<img src="/ui/rating/star_empty.svg"/>`
             ratingElement += ratingPart;
         }
     }
@@ -69,8 +69,7 @@ function createReviewImages(reviewImages){
 
     for (let i = 0; i <reviewImages.length ; i++) {
         const path = `/images/`+reviewImages[i]
-        // alert(path+reviewImages[i])
-        // alert(reviewImages[i])
+        alert(reviewImages[i])
        reviewImagesElement +=`<div class="review-img-container"><img class="review-img" src="${path}"/></div>`
     }
     console.log(reviewImagesElement)
@@ -78,10 +77,11 @@ function createReviewImages(reviewImages){
 }
 
 function createReview(review) {
-    // console.log(review.)
-    console.log(typeof review)
-    const reviewElement = `<div class="review">
 
+   const reviewImages =  ` <div class="review-image-set">
+        ${review.reviewImagePaths.length===0? '' : createReviewImages(review.reviewImagePaths)}
+    </div>`
+    const reviewElement = `<div class="review">
         <div class="review-user-info">
             <div class="review-user-avatar">
                 <img src="/images/${review.userAvatar}" alt="user avatar">
@@ -89,20 +89,20 @@ function createReview(review) {
             <div class="review-username">${review.username}</div>
             <div class="review-date">${review.dateTime}</div>
         </div>
+        
+        ${reviewImages}
+        <h3>${review.title}</h3>
         <div class="review-rating">
         ${createReviewRating(review.rating)}
-        </div>
-        <div class="review-image-set">
-            ${createReviewImages(review.reviewImagePaths)}
         </div>
         <p>${review.review}</p>
         <div class="user-rating"></div>
         <div class="rate-review">
-            <span class="material-symbols-outlined">thumb_up<h5>${review.likes}</h5></span>
-            <span class="material-symbols-outlined">thumb_down<h5>${review.dislikes}</h5></span>
+           <button class="like-review-btn"><span class="material-symbols-outlined">thumb_up<h5>${review.likes}</h5></span></button>
+           <button class="dislike-review-btn"><span class="material-symbols-outlined">thumb_down<h5>${review.dislikes}</h5></span></button> 
         </div>
     </div>`
-    // console.log(reviewElement)
+
 
     return reviewElement;
 }
@@ -129,8 +129,7 @@ function fetchReviews(){
 
             document.querySelector('.loader-container').remove()
             document.querySelector('.user-reviews').lastElementChild.insertAdjacentHTML('beforebegin',array)
-            // reviewContainer.innerHTML=(array)
-            // document.querySelector('.user-reviews').lastElementChild.insertAdjacentHTML('afterbegin',array)
+
             const reviews = document.querySelectorAll('.review')
 
             reviews.forEach((review, index) => {

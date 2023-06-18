@@ -29,28 +29,35 @@
   <nav th:replace="fragments/fragments.html :: secondary-nav"></nav>
   <nav th:replace="fragments/fragments.html :: mobile-menu"></nav>
 
-  <section th:replace="fragments/fragments.html :: mobile-search-modal"></section>
+<!--  <section th:replace="fragments/fragments.html :: mobile-search-modal"></section>-->
 
   <nav th:replace="fragments/fragments.html :: mobile-bottom-menu"></nav>
 
 
   <main class="main-content">
-    <section>
+    <section style="width: 70%">
 
-      <section style="width: 70%; display: flex; justify-content: center"  class="splide" aria-label="Splide Basic HTML Example">
-        <div style="color: #1fd133" class="splide__track">
-          <ul class="splide__list">
-            <li style="display: flex; justify-content: center" class="splide__slide"><img style="object-fit: contain; height: 500px; width: 500px"
-                                           src="http://placehold.it/360x150"></li>
-            <li style="display: flex; justify-content: center" class="splide__slide"><img style="object-fit: contain; height: 500px; width: 500px"
-                                           src="http://placehold.it/360x150"></li>
-            <li style="display: flex; justify-content: center" class="splide__slide"><img style="object-fit: contain; height: 500px; width: 500px"
-                                           src="http://placehold.it/360x150"></li>
-            <li style="display: flex; justify-content: center" class="splide__slide"><img style="object-fit: contain; height: 500px; width: 500px"
-                                           src="http://placehold.it/360x150"></li>
-          </ul>
+      <div  style="width: 100%; border-radius: 50px" class="promo-container">
+        <div   style="width: 100%; height: 100%" class="splide">
+          <div  class="splide__track">
+            <ul class="splide__list">
+              <li style="  border-radius: 10px; width:100%; height:100%; display: flex; justify-content: center; align-items: center;" data-splide-interval="5000" class="splide__slide"><img style="object-fit: contain; height: auto; width: 100%"
+                                                                                                                                              src="https://source.unsplash.com/featured/1920x1080"></li>
+              <li style="  border-radius: 10px; width:100%; height:100%; display: flex; justify-content: center; align-items: center;" data-splide-interval="5000" class="splide__slide"><img style="object-fit: contain; height: auto; width: 100%"
+                                                                                                                                              src="https://source.unsplash.com/featured/1920x1080"></li>
+              <li style="  border-radius: 10px; width:100%; height:100%; display: flex; justify-content: center; align-items: center;" data-splide-interval="5000" class="splide__slide"><img style="object-fit: contain; height: auto; width: 100%"
+                                                                                                                                              src="https://source.unsplash.com/featured/1920x1080"></li>
+              <li style="  border-radius: 10px; width:100%; height:100%; display: flex; justify-content: center; align-items: center;" data-splide-interval="5000" class="splide__slide"><img style="object-fit: contain; height: auto; width: 100%"
+                                                                                                                                              src="https://place-hold.it/1920x1080"></li>
+            </ul>
+          </div>
+          <div class="splide__progress">
+            <div style="background: orange;" class="splide__progress__bar">
+            </div>
+          </div>
         </div>
-      </section>
+      </div>
+
 
 <!--      <h1 th:text="${categories}"></h1>-->
 
@@ -66,18 +73,21 @@
 
   <script type="text/javascript" th:src="@{/js/hamburger.js}"></script>
   <script type="text/javascript" th:src="@{/js/search.js}"></script>
+  <script type="text/javascript" th:src="@{/js/header.js}"></script>
   <script src=" https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js "></script>
+
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       const splide = new Splide('.splide',{
         type: 'loop',
         focus: 'center',
-        autoScroll: {
-          speed: 2
-        }
-
+        autoplay:'play',
+        center: true,
+        contain: true,
+        pagination: false
       });
       splide.mount();
+      // splide.on('autoplay:play')
     });
   </script>
 </body>

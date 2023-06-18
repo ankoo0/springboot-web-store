@@ -70,7 +70,7 @@ body{
     height: 200px;
     display: flex;
     flex-direction: row;
-    box-shadow: 0 0 14px 2px rgba(163,160,163,1);
+    box-shadow: 0 0 10px 6px rgb(225, 225, 225);
     opacity: 0;
     transform: translateY(50px);
     transition: opacity 0.5s ease, transform 0.5s ease;
@@ -91,13 +91,12 @@ body{
 .increment-btn {
     width: 20px;
     height: 20px;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border: none;
     border-radius: 100%;
     background: none;
-    /* text-align: center; */
-    /* display: inline-block; */
 }
 
 .decrement-btn {
@@ -151,7 +150,7 @@ body{
 
 .order-container {
     border-radius: 10px;
-    box-shadow: 0 0 14px 2px rgba(163,160,163,1);
+    box-shadow: 0 0 10px 6px rgb(225, 225, 225);
     width: 20%;
     padding: 20px;
     height: 300px;
