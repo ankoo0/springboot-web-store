@@ -16,11 +16,8 @@ import org.springframework.stereotype.Repository;
 public interface ProductRepository extends JpaRepository<Product,Long>,
         JpaSpecificationExecutor<Product> {
 
-
-
    Page<Product> findAll(Specification<Product> spec,
                                  Pageable pageable);
-
 
    @Query(value = "select count(id) from product where document @@ plainto_tsquery(?1) and subcategory_id=?2", nativeQuery = true)
    Long countAllBySubcategory(@Param("query") String query,@Param("subcategoryId")Long subcategoryId);

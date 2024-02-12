@@ -11,14 +11,6 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/admin")
 public class AdminController {
 
-    /*
-    Filter and sorting fixed
-    improved search bar
-    controller cleanup
-    price update
-
-     */
-
     private final ProductCategoryService categoryService;
 
     @Autowired
@@ -30,6 +22,7 @@ public class AdminController {
     public ModelAndView admin(){
         ModelAndView modelAndView = new ModelAndView("admin");
         modelAndView.addObject("categories", categoryService.getAllCategories());
+
         return modelAndView;
     }
 
@@ -37,6 +30,7 @@ public class AdminController {
     public ModelAndView addProduct(){
         ModelAndView modelAndView = new ModelAndView("add-product");
         modelAndView.addObject("categories", categoryService.getAllCategories());
+
         return modelAndView;
     }
 

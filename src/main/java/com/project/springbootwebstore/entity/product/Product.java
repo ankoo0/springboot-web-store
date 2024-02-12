@@ -1,40 +1,29 @@
 package com.project.springbootwebstore.entity.product;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.project.springbootwebstore.entity.users.Order;
+import com.project.springbootwebstore.entity.order.Order;
 import com.project.springbootwebstore.entity.users.Review;
 import org.hibernate.Hibernate;
-//import org.hibernate.Hibernate;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
-//@Indexed
-//@Table(name = "product")
 public class Product {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-
-
     private Long id;
     @Column(name = "product_name",nullable = false)
     private String name;
-    @Column(nullable = false)
-    private String shortDescription;
     @Column(nullable = false)
     private String fullDescription;
     @Column(nullable = false)
@@ -55,32 +44,20 @@ public class Product {
     private List<Review> reviews;
     @JoinColumn(name = "category_id")
     @ManyToOne
-    @JsonIgnore
     private ProductCategory category;
     @JoinColumn(name = "subcategory_id")
     @ManyToOne
-    @JsonIgnore
     private ProductSubcategory subcategory;
     @ManyToOne
-    @JsonIgnore
     private ProductDiscount discount;
     @ManyToMany
-    @JsonIgnore
     private List<Order> ordersWithProduct;
-   private Long quantityCart;
-
-    public Product(Long id, Long quantityCart) {
-        this.id = id;
-        this.quantityCart = quantityCart;
-    }
 
     public Product(Long id) {
         this.id = id;
     }
 
     public Product() {
-
-
     }
 
     public Long getId() {
@@ -97,14 +74,6 @@ public class Product {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getShortDescription() {
-        return shortDescription;
-    }
-
-    public void setShortDescription(String shortDescription) {
-        this.shortDescription = shortDescription;
     }
 
     public String getFullDescription() {
@@ -206,7 +175,6 @@ public class Product {
         return getClass().getSimpleName() + "(" +
                 "id = " + id + ", " +
                 "name = " + name + ", " +
-                "shortDescription = " + shortDescription + ", " +
                 "fullDescription = " + fullDescription + ", " +
                 "mainThumbnailPath = " + mainThumbnailPath + ", " +
                 "creationTime = " + creationTime + ", " +
@@ -215,13 +183,6 @@ public class Product {
                 "discount = " + discount + ")";
     }
 
-    public Long getQuantityCart() {
-        return quantityCart;
-    }
-
-    public void setQuantityCart(Long quantityCart) {
-        this.quantityCart = quantityCart;
-    }
 
 
     public Long getQuantity() {

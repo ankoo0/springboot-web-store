@@ -2,12 +2,25 @@ const search = document.querySelector(".search-input");
 const resetSearchBtn = document.querySelector('.close-search-btn')
 const searchBtn = document.querySelector(".search-btn");
 const searchModal = document.querySelector(".search-modal");
+const searchContainer = document.querySelector('.header-search-container')
 
 let typingTimer;                //timer identifier
 let doneTypingInterval = 500;  //time in ms (5 seconds)
 
 
+searchContainer.addEventListener('focusin', function() {
+    searchModal.style.display='flex'
+    searchModal.style.maxHeight = '500px';
 
+});
+
+searchContainer.addEventListener('focusout', function(e) {
+    const target = e.relatedTarget || document.activeElement;
+    if (!searchModal.contains(target)) {
+        searchModal.style.display = 'none';
+        searchModal.style.maxHeight = '0';
+    }
+});
 
 resetSearchBtn.addEventListener('click',(e)=>{
     e.preventDefault()
@@ -25,16 +38,6 @@ function collapseSearchModal(){
 
 
 
-// const onOutsideClick = (event) => {
-//     // const isClickInsideElement = searchModal.contains(event.target);
-//     if (!searchModal.contains(event.target)) {
-//         searchModal.style.visibility = 'hidden'
-//         searchModal.style.maxHeight = '0px'
-//         document.removeEventListener('click', onOutsideClick)
-//     }
-// }
-// document.addEventListener('click',onOutsideClick );
-//on keyup, start the countdown
 search.addEventListener('keyup', () => {
     clearTimeout(typingTimer);
 
@@ -131,7 +134,6 @@ function fillSearchPreview(productsJson) {
             <div class="search-product-title">
              <a href="/main/${product.category}/${product.subcategory}/${product.id}"><h3>${product.name}</h3></a>
             </div>
-               <p>${product.shortDescription}</p>
                <p>${product.price}</p>
             </div>
             </div>

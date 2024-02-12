@@ -1,28 +1,19 @@
 package com.project.springbootwebstore.controller;
 
-import com.project.springbootwebstore.dto.CartItem;
+import com.project.springbootwebstore.dto.AttributeResponse;
+import com.project.springbootwebstore.dto.FilterResponse;
 import com.project.springbootwebstore.dto.ProductToListViewDto;
 import com.project.springbootwebstore.dto.ProductToProductViewDto;
-import com.project.springbootwebstore.service.ProductAttributeService;
-import com.project.springbootwebstore.service.ProductCategoryService;
-import com.project.springbootwebstore.service.ProductService;
-import com.project.springbootwebstore.service.ProductSubcategoryService;
-import com.project.springbootwebstore.service.ReviewService;
-import com.project.springbootwebstore.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.project.springbootwebstore.service.*;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -31,10 +22,9 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/main")
+@RequiredArgsConstructor
 public class ProductsController {
 
-
-    //  question about dto null alues request dto
     /**
      * Fix Form and Sorting
      * Add Review modal
@@ -75,48 +65,26 @@ public class ProductsController {
     private final UserService userService;
     private final ReviewService reviewService;
 
-    @Autowired
-    public ProductsController(ProductService productService, ProductCategoryService categoryService, ProductSubcategoryService subcategoryService, ProductAttributeService attributeService, UserService userService, ReviewService reviewService) {
-        this.productService = productService;
-        this.categoryService = categoryService;
-        this.subcategoryService = subcategoryService;
-        this.attributeService = attributeService;
-        this.userService = userService;
-        this.reviewService = reviewService;
-    }
-
-
     @GetMapping("/all")
-    public ModelAndView allSearchResults(@RequestParam(name = "q", required = false) Optional<String> query, @RequestParam(name = "page", defaultValue = "1") int page) {
+    public ModelAndView allSearchResults(@RequestParam(name = "q", required = false) Optional<String> query, @RequestParam(name = "page", defaultValue = "1") int page, HttpServletRequest servletRequest) {
         ModelAndView modelAndView = new ModelAndView("products");
 
         Page<ProductToListViewDto> productPages = productService.search(query.orElse(""), PageRequest.of(page - 1, 2));
         List<ProductToListViewDto> products = productPages.getContent();
-
         modelAndView.addObject("query", query.orElse(""));
         modelAndView.addObject("currentPage", page);
         modelAndView.addObject("products", products);
         modelAndView.addObject("totalPages", productPages.getTotalPages());
         modelAndView.addObject("totalProducts", productPages.getTotalElements());
         modelAndView.addObject("categories", categoryService.getAllCategories());
+        modelAndView.addObject("contextPath",servletRequest.getContextPath());
         return modelAndView;
     }
 
-
-
-
-
-
-
     @PostMapping("/filter")
-    public @ResponseBody Map<String, List<String>> getFilter(@RequestBody String subcategory) {
+    public @ResponseBody List<AttributeResponse> getFilter(@RequestBody String subcategory) {
         return attributeService.getAttributesBySubcategory(subcategory);
     }
-
-
-
-
-
 
     @GetMapping
     public ModelAndView mainView() {
@@ -124,7 +92,6 @@ public class ProductsController {
         modelAndView.addObject("categories", categoryService.getAllCategories());
         return modelAndView;
     }
-
 
     @GetMapping("/{category}/{subcategory}")
     public ModelAndView subcategoryView(
@@ -134,15 +101,20 @@ public class ProductsController {
             @RequestParam(name = "q", required = false) String query,
             @RequestParam(name = "page") int page,
             @PathVariable(name = "category") String category,
-            @PathVariable(name = "subcategory") String subcategoryName
-    ) {
+            @PathVariable(name = "subcategory") String subcategoryName,
+            HttpServletRequest servletRequest    ) {
         Page<ProductToListViewDto> productPages;
 
         Map<String, String[]> map = params.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e2 -> e2.getValue().toArray(new String[0])));
+        map.entrySet().forEach(System.out::println);
         String parameters = getFilterParamsString(map);
         productPages = productService.getProductPages(map, subcategoryName);
         List<ProductToListViewDto> products = productPages.getContent();
+
         query = query == null ? "" : query;
+        int totalPages = productPages.getTotalPages();
+        int paginationStart = getPaginationStart(page);
+        int paginationEnd = getPaginationEnd(page,totalPages);
 
         ModelAndView mov = new ModelAndView("products");
         mov.addObject("parameters", parameters);
@@ -150,10 +122,15 @@ public class ProductsController {
         mov.addObject("order", order);
         mov.addObject("query", query);
         mov.addObject("currentPage", page);
+        mov.addObject("totalPages", totalPages);
         mov.addObject("products", products);
-        mov.addObject("totalPages", productPages.getTotalPages());
+        mov.addObject("subcategory", StringUtils.capitalize(subcategoryName));
+        mov.addObject("paginationStart", paginationStart);
+        mov.addObject("paginationEnd", paginationEnd);
         mov.addObject("totalProducts", productPages.getTotalElements());
         mov.addObject("categories", categoryService.getAllCategories());
+        mov.addObject("contextPath",servletRequest.getContextPath());
+
         return mov;
 
     }
@@ -170,15 +147,33 @@ public class ProductsController {
                 .collect(Collectors.joining("&"));
     }
 
+    private int getPaginationStart(int currentPage){
+        return switch (currentPage) {
+            case (1), (2) -> 1;
+            default -> currentPage - 2;
+        };
+
+    }
+
+    private int getPaginationEnd(int currentPage, int totalPages){
+        int result = totalPages-currentPage;
+        return switch (result) {
+            case (0), (1) -> totalPages;
+            default -> currentPage + 2;
+        };
+
+    }
 
     @GetMapping("/{category}/{subcategory}/{productId}")
-    public ModelAndView productView(@PathVariable(name = "category") String category, @PathVariable(name = "subcategory") String subcategory, @PathVariable(name = "productId") Long productId) {
+    public ModelAndView productView(@PathVariable(name = "category") String category, @PathVariable(name = "subcategory") String subcategory, @PathVariable(name = "productId") Long productId, HttpServletRequest servletRequest) {
         ProductToProductViewDto product = productService.getProductById(productId);
         Long productReviewsCount = reviewService.getProductReviewsCount(productId);
         ModelAndView mov = new ModelAndView("product-view");
         mov.addObject("product", product);
         mov.addObject("categories", categoryService.getAllCategories());
         mov.addObject("reviewCount", productReviewsCount);
+        mov.addObject("contextPath",servletRequest.getContextPath());
+
         return mov;
     }
 

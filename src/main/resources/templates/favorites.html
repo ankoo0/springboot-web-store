@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,1,0" />
 
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,12 +22,12 @@
 
 <body>
 
-<header th:replace="fragments/fragments.html :: header">
+<header th:replace="~{fragments/fragments.html :: header}">
 </header>
-<nav th:replace="fragments/fragments.html :: secondary-nav"></nav>
-<nav th:replace="fragments/fragments.html :: mobile-menu"></nav>
+<nav th:replace="~{fragments/fragments.html :: secondary-nav}"></nav>
+<nav th:replace="~{fragments/fragments.html :: mobile-menu}"></nav>
 
-<nav th:replace="fragments/fragments.html :: mobile-bottom-menu"></nav>
+<nav th:replace="~{fragments/fragments.html :: mobile-bottom-menu}"></nav>
 
 
 <main class="main-content">

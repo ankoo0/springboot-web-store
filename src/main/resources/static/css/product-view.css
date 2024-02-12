@@ -719,6 +719,10 @@ tr:hover {
     flex-direction: column;
 }
 
+.description-container > p{
+    text-align: justify;
+}
+
 @media screen and (min-width: 320px) and (max-width: 820px) {
     .description-container{
         padding: 0 10px;

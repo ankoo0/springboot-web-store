@@ -2,21 +2,18 @@ package com.project.springbootwebstore.service;
 
 import com.project.springbootwebstore.entity.product.ProductSubcategory;
 import com.project.springbootwebstore.repository.ProductSubcategoryRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ProductSubcategoryService {
 
+    private final ProductSubcategoryRepository subcategoryRepository;
 
-    ProductSubcategoryRepository subcategoryRepository;
-
-    @Autowired
-    public ProductSubcategoryService(ProductSubcategoryRepository subcategoryRepository) {
-        this.subcategoryRepository = subcategoryRepository;
-    }
 
     public List<ProductSubcategory> getAllSubcategories(){
         return subcategoryRepository.findAll();

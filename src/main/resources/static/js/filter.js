@@ -40,11 +40,6 @@ function decodeURL() {
     return map;
 }
 
-// function initFilterState() {
-//
-// }
-
-
 fetch('/main/filter', {
     method: 'post',
     headers: {
@@ -55,6 +50,7 @@ fetch('/main/filter', {
     // add query if present
 
 }).then(res => res.json()).then(res => {
+    // console.log(res)
 
     createFilter(res)
 
@@ -86,11 +82,11 @@ fetch('/main/filter', {
 
 function createFilter(attrJSON) {
     let filter = ``;
-    filter += `<h3>Apply filters:</h3>`
+    filter += `<div style="display: flex; flex-direction: row; justify-content: space-between"><h3>Apply filters:</h3> <span class="material-symbols-outlined">filter_alt</span></div>`
     const hiddenPagination = `<input name="page" value="1" class="checkbox" checked type="hidden"/>`
     filter += hiddenPagination
-    for (const attrName in attrJSON) {
-        filter += createAttributesContainer(attrJSON[attrName], attrName)
+    for (const attr in attrJSON) {
+        filter += createAttributesContainer(attrJSON[attr])
     }
 
     filter += createSubmitBtn()
@@ -101,15 +97,15 @@ function createSubmitBtn() {
     return `<button type="submit" class="submit-filter-btn">Find</button>`
 }
 
-function createAttributesContainer(checkboxesData, attrName) {
+function createAttributesContainer(attribute) {
     const attrContainer = document.createElement('div')
     attrContainer.classList.add('attr-container')
 
     const attributeValuesContainer = document.createElement('div')
     attributeValuesContainer.classList.add('attribute-values')
 
-    const header = createHeader(attrName, null)
-    const attributeValueSet = createAttributeValueSet(checkboxesData, attrName);
+    const header = createHeader(attribute)
+    const attributeValueSet = createAttributeValueSet(attribute);
 
     // if (attributeValueSet.length < 6) {
         attributeValuesContainer.innerHTML=attributeValueSet.join('');
@@ -132,8 +128,12 @@ function createAttributesContainer(checkboxesData, attrName) {
     return attrContainer.outerHTML
 }
 
-function createHeader(attrName, attrDescription) {
-    return `<div class="attribute-header"><h4>${attrName}</h4><div class="attribute-info-badge">?<div class="attribute-info">lorem ipsum dfgsjdfgeayfgdhscbvsdvhbsdfhsbfhshgfaagehfe</div></div></div>`
+function createHeader(attribute) {
+    console.log(attribute.data)
+    if (attribute.data.description===null){
+        return ``
+    }
+    return `<div class="attribute-header"><h4>${attribute.name}</h4><div class="attribute-info-badge">?<div class="attribute-info"><p>${attribute.data.description}</p></div></div></div>`
 }
 
 // function createExpandBtn(attrMenu, length) {
@@ -152,20 +152,22 @@ function createHeader(attrName, attrDescription) {
 //     return attrMenu.outerHTML
 // }
 
-function createAttributeValueSet(checkboxesData, attrName) {
+function createAttributeValueSet(attribute) {
 
     const checkboxes = [];
     let initMap = decodeURL()
 
-    for (let i = 0; i < checkboxesData.length; i++) {
+    const attributeData = attribute.data.values;
+
+    for (let i = 0; i < attributeData.length; i++) {
 
         let isChecked = false
 
-        if (typeof initMap !== "undefined" && initMap.hasOwnProperty(attrName)) {
-            initMap[attrName].find(e => e === checkboxesData[i]) ? isChecked = true : isChecked = false
+        if (typeof initMap !== "undefined" && initMap.hasOwnProperty(attribute.name)) {
+            initMap[attribute.name].find(e => e === attribute[i]) ? isChecked = true : isChecked = false
         }
         // incorrect id output
-        const checkbox = `<div class="check-container"><input name="${attrName}" value="${checkboxesData[i]}" class="filter-checkbox" id="${attrName + "-" + i}" type="checkbox" ${isChecked ? 'checked' : ''} /> <label for="${attrName}">${checkboxesData[i]}</label></div>`
+        const checkbox = `<div class="check-container"><input name="${attribute.name}" value="${attributeData[i]}" class="filter-checkbox" id="${attribute.name + "-" + i}" type="checkbox" ${isChecked ? 'checked' : ''} /> <label for="${attribute.name}">${attributeData[i]}</label></div>`
         checkboxes.push(checkbox)
     }
     return checkboxes;

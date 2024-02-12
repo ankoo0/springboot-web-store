@@ -4,18 +4,19 @@ import com.project.springbootwebstore.entity.product.Product;
 import com.project.springbootwebstore.entity.product.ProductAttribute;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import jakarta.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Predicate;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Predicate;
-import java.util.*;
-
-public class ProductSpecification {
+public final class ProductSpecification {
 
     // select all products with corresponding attribute names then select by values .where can contain varargs
 // attribute values may overlap so add name t
-//    public static Specification<Product> hasAttributesAndSubcategory(List<String> attributeValues, String subcategoryName) {
+//    public static Specification<Product> hasAttributesAndSubcategory(List<String> values, String subcategoryName) {
 //
 //        return (root, query, criteriaBuilder) -> {
 //
@@ -24,7 +25,7 @@ public class ProductSpecification {
 //            Join<Product, ProductAttribute> attribute = root.join("productAttributes");
 //            Join<Product, ProductSubcategory> subcategory = root.join("subcategory");
 //            List<Predicate> filterParams = new ArrayList<>();
-//            for (String val : attributeValues) {
+//            for (String val : values) {
 //                filterParams.add(criteriaBuilder.equal(attribute.get("attributeValue"), val));
 //            }
 //
@@ -34,19 +35,19 @@ public class ProductSpecification {
 //    }
 
 
-//    public static Specification<Product> hasAttributesAndSubcategory(Map<String, String[]> attributeValues, String subcategoryName) {
+//    public static Specification<Product> hasAttributesAndSubcategory(Map<String, String[]> values, String subcategoryName) {
 //
 //        return (root, query, cb) -> {
 //
 //            Join<Product, ProductAttribute> attribute1 = root.join("productAttributes", JoinType.INNER);
-//            Predicate p1 = cb.equal(attribute1.get("attributeName"),"Genre");
+//            Predicate p1 = cb.equal(attribute1.get("name"),"Genre");
 //            Predicate p2 = cb.equal(attribute1.get("attributeValue"),"Arcade");
 //            Predicate p3 = cb.equal(attribute1.get("attributeValue"),"Strategy");
 //            attribute1.on(cb.and(p1),cb.or(p2,p3));
 //
 //
 //            Join<Product, ProductAttribute> attribute2 = root.join("productAttributes");
-//            Predicate p11 = cb.equal(attribute2.get("attributeName"),"Year");
+//            Predicate p11 = cb.equal(attribute2.get("name"),"Year");
 //            Predicate p12 = cb.equal(attribute2.get("attributeValue"),"2020");
 //            Predicate p13 = cb.equal(attribute2.get("attributeValue"),"2022");
 //            attribute2.on(cb.and(p11),cb.or(p12,p13));
@@ -55,7 +56,7 @@ public class ProductSpecification {
 //
 ////            Join<Product, ProductSubcategory> subcategory = root.join("subcategory");
 ////            List<Predicate> filterParams = new ArrayList<>();
-////            for (String val : attributeValues) {
+////            for (String val : values) {
 ////                filterParams.add(cb.equal(attribute1.get("attributeValue"), val));
 ////            }
 //
@@ -65,30 +66,29 @@ public class ProductSpecification {
 //    }
 
 
+    private ProductSpecification() {
+    }
+
     public static Specification<Product> hasAttributes(Map<String, String[]> attributeValues) {
 
         return (root, query, cb) -> {
 
-            attributeValues.entrySet().forEach(e-> System.out.println(e.getKey() + "-" + e.getValue()));
-            System.out.println(attributeValues.size() + " ggggggggggggggggggggggggggggggggggg");
-
-
             for (Map.Entry<String,String[]> e : attributeValues.entrySet()) {
                 Join<Product, ProductAttribute> attribute1 = root.join("productAttributes", JoinType.INNER);
-                Predicate p1 = cb.equal(attribute1.get("attributeName"),e.getKey());
-                List<Predicate> or = Arrays.stream(e.getValue()).map(v -> cb.equal(attribute1.get("attributeValue"), v)).toList();
+                Predicate p1 = cb.equal(attribute1.get("name"),e.getKey());
+                List<Predicate> or = Arrays.stream(e.getValue()).map(v -> cb.equal(attribute1.get("value"), v)).toList();
                 attribute1.on(cb.and(p1),cb.or(or.toArray(new Predicate[0])));
             }
 
 //            Join<Product, ProductAttribute> attribute1 = root.join("productAttributes", JoinType.INNER);
-//            Predicate p1 = cb.equal(attribute1.get("attributeName"),"Genre");
+//            Predicate p1 = cb.equal(attribute1.get("name"),"Genre");
 //            Predicate p2 = cb.equal(attribute1.get("attributeValue"),"Arcade");
 //            Predicate p3 = cb.equal(attribute1.get("attributeValue"),"Strategy");
 //            attribute1.on(cb.and(p1),cb.or(p2,p3));
 //
 //
 //            Join<Product, ProductAttribute> attribute2 = root.join("productAttributes");
-//            Predicate p11 = cb.equal(attribute2.get("attributeName"),"Year");
+//            Predicate p11 = cb.equal(attribute2.get("name"),"Year");
 //            Predicate p12 = cb.equal(attribute2.get("attributeValue"),"2020");
 //            Predicate p13 = cb.equal(attribute2.get("attributeValue"),"2022");
 //            attribute2.on(cb.and(p11),cb.or(p12,p13));
@@ -97,7 +97,7 @@ public class ProductSpecification {
 
 //            Join<Product, ProductSubcategory> subcategory = root.join("subcategory");
 //            List<Predicate> filterParams = new ArrayList<>();
-//            for (String val : attributeValues) {
+//            for (String val : values) {
 //                filterParams.add(cb.equal(attribute1.get("attributeValue"), val));
 //            }
 

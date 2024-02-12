@@ -3,9 +3,9 @@ package com.project.springbootwebstore.repository;
 import com.project.springbootwebstore.entity.product.Product;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.*;
 import java.util.Collections;
 import java.util.List;
 
@@ -48,7 +48,7 @@ public class CustomProductRepository {
        List<Product> pe = em.createQuery("SELECT p FROM Product as p WHERE function('fts', " +  q +  ") = TRUE", Product.class).getResultList();
         System.out.println("fts: ");
 //        System.out.println(pe);
-        pe.forEach(product -> product.getProductAttributes().forEach(a-> System.out.println(a.getAttributeValue())));
+        pe.forEach(product -> product.getProductAttributes().forEach(a-> System.out.println(a.getValue())));
         System.out.println("qqqqqqqqqq");
 //        TypedQuery<Product> query = em.createQuery(cr);
         return Collections.emptyList();

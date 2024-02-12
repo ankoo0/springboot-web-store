@@ -5,7 +5,6 @@ import com.project.springbootwebstore.entity.product.Product;
 import com.project.springbootwebstore.entity.product.ProductAttribute;
 import com.project.springbootwebstore.entity.product.ProductImagePath;
 import org.springframework.stereotype.Component;
-
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -30,8 +29,8 @@ public final class ProductToProductViewDtoMapper implements Function<Product, Pr
                 product.getDiscount().getDiscountPercent(),
                 product.getProductAttributes()
                         .stream()
-                        .collect(Collectors.toMap(ProductAttribute::getAttributeName,
-                                ProductAttribute::getAttributeValue))
+                        .collect(Collectors.toMap(ProductAttribute::getName,
+                                ProductAttribute::getValue))
 
         );
     }

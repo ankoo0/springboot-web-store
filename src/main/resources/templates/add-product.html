@@ -1,22 +1,70 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,900;1,100&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css"  th:href="@{/css/fragments.css}">
+    <link rel="stylesheet" type="text/css"  th:href="@{/css/add-product.css}">
     <title>Add Product</title>
 </head>
-<body style="display: flex;  justify-content: center; align-items: center; height: 100%">
-<form  style="display: flex; flex-direction: column;  justify-content: center; align-items: center;" action="/admin/add-product" method="post" >
-<!--    add img inputs and form validation-->
-    <label for="title">Title</label>
-    <input id="title" class="product-input">
-    <label for="description">Description</label>
-    <input id="description" class="product-input">
-    <label for="price">Title</label>
-    <input id="price" class="product-input">
-    <label for="quantity">Quantity</label>
-    <input id="quantity" class="product-input">
-    <button type="submit">Add Product</button>
-</form>
+<body>
 
+<header th:replace="~{fragments/fragments.html :: header}">
+</header>
+<nav th:replace="~{fragments/fragments.html :: secondary-nav}"></nav>
+<nav th:replace="~{fragments/fragments.html :: mobile-menu}"></nav>
+
+<!--  <section th:replace="fragments/fragments.html :: mobile-search-modal"></section>-->
+
+<nav th:replace="~{fragments/fragments.html :: mobile-bottom-menu}"></nav>
+
+<section class="main-content">
+    <form  style="display: flex; flex-direction: column;  justify-content: center; align-items: center;" action="/admin/add-product" method="post" >
+        <!--    add img inputs and form validation-->
+        <label for="title">Title</label>
+        <input name="title" type="text" id="title" class="product-input">
+
+        <label for="description">Description</label>
+        <textarea name="description" style="resize: none" id="description" class="product-input"></textarea>
+        <label for="price">Price</label>
+        <input name="price" id="price" class="product-input">
+        <label for="quantity">Quantity</label>
+        <input name="quantity" id="quantity" class="product-input">
+        <select class="category-select">
+            <option th:value="${category.categoryName}" th:attr="data-id=${category.id}" th:each="category : ${categories}" th:text="${category.categoryName}"></option>
+        </select>
+        <div class="subcategory-container">
+            <select class="subcategory-select" th:attr="data-id=${category.id}" th:each="category : ${categories}">
+                <option th:value="${subcategory}" th:each="subcategory : ${category.subcategories}" th:text="${subcategory}"></option>
+            </select>
+        </div>
+
+        <input name="reviewImages" type="file" accept="image/*" id="image-input" multiple>
+        <div class="images-container"></div>
+        <button type="submit">Add Product</button>
+    </form>
+
+
+</section>
+
+<footer class="main-footer">
+
+</footer>
+
+<script type="text/javascript" th:src="@{/js/subcategory-select.js}"></script>
+<script type="text/javascript" th:src="@{/js/add-product.js}"></script>
+<script type="text/javascript" th:src="@{/js/hamburger.js}"></script>
+<script type="text/javascript" th:src="@{/js/search.js}"></script>
+<script type="text/javascript" th:src="@{/js/header.js}"></script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 package com.project.springbootwebstore.entity.users;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 public class ReviewImagePath {

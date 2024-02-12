@@ -133,3 +133,18 @@ body{
     transform: translateX(-100%);
     opacity: 0;
 }
+
+.product-link {
+    text-decoration: none;
+    color: #333333;
+
+}
+
+.product-link:hover > h3 {
+    color: orange;
+}
+.product-link > h3{
+    color: #4e5264;
+    cursor: pointer;
+    transition: all 0.3s;
+}

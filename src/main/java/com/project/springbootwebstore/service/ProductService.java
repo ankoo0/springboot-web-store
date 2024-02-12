@@ -1,11 +1,7 @@
 package com.project.springbootwebstore.service;
 
 
-import com.project.springbootwebstore.dto.CartItem;
-import com.project.springbootwebstore.dto.FavoriteItem;
-import com.project.springbootwebstore.dto.ProductSubcategoryDto;
-import com.project.springbootwebstore.dto.ProductToListViewDto;
-import com.project.springbootwebstore.dto.ProductToProductViewDto;
+import com.project.springbootwebstore.dto.*;
 import com.project.springbootwebstore.dto.mappers.ProductToListViewDtoMapper;
 import com.project.springbootwebstore.dto.mappers.ProductToProductViewDtoMapper;
 import com.project.springbootwebstore.entity.product.Product;
@@ -13,7 +9,7 @@ import com.project.springbootwebstore.entity.product.ProductSubcategory;
 import com.project.springbootwebstore.repository.CustomProductRepository;
 import com.project.springbootwebstore.repository.ProductRepository;
 import com.project.springbootwebstore.repository.specification.ProductSpecification;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +23,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ProductService {
 
     private final ProductRepository productRepository;
@@ -35,27 +32,17 @@ public class ProductService {
     private final ProductToListViewDtoMapper productToListViewDtoMapper;
     private final ProductToProductViewDtoMapper productToProductViewDtoMapper;
 
-    @Autowired
-    public ProductService(ProductRepository productRepository, CustomProductRepository customProductRepository, ProductSubcategoryService subcategoryService, ProductToListViewDtoMapper productToListViewDtoMapper, ProductToProductViewDtoMapper productToProductViewDtoMapper) {
-        this.productRepository = productRepository;
-        this.customProductRepository = customProductRepository;
-        this.subcategoryService = subcategoryService;
-        this.productToListViewDtoMapper = productToListViewDtoMapper;
-        this.productToProductViewDtoMapper = productToProductViewDtoMapper;
-    }
-
-
     public ProductToProductViewDto getProductById(Long id) {
         Product product = productRepository.findById(id).orElseThrow();
         return productToProductViewDtoMapper.apply(product);
     }
 
     public ProductToListViewDto getSingleCartProduct(CartItem item) {
-        Product product = productRepository.findById((long) item.getId()).orElseThrow();
+        Product product = productRepository.findById((long) item.id()).orElseThrow();
         Long discount = product.getDiscount().getDiscountPercent();
         Double price = product.getPrice();
         DecimalFormat df = new DecimalFormat("#.##");
-        Double actualPriceByQuantity = (discount > 0 ? Double.valueOf(price - ((price / 100) * discount)) : price) * item.getQuantity();
+        Double actualPriceByQuantity = (discount > 0 ? Double.valueOf(price - ((price / 100) * discount)) : price) * item.quantity();
         product.setPrice(Double.valueOf(df.format(actualPriceByQuantity)));
         return productToListViewDtoMapper.apply(product);
     }
@@ -63,6 +50,7 @@ public class ProductService {
 
     public ProductToListViewDto getSingleFavoriteProduct(FavoriteItem item) {
         Product product = productRepository.findById((long) item.getId()).orElseThrow();
+
         return productToListViewDtoMapper.apply(product);
     }
 
@@ -109,33 +97,34 @@ public class ProductService {
         boolean hasOrder = parameters.containsKey("order");
         boolean hasSorting = parameters.containsKey("sortBy");
         boolean hasQuery = parameters.containsKey("q");
-        boolean hasFilter = filter.size() > 0;
+        boolean hasFilter = !filter.isEmpty();
 
 
         if (hasFilter) {
             spec = ProductSpecification.hasAttributes(filter);
+
         }
         if (hasSorting) {
             String sortBy = parameters.get("sortBy")[0];
             String order = hasOrder ? parameters.get("order")[0] : "";
             sort = ProductSpecification.sort(sortBy, order);
+
         }
-
-
         if (hasQuery) {
             String query = parameters.get("q")[0];
             spec = spec.and(ProductSpecification.hasQueryy(query));
-        } else {
-            spec = spec.and(ProductSpecification.hasSubcategory(subcategoryName));
+
         }
+
+        spec = spec.and(ProductSpecification.hasSubcategory(subcategoryName));
+
 
         int page = Integer.parseInt(parameters.get("page")[0]);
         Pageable pageable = PageRequest.of(page - 1, 10, sort);
 
         Page<Product> productPage = productRepository.findAll(spec, pageable);
 
-        return productPage
-                .map(productToListViewDtoMapper);
+        return productPage.map(productToListViewDtoMapper);
     }
 
 
@@ -146,9 +135,13 @@ public class ProductService {
 
     public Double getProductCartPrice(CartItem cartItem) {
 
-        ProductToListViewDto product = productToListViewDtoMapper.apply(productRepository.findById(Long.valueOf(cartItem.getId())).get());
+        ProductToListViewDto product = productToListViewDtoMapper.apply(productRepository.findById((long) cartItem.id()).get());
 
         DecimalFormat df = new DecimalFormat("#.##");
-        return Double.valueOf(df.format(product.getPrice() * cartItem.getQuantity()));
+        return Double.valueOf(df.format(product.price() * cartItem.quantity()));
+    }
+
+    public List<Product> getAllProductsById(List<Long> productIds) {
+        return productRepository.findAllById(productIds);
     }
 }

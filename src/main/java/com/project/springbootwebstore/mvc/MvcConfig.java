@@ -1,4 +1,4 @@
-package com.project.springbootwebstore;
+package com.project.springbootwebstore.mvc;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -15,8 +15,5 @@ public class MvcConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/images/reviews/**")
                 .addResourceLocations("file:" + imageDirectory);
-//                .setCachePeriod(3600)
-//                .resourceChain(true)
-//                .addResolver(new PathResourceResolver());
     }
 }

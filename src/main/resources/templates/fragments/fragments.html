@@ -19,9 +19,9 @@
 
         </div>
         <div class="header-search-container">
-            <form class="header-search-form" method="post" action="">
+            <form class="header-search-form" method="get" action="/main/all">
 
-                <input class="search-input" type="text" placeholder="Search here...">
+                <input class="search-input" name="q" type="text" autocomplete="off" placeholder="Search here...">
                 <button class="close-search-btn">
                     <span class="material-symbols-outlined">close</span>
                 </button>
@@ -107,6 +107,7 @@
         <li class="mobile-category-item" th:each="category : ${categories}">
             <div class="mobile-category-main">
 <!--                <img th:src="|/images/categories/${category.categoryImage}|">-->
+                <div style="height: 30px; width: 30px" class="category-icon-container"><img style="width:100%; height:auto;"  th:src="|/images/categories/${category.categoryImage}|"></div>
                 <div th:text="${category.categoryName}"></div>
                 <span class="material-symbols-outlined">expand_more</span>
             </div>
@@ -202,7 +203,7 @@
             </fieldset>
             <input name="title" class="review-header" type="text"/>
             <textarea name="review" class="review-body"></textarea>
-            <input name="reviewImages" type="file" id="image-input" multiple>
+            <input name="reviewImages" type="file" id="image-input" accept="image/*" multiple>
             <div class="review-image-container"></div>
             <input name="productId" type="hidden" th:value="${product.Id}">
 

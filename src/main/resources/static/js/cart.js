@@ -4,24 +4,41 @@ initShoppingCart();
 
 
 function initShoppingCart() {
-    fetch('/cart/items', {
-        method: 'post',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(items)
-    }).then(res => res.json())
-        .then( res => {
-            alert(JSON.stringify(res));
-            createProductCarts(res)
-            createRemoveButtons();
-            createIncrementButtons()
-            createDecrementButtons()
-            cardsInitAnimation()
-            changeTotalPrice()
+    if (items.length===0){
+        const cartContainer = document.querySelector('.cart-container')
+        cartContainer.innerHTML=''
+        // cartContainer.style.justifyContent='center'
+        // cartContainer.style.alignItems='center'
+        // cartContainer.style.flexDirection='column'
+        const noCartItems = document.createElement('div')
+        const noItemsText = document.createElement('h3')
+        noItemsText.innerText='There is nothing in your cart ☹️'
+        noCartItems.appendChild(noItemsText)
+        cartContainer.appendChild(noCartItems)
 
-        });
+    }else {
+        fetch('/cart/items', {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(items)
+        }).then(res => res.json())
+            .then( res => {
+
+                // alert(JSON.stringify(res));
+                createProductCarts(res)
+                createRemoveButtons();
+                createIncrementButtons()
+                createDecrementButtons()
+                cardsInitAnimation()
+                changeTotalPrice()
+
+            });
+
+    }
+
 //src="data:image/png;base64,${json.img}
 }
 
@@ -42,10 +59,10 @@ function changeTotalPrice(){
         const priceText = price.textContent;
         const priceValue = parseFloat(priceText.replace('$', ''));
         totalSum += priceValue;
-        alert(totalSum)
+        // alert(totalSum)
     })
 
-    alert(document.querySelector('.total-pricing > h4').innerHTML)
+    // alert(document.querySelector('.total-pricing > h4').innerHTML)
     document.querySelector('.total-pricing > h4').innerHTML='Total: ' + parseFloat(totalSum).toFixed(2) + ' $'
 
 }
@@ -120,9 +137,9 @@ function createRemoveButtons() {
     const cards = document.querySelectorAll('.cart-item')
     const removeButtons = document.querySelectorAll(".delete-btn");
 
-    cards.forEach(card => {
-        card.style.transition = 'all 0.5s ease-in-out';
-    });
+    // cards.forEach(card => {
+    //     card.style.transition = 'all 0.5s ease-in-out';
+    // });
     removeButtons.forEach(button => {
         button.addEventListener("click", function () {
             const itemId = parseInt(button.dataset.itemid)
@@ -130,9 +147,7 @@ function createRemoveButtons() {
                 if (items[i].id === itemId) {
                     items.splice(i, 1)
                     window.localStorage.setItem("cart", JSON.stringify(items));
-
                     removeItem(itemId)
-
                 }
             }
         })
@@ -144,6 +159,7 @@ function removeItem(itemId){
     itemCard.classList.add('removing')
     itemCard.addEventListener('transitionend', () => {
         itemCard.remove();
+        changeTotalPrice()
     });
 }
 
@@ -151,6 +167,10 @@ function removeItem(itemId){
 function createProductCarts(productsJson) {
     for (let i = 0; i < productsJson.length; i++) {
         let product = productsJson[i];
+        const productId = product.id;
+        const subcategory = product.subcategory.toLowerCase();
+        const category = product.category.toLowerCase();
+        // alert(category + " " + subcategory)
         document.querySelector(".cart-items-container").insertAdjacentHTML('afterbegin',
             `
                         <div class="cart-item" id="${product.id}">
@@ -160,8 +180,8 @@ function createProductCarts(productsJson) {
                             </div>   
                              
                             <div class="product-info">
-                              <h3>${product.name} </h3>
-                              <p>${product.shortDescription}</p>
+                              <a class="product-link" href="main/${category}/${subcategory}/${productId}"><h3>${product.name}</h3></a>
+<!--                              <p>${product.shortDescription}</p>-->
                             </div>                 
                             
                             <div class="item-actions-container">
@@ -183,7 +203,10 @@ function createProductCarts(productsJson) {
                              </div>
                         </div>
                  `);
+
+
     }
+
 }
 
 function changeItemPrice(itemId){

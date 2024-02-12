@@ -1,7 +1,7 @@
 package com.project.springbootwebstore.dto;
 
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
 
 public class ProductSubcategoryDto {
     private final Long id;

@@ -1,29 +1,32 @@
 package com.project.springbootwebstore.entity.product;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "product_attribute")
 public class ProductAttribute {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String attributeName;
-    private String attributeValue;
+    @Column(name = "name")
+    private String name;
+    @Column(name = "value")
+    private String value;
     @Column(columnDefinition = "description text")
     private String description;
-
     @ManyToOne
     private Product product;
-
     @ManyToOne
     private ProductSubcategory productSubcategory;
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public Long getId() {
         return id;
@@ -33,20 +36,20 @@ public class ProductAttribute {
         this.id = id;
     }
 
-    public String getAttributeName() {
-        return attributeName;
+    public String getName() {
+        return name;
     }
 
-    public void setAttributeName(String attributeName) {
-        this.attributeName = attributeName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getAttributeValue() {
-        return attributeValue;
+    public String getValue() {
+        return value;
     }
 
-    public void setAttributeValue(String attributeValue) {
-        this.attributeValue = attributeValue;
+    public void setValue(String value) {
+        this.value = value;
     }
 
     public Product getProduct() {

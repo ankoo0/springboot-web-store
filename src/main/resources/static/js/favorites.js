@@ -1,35 +1,42 @@
 const items = JSON.parse(window.localStorage.getItem("favorites")) || [];
-
-
-
-    initFavorites();
-
-
+initFavorites();
 
 
 function initFavorites() {
-    alert(JSON.stringify(items))
-    fetch('/favorites', {
-        method: 'post',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(items)
-    }).then(res => res.json())
-        .then(function (res) {
-            alert(JSON.stringify(res))
-            createFavoriteCards(res)
-            createRemoveButtons();
+    // alert(JSON.stringify(items))
 
-            const favCards = document.querySelectorAll('.fav-item')
-            favCards.forEach((card, index) => {
-                setTimeout(() => {
-                    card.classList.add('show');
-                }, index * 100);
+    if (items === []) {
+        const noFavItems = document.createElement('div')
+        const noItemsText = document.createElement('h3')
+        noItemsText.innerText = 'There is nothing in favorites ☹️'
+        noFavItems.appendChild(noItemsText)
+        const favoritesSection = document.querySelector('.favorites-section')
+        favoritesSection.innerHTML = ''
+        favoritesSection.appendChild(noFavItems)
+    } else {
+        fetch('/favorites', {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(items)
+        }).then(res => res.json())
+            .then(function (res) {
+                // alert(JSON.stringify(res))
+
+                createFavoriteCards(res)
+                createRemoveButtons();
+
+                const favCards = document.querySelectorAll('.fav-item')
+                favCards.forEach((card, index) => {
+                    setTimeout(() => {
+                        card.classList.add('show');
+                    }, index * 100);
+                });
+
             });
-
-        });
+    }
 
 }
 
@@ -37,6 +44,10 @@ function initFavorites() {
 function createFavoriteCards(productsJson) {
     for (let i = 0; i < productsJson.length; i++) {
         let product = productsJson[i];
+
+        const productId = product.id;
+        const subcategory = product.subcategory.toLowerCase();
+        const category = product.category.toLowerCase();
         document.querySelector(".favorites-list").insertAdjacentHTML('afterbegin',
             `
                         <div class="fav-item" id="${product.id}">
@@ -46,8 +57,8 @@ function createFavoriteCards(productsJson) {
                             </div>   
                              
                             <div class="product-info">
-                              <h3>${product.name} </h3>
-                              <p>${product.shortDescription}</p>
+                                <a class="product-link" href="main/${category}/${subcategory}/${productId}"><h3>${product.name}</h3></a>
+<!--                              <p>${product.shortDescription}</p>-->
                             </div>                 
                             
                            
@@ -63,14 +74,8 @@ function createFavoriteCards(productsJson) {
                              </div>
                         </div>
                  `);
-
-
-
-
-
     }
 }
-
 
 
 function createRemoveButtons() {

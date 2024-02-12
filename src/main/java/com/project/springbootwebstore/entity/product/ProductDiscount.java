@@ -1,7 +1,7 @@
 package com.project.springbootwebstore.entity.product;
 
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.List;
 
 @Entity

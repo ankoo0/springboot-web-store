@@ -1,0 +1,73 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 100%;
+    /* overflow: overlay; */
+}
+
+
+.main-footer {
+    width: 100%;
+    background-color: #333;
+    margin-top: auto;
+    height: 6vh;
+    min-height: 60px;
+    flex: 0 1 auto;
+}
+
+.main-content {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    flex: 1 1 auto;
+}
+
+.order-details{
+    width: 70%;
+}
+
+.field {
+    padding: 5px;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid gray;
+    color: #333;
+}
+
+.field:focus {
+    border: 1px solid orange;
+}
+
+.details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+    padding: 10px;
+    border: 1px solid gray;
+    border-radius: 10px;
+}
+
+textarea.field{
+    resize: vertical;
+}
+
+.delivery-date{
+    display: flex;
+    flex-direction: row;
+}
+
+
+

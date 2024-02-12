@@ -22,12 +22,12 @@
 
 <body>
 
-<header th:replace="fragments/fragments.html :: header">
+<header th:replace="~{fragments/fragments.html :: header}">
 </header>
-<nav th:replace="fragments/fragments.html :: secondary-nav"></nav>
-<nav th:replace="fragments/fragments.html :: mobile-menu"></nav>
+<nav th:replace="~{fragments/fragments.html :: secondary-nav}"></nav>
+<nav th:replace="~{fragments/fragments.html :: mobile-menu}"></nav>
 
-<nav th:replace="fragments/fragments.html :: mobile-bottom-menu"></nav>
+<nav th:replace="~{fragments/fragments.html :: mobile-bottom-menu}"></nav>
 
 
 <main class="main-content">
@@ -41,9 +41,7 @@
           <div class="action-img-container">
             <img th:src="@{/images/account/manage_account.svg}"/>
           </div>
-          <p>
-            Personal Info
-          </p>
+          <p>Personal Info</p>
         </a>
       </div>
 
@@ -52,9 +50,7 @@
             <div class="action-img-container">
               <img th:src="@{/images/account/balance_wallet.svg}"/>
             </div>
-            <p>
-              Balance
-            </p>
+            <p>Balance</p>
           </a>
       </div>
 
@@ -63,9 +59,7 @@
           <div class="action-img-container">
             <img th:src="@{/images/account/promo.svg}"/>
           </div>
-          <p>
-            Promocodes
-          </p>
+          <p>Promo-codes</p>
         </a>
       </div>
 
@@ -74,9 +68,7 @@
           <div class="action-img-container">
             <img th:src="@{/images/account/orders.svg}"/>
           </div>
-          <p>
-            Orders
-          </p>
+          <p>Orders</p>
         </a>
       </div>
 
@@ -85,9 +77,7 @@
           <div class="action-img-container">
             <img th:src="@{/images/account/password.svg}"/>
           </div>
-          <p>
-            Change Password
-          </p>
+          <p>Security</p>
         </a>
       </div>
 
@@ -96,9 +86,7 @@
           <div class="action-img-container">
             <img th:src="@{/images/account/signout.svg}"/>
           </div>
-          <p>
-            Sign-Out
-          </p>
+          <p>Sign-Out</p>
         </a>
       </div>
 

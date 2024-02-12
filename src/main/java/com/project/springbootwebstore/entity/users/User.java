@@ -3,9 +3,10 @@ package com.project.springbootwebstore.entity.users;
 
 //import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import com.project.springbootwebstore.entity.order.Order;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 

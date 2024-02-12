@@ -7,6 +7,7 @@ import com.project.springbootwebstore.entity.users.Review;
 import com.project.springbootwebstore.repository.ProductRepository;
 import com.project.springbootwebstore.repository.ReviewRepository;
 import com.project.springbootwebstore.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,7 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
+@RequiredArgsConstructor
 public class ReviewService {
 
     @Value("${review.image.directory}")
@@ -31,19 +33,6 @@ public class ReviewService {
     private final UserRepository userRepository;
     private final ReviewImagePathService imagePathService;
     private final ProductRepository productRepository;
-
-    @Autowired
-    public ReviewService(ReviewRepository reviewRepository, ReviewDtoMapper reviewDtoMapper, UserRepository userRepository, ReviewImagePathService imagePathService, ProductRepository productRepository) {
-        this.reviewRepository = reviewRepository;
-        this.reviewDtoMapper = reviewDtoMapper;
-        this.userRepository = userRepository;
-        this.imagePathService = imagePathService;
-        this.productRepository = productRepository;
-    }
-
-
-
-
 
     public Page<ReviewDto> getAllReviewsForProduct(Long productId,String page){
         final int REVIEW_PAGE_SIZE = 2;

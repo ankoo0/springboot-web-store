@@ -6,16 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!--    <link rel="stylesheet"-->
-<!--          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"/>-->
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,1,0"/>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,900;1,100&display=swap"
           rel="stylesheet">
-
     <link rel="stylesheet" type="text/css" th:href="@{/css/products.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/fragments.css}">
 
@@ -25,46 +21,60 @@
 
 <body>
 
-<header th:replace="fragments/fragments.html :: header">
+<header th:replace="~{fragments/fragments.html :: header}">
 </header>
-<nav th:replace="fragments/fragments.html :: secondary-nav"></nav>
-<nav th:replace="fragments/fragments.html :: mobile-menu"></nav>
-<nav th:replace="fragments/fragments.html :: mobile-bottom-menu"></nav>
-<div th:replace="fragments/fragments.html :: overlay-blurred"></div>
+<nav th:replace="~{fragments/fragments.html :: secondary-nav}"></nav>
+<nav th:replace="~{fragments/fragments.html :: mobile-menu}"></nav>
+<nav th:replace="~{fragments/fragments.html :: mobile-bottom-menu}"></nav>
+<div th:replace="~{fragments/fragments.html :: overlay-blurred}"></div>
 
 <main class="main-content">
+    <section class="product-list-header">
+        <h2 th:text="${subcategory}"></h2>
+    </section>
     <section class="products-view-content">
         <section class="product-filtering">
 
             <form class="filtering-form" method="get"
-                  th:action="${#httpServletRequest.getRequestURL().toString()} + '?page=1'">
+                  th:action="${contextPath} + '?page=1'">
             </form>
 
         </section>
         <section class="products-content">
             <div class="product-view-preferences">
-                <h1 th:text="${products.size}"></h1>
-
+                <h1 th:text="${products.size()}"></h1>
                 <div th:with="ampersand=${parameters.equals('')? '' : '&'}" class="sorting-container">
-                    <h1 th:text="${parameters}"></h1>
-                    <span class="material-symbols-outlined">sync_alt</span>By Relevance
-                    <div  class="sorting-parameters">
 
-                        <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()},
-                        query=${query==''} ? ''  : ${'&q=' +query},  parameters=${parameters==''} ? ''  : ${'&' + parameters} "
-                           th:href="${#httpServletRequest.getRequestURL().toString() + '?' + 'page=' + currentPage + query +  '&sortBy=relevance' + ampersand + parameters}">By
+                    <span class="material-symbols-outlined">sync_alt</span>
+                    <p class="current-sorting" th:text="${sortBy == null || order == null ? 'By Rating' : ''}"></p>
+                    <th:block th:if="${sortBy != null}">
+
+                        <p class="current-sorting" th:if="${sortBy.equals('rating')}" th:text="${'By Rating'}"></p>
+                        <p class="current-sorting" th:if="${sortBy.equals('relevance')}"
+                           th:text="${'By Relevance'}"></p>
+                        <p class="current-sorting" th:if="${sortBy.equals('arrivals')}" th:text="${'New Arrivals'}"></p>
+                        <p class="current-sorting" th:if="${sortBy.equals('price') && order.equals('desc')}"
+                           th:text="${'By Price (high-low)'}"></p>
+                        <p class="current-sorting" th:if="${sortBy.equals('price') && order.equals('asc')}"
+                           th:text="${'By Price (low-high)'}"></p>
+                    </th:block>
+
+                    <div class="sorting-parameters">
+
+                        <a th:with="query=${query==''} ? ''  : ${'&q=' +query},  parameters=${parameters==''} ? ''  : ${'&' + parameters} "
+                           th:href="${contextPath + '?' + 'page=' + currentPage + query +  '&sortBy=relevance' + ampersand + parameters}">By
                             Relevance</a>
-                        <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
-                           th:href="${#httpServletRequest.getRequestURL().toString() + '?' + 'page=' + currentPage + query + '&sortBy=price&order=asc' + ampersand + parameters}">By
+                        <a
+                           th:href="${contextPath + '?' + 'page=' + currentPage + query + '&sortBy=price&order=asc' + ampersand + parameters}">By
                             Price (low-high)</a>
-                        <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
-                           th:href="${#httpServletRequest.getRequestURL().toString() + '?' + 'page=' + currentPage + query + '&sortBy=price&order=desc' + ampersand + parameters}">By
+                        <a
+                           th:href="${contextPath + '?' + 'page=' + currentPage + query + '&sortBy=price&order=desc' + ampersand + parameters}">By
                             Price (high-low)</a>
-                        <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
-                           th:href="${#httpServletRequest.getRequestURL().toString() + '?' + 'page=' + currentPage + query + '&sortBy=rating' + ampersand + parameters}">By
+                        <a
+                           th:href="${contextPath + '?' + 'page=' + currentPage + query + '&sortBy=rating' + ampersand + parameters}">By
                             Rating</a>
-                        <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
-                           th:href="${#httpServletRequest.getRequestURL().toString() + '?' + 'page=' + currentPage + query + '&sortBy=arrivals' + ampersand + parameters}">New
+                        <a
+                           th:href="${contextPath + '?' + 'page=' + currentPage + query + '&sortBy=arrivals' + ampersand + parameters}">New
                             Arrivals</a>
                     </div>
                 </div>
@@ -73,9 +83,10 @@
 
 
             <section class="products-list">
-                <div class="product-card" th:if="${products.size>0}" th:each="product : ${products}">
+                <div class="product-card" th:if="${products.size()>0}" th:each="product : ${products}">
 
-                    <div th:if="${product.discount>0}" class="discount-badge"><span class="material-symbols-outlined">local_fire_department</span><p th:text="'-' + ${product.discount} + '%'"></p></div>
+                    <div th:if="${product.discount>0}" class="discount-badge"><span class="material-symbols-outlined">local_fire_department</span>
+                        <p th:text="'-' + ${product.discount} + '%'"></p></div>
                     <div class="product-img-container">
                         <img class="product-card-img" th:src="@{|/images/${product.mainThumbnailPath}|}">
                     </div>
@@ -97,57 +108,57 @@
                             <div th:if="${product.quantity==0}" class="status-none">Out of stock</div>
                         </div>
 
-                        <div th:with="math=${T(java.lang.Math)},whole=${math.floor(product.rating)}, remainder=${product.rating - whole}" style="display:flex; flex-direction:row;" class="product-rating">
-                            <!--                        th:with="fullRating=${(int)product.rating/}"-->
-                            <!--                        <h3 th:text="${product.rating + ' ' +whole + ' ' + remainder}"></h3>-->
-                            <div class="rating-container" style=" width: 20px; height: 20px;" th:each="i : ${#numbers.sequence(1,5)}">
+                        <div th:with="math=${T(java.lang.Math)},whole=${math.floor(product.rating)}, remainder=${product.rating - whole}"
+                             style="display:flex; flex-direction:row;" class="product-rating">
+                            <div class="rating-container" style=" width: 20px; height: 20px;"
+                                 th:each="i : ${#numbers.sequence(1,5)}">
 
-                                <img th:if="${i<=whole}" style=" display:block; filter: invert(80%) sepia(47%) saturate(2884%) hue-rotate(0deg) brightness(109%) contrast(107%); height: auto; width: 100%" src="/ui/rating/star_full.svg"/>
-                                <img th:if="${i - whole ==1 && remainder>0 }" style=" display:block; filter: invert(80%) sepia(47%) saturate(2884%) hue-rotate(0deg) brightness(109%) contrast(107%); height: auto; width: 100%" src="/ui/rating/star_half.svg"/>
-                                <img th:if="${(i - whole ==1) && !(remainder>0) }" style=" display:block; filter: invert(80%) sepia(47%) saturate(2884%) hue-rotate(0deg) brightness(109%) contrast(107%); height: auto; width: 100%" src="/ui/rating/star_empty.svg"/>
-                                <img th:if="${i - whole>1}" style=" display:block; filter: invert(80%) sepia(47%) saturate(2884%) hue-rotate(0deg) brightness(109%) contrast(107%); height: auto; width: 100%" src="/ui/rating/star_empty.svg"/>
-                                <!--                            <img style=" display:block; filter: invert(80%) sepia(47%) saturate(2884%) hue-rotate(0deg) brightness(109%) contrast(107%); height: auto; width: 100%" src="/ui/rating/star_half.svg"/>-->
+                                <img th:if="${i<=whole}"
+                                     style=" display:block; filter: invert(80%) sepia(47%) saturate(2884%) hue-rotate(0deg) brightness(109%) contrast(107%); height: auto; width: 100%"
+                                     src="/ui/rating/star_full.svg"/>
+                                <img th:if="${i - whole ==1 && remainder>0 }"
+                                     style=" display:block; filter: invert(80%) sepia(47%) saturate(2884%) hue-rotate(0deg) brightness(109%) contrast(107%); height: auto; width: 100%"
+                                     src="/ui/rating/star_half.svg"/>
+                                <img th:if="${(i - whole ==1) && !(remainder>0) }"
+                                     style=" display:block; filter: invert(80%) sepia(47%) saturate(2884%) hue-rotate(0deg) brightness(109%) contrast(107%); height: auto; width: 100%"
+                                     src="/ui/rating/star_empty.svg"/>
+                                <img th:if="${i - whole>1}"
+                                     style=" display:block; filter: invert(80%) sepia(47%) saturate(2884%) hue-rotate(0deg) brightness(109%) contrast(107%); height: auto; width: 100%"
+                                     src="/ui/rating/star_empty.svg"/>
 
                             </div>
                             <span th:text="${product.rating}"></span>
                         </div>
-                        <!--th:text="${#numbers.formatDecimal(${discountPrice},1,3)}"-->
-                        <!--                    <p th:text="${product.shortDescription}"/>-->
-                        <div class="attributes">
 
-                            <div class="attribute-entry"   th:each="attribute,iStat : ${product.productAttributes}">
+                        <div class="attributes">
+                            <div class="attribute-entry" th:each="attribute,iStat : ${product.productAttributes}">
                                 <p th:if="${iStat.index <3}" th:text="${attribute.key}"></p>
                                 <p th:if="${iStat.index <3}" th:text="${attribute.value}"></p>
                             </div>
                         </div>
 
-                        <!--                    <h3 style="text-decoration: line-through" th:text="${product.price}+' $'"/>-->
-
-
-
-                        <!--          <a class="product-details-btn" th:href="@{|${#strings.toLowerCase(product.category.categoryName)}/${#strings.toLowerCase(product.subcategory.subcategoryName)}/${product.id}|}"  th:text="Description"/>-->
-                        <!--          <a class="product-details-btn" th:href="@{|${product.id}|}"  th:text="Description"/>  this is only /main/electronics/2 no subcategory-->
-                        <!--          <a class="product-details-btn" th:href="@{|/${product.id}|}"  th:text="Description"/>-->
-                        <!--          <a class="product-details-btn" th:href="@{|${#strings.toLowerCase(product.subcategory.subcategoryName)}/${product.id}|}"  th:text="Description"/>-->
                     </div>
 
                     <div class="product-actions">
-                        <h2 th:class="${product.discount} >0 ? 'price discount' : 'price'" th:text="${#numbers.formatDecimal(product.price,1,2)} + '$'"></h2>
-                        <button th:attr="data-id=${product.id},data-quantity=0" class="add-to-cart-btn">Add to cart</button>
+                        <h2 th:class="${product.discount} >0 ? 'price discount' : 'price'"
+                            th:text="${#numbers.formatDecimal(product.price,1,2)} + '$'"></h2>
+                        <button th:attr="data-id=${product.id},data-quantity=0" class="add-to-cart-btn">Add to cart
+                        </button>
                         <div class="secondary-actions">
                             <button th:attr="data-id=${product.id}" class="add-to-favorites-btn"><span
                                     class="material-symbols-outlined">favorite</span></button>
                             <button th:attr="data-id=${product.id}" class="add-to-comparison-btn"><span
                                     class="material-symbols-outlined">bar_chart</span></button>
                         </div>
-
                     </div>
+
                 </div>
 
             </section>
 
-            <div th:if="${products.size==0}"><h2>Sorry, but nothing matched your search terms. Please, try again with
-                some different keywords</h2></div>
+            <div th:if="${products.size()==0}">
+                <h2>Sorry, but nothing matched your search terms. Please, try again with some different keywords</h2>
+            </div>
 
 
         </section>
@@ -155,23 +166,32 @@
 
     <nav class="pagination" th:if="${totalPages>1}">
         <ul>
-            <li class="pagination-item"  th:with="parameters=${parameters==''} ? ''  : ${parameters}" th:if="${currentPage!=1}"><a th:with="prevPage=${currentPage}-${1}"
-                                                                     th:href="@{|?page=${prevPage}|}">&lt;</a></li>
+            <li class="pagination-item" th:with="parameters=${parameters==''} ? ''  : ${parameters}"
+                th:if="${currentPage!=1}">
+                <a th:with="prevPage=${currentPage}-${1}"
+                   th:href="@{|?page=${prevPage}|}">&lt;
+                </a>
+            </li>
 
-            <li th:each="i : ${#numbers.sequence(1,totalPages)}"
-                th:class="${currentPage == i} ? 'pagination-item active' : 'pagination-item'"><a
-                    th:with="query=${query==''} ? ''  : ${'&q=' +query},
+            <li th:each="i : ${#numbers.sequence(paginationStart,paginationEnd)}"
+                th:class="${currentPage == i} ? 'pagination-item active' : 'pagination-item'">
+                <a th:with="query=${query==''} ? ''  : ${'&q=' +query},
                     parameters=${parameters==''} ? ''  : ${'&' + parameters},
                     nextPage=${'page=' +i},
                     sortBy=${sortBy==null ? '' : '&sortBy='+sortBy},order=${order==null ? '' : '&order='+order},
-                    url=${#httpServletRequest.requestURI + '?' + nextPage + query + sortBy  + order + parameters}"
-                    th:href="${url}" th:text="${i}"></a></li>
+                    url=${contextPath + '?' + nextPage + query + sortBy  + order + parameters}"
+                   th:href="${url}" th:text="${i}">
+                </a>
+            </li>
 
-            <li class="pagination-item" th:if="${currentPage!=totalPages}"><a
-                    th:with="nextPage=${'page=' +(currentPage+1)}, sortBy=${sortBy==null ? '' : '&sortBy='+sortBy},order=${order==null ? '' : '&order='+order}, url=${#httpServletRequest.requestURI + '?' + nextPage + sortBy  + order}"
-                    th:href="${url}">&gt;</a></li>
-
-            <!--        <li class="pagination-item" th:if="${currentPage!=totalPages}"><a th:with="nextPage=${currentPage+1},url=${#request.getRequestURL()+'?'+#request.getQueryString()},urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromHttpUrl(url.toString()).replaceQueryParam('page',nextPage).toUriString()}"  th:text="${urlBuilder}" th:href="@{${urlBuilder}}">&gt;</a></li>-->
+            <li class="pagination-item" th:if="${currentPage!=totalPages}">
+                <a th:with="nextPage=${'page=' +(currentPage+1)},
+                    sortBy=${sortBy==null ? '' : '&sortBy='+sortBy},
+                    order=${order==null ? '' : '&order='+order},
+                    url=${contextPath + '?' + nextPage + sortBy  + order}"
+                   th:href="${url}">&gt;
+                </a>
+            </li>
         </ul>
     </nav>
 

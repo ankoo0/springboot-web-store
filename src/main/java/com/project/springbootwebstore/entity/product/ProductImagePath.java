@@ -1,6 +1,6 @@
 package com.project.springbootwebstore.entity.product;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 public class ProductImagePath {

@@ -1,6 +1,5 @@
 package com.project.springbootwebstore.service;
 
-//import com.project.springbootwebstore.model.entity.users.Role;
 import com.project.springbootwebstore.entity.users.User;
 import com.project.springbootwebstore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

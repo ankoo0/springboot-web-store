@@ -6,8 +6,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-@Controller
+@Controller("/account")
 public class AccountController {
+
+    // TODO: Validation, Package Refactoring, CSS and Template Refactoring, Delete Comments, Reuse Constants and Code
 
     private final ProductCategoryService categoryService;
 
@@ -16,10 +18,19 @@ public class AccountController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping(value = "/account")
+    @GetMapping
     public ModelAndView accountView() {
         ModelAndView modelAndView = new ModelAndView("account");
         modelAndView.addObject("categories", categoryService.getAllCategories());
+
         return modelAndView;
+    }
+
+    @GetMapping("/orders")
+    public ModelAndView userOrdersView(){
+        ModelAndView modelAndView = new ModelAndView("account");
+        modelAndView.addObject("categories", categoryService.getAllCategories());
+
+        return null;
     }
 }

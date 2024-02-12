@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,1,0" />
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,900;1,100&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css"  th:href="@{/css/order.css}">
+    <link rel="stylesheet" type="text/css"  th:href="@{/css/fragments.css}">
+
+    <title>Order</title>
+</head>
+<body>
+
+<header th:replace="fragments/fragments.html :: header">
+</header>
+<nav th:replace="~{fragments/fragments.html :: secondary-nav}"></nav>
+<nav th:replace="~{fragments/fragments.html :: mobile-menu}"></nav>
+<nav th:replace="~{fragments/fragments.html :: mobile-bottom-menu}"></nav>
+
+
+<main class="main-content">
+    <section class="order-details">
+        <form class="order-form" action="/order" method="post">
+            <fieldset class="customer details">
+                <legend>1. Enter your personal info</legend>
+                <input class="field" type="text" name="firstName" placeholder="First Name">
+                <input class="field" type="text" name="lastName" placeholder="Last Name">
+                <input class="field" type="text" name="email" placeholder="E-Mail">
+                <input class="field" type="text" name="phone" placeholder="Phone Number">
+            </fieldset>
+
+            <fieldset class="delivery details">
+                <legend>2. Fill delivery details</legend>
+                <input class="field" type="text" name="city" placeholder="City">
+                <input class="field" type="text" name="street" placeholder="Street">
+                <input class="field" type="text" name="building" placeholder="Building">
+                <input class="field" type="text" name="apartmentNo" placeholder="Apartment">
+                <div class="delivery-date">
+                    <label for="date">Delivery date</label>
+                    <input id="date" class="field" type="date" name="date" >
+                </div>
+
+            </fieldset>
+
+            <fieldset class="info details">
+                <legend>3. Order additional info</legend>
+                <textarea class="field" name="info"></textarea>
+            </fieldset>
+
+            <div class="">
+
+            </div>
+            <button class="send-order-btn">Submit</button>
+        </form>
+
+    </section>
+</main>
+
+
+
+
+<!--<footer class="main-footer">-->
+
+<!--</footer>-->
+
+<script type="text/javascript" th:src="@{/js/hamburger.js}"></script>
+<script type="text/javascript" th:src="@{/js/header.js}"></script>
+<script type="text/javascript" th:src="@{/js/order.js}"></script>
+
+</body>
+</html>

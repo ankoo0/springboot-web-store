@@ -22,14 +22,14 @@
 
 <body>
 
-<header th:replace="fragments/fragments.html :: header">
+<header th:replace="~{fragments/fragments.html :: header}">
 </header>
-<nav th:replace="fragments/fragments.html :: secondary-nav"></nav>
-<nav th:replace="fragments/fragments.html :: mobile-menu"></nav>
+<nav th:replace="~{fragments/fragments.html :: secondary-nav}"></nav>
+<nav th:replace="~{fragments/fragments.html :: mobile-menu}"></nav>
 
-<section th:replace="fragments/fragments.html :: mobile-search-modal"></section>
+<section th:replace="~{fragments/fragments.html :: mobile-search-modal}"></section>
 
-<nav th:replace="fragments/fragments.html :: mobile-bottom-menu"></nav>
+<nav th:replace="~{fragments/fragments.html :: mobile-bottom-menu}"></nav>
 
 
 <main class="main-content">

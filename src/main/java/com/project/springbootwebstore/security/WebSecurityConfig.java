@@ -12,9 +12,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Configuration
@@ -26,17 +26,17 @@ public class WebSecurityConfig {
         return http
                 .csrf().disable().cors().
                 and()
-                .authorizeRequests().antMatchers(
+                .authorizeRequests().requestMatchers(
                         "/css/**",
                         "/js/**",
                         "/images/**",
                         "/main/filter/**"
                 ).permitAll()
                 .and()
-                .authorizeRequests().antMatchers(
-                        "/main/account/**",
-                        "/main/cart/**",
-                        "/main/favorites/**",
+                .authorizeRequests().requestMatchers(
+                        "/account/**",
+                        "/cart/**",
+                        "/favorites/**",
                         "/admin/**"
                 ).authenticated()
                 .and()
@@ -58,6 +58,8 @@ public class WebSecurityConfig {
         @Override
         public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
             String referer = request.getHeader("Referer");
+            System.out.println(request.getHeader("Referer"));
+            System.out.println("gggggggggggggggggggggg");
             if (referer != null) {
                 getRedirectStrategy().sendRedirect(request, response, referer);
             } else {
