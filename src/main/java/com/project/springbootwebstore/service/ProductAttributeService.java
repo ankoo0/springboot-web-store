@@ -22,16 +22,13 @@ public class ProductAttributeService {
 
 
     public List<AttributeResponse> getAttributesBySubcategory(String subcategoryName){
-        ///dfgh
-        subcategoryName = subcategoryName.substring(0, 1).toUpperCase() + subcategoryName.substring(1);
-        List<ProductAttribute> result = attributeRepository.findAllByProductSubcategorySubcategoryName(subcategoryName);
-        System.out.println(result);
-//        new FilterResponse()
 
+        subcategoryName = subcategoryName.substring(0, 1).toUpperCase() + subcategoryName.substring(1);
+        List<ProductAttribute> result = attributeRepository.findDistinctByProductSubcategorySubcategoryName(subcategoryName);
         List<AttributeResponse> attributeResponses = result.stream()
                 .map(p->new AttributeResponse(
                         p.getName(),
-                        new AttributeData(p.getDescription(), result.stream().filter(e->e.getName().equals(p.getName())).map(ProductAttribute::getValue).distinct().toList())
+                        new AttributeData("", result.stream().filter(e->e.getName().equals(p.getName())).map(ProductAttribute::getValue).distinct().toList())
                         )
                 ).distinct()
                 .toList();
@@ -39,12 +36,12 @@ public class ProductAttributeService {
 
         attributeResponses.forEach(System.out::println);
 
-        Map<String, List<String>> distinctAttributes = result.stream()
-               .collect(Collectors.groupingBy(ProductAttribute::getName,
-                        Collectors.mapping(ProductAttribute::getName, Collectors.toList())));
-//        distinctAttributes.entrySet().forEach(System.out::println);
-        distinctAttributes = distinctAttributes.entrySet().stream().map(e->Map.entry(e.getKey(),e.getValue().stream().distinct().toList())).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-//        distinctAttributes.entrySet().forEach(System.out::println);
+//        Map<String, List<String>> distinctAttributes = result.stream()
+//               .collect(Collectors.groupingBy(ProductAttribute::getName,
+//                        Collectors.mapping(ProductAttribute::getName, Collectors.toList())));
+//
+//        distinctAttributes = distinctAttributes.entrySet().stream().map(e->Map.entry(e.getKey(),e.getValue().stream().distinct().toList())).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
         return attributeResponses;
 
     }

@@ -58,8 +58,6 @@ public class WebSecurityConfig {
         @Override
         public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
             String referer = request.getHeader("Referer");
-            System.out.println(request.getHeader("Referer"));
-            System.out.println("gggggggggggggggggggggg");
             if (referer != null) {
                 getRedirectStrategy().sendRedirect(request, response, referer);
             } else {

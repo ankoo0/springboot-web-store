@@ -6,13 +6,13 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.2.2</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/>
 	</parent>
 	<groupId>com.project</groupId>
 	<artifactId>springboot-web-store</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>springboot-web-store</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Web store project written with Spring Boot</description>
 	<properties>
 		<java.version>21</java.version>
 		<org.mapstruct.version>1.5.5.Final</org.mapstruct.version>

@@ -17,8 +17,6 @@ public class UserService {
     }
 
     public Optional<User> getUserByUsername(String username){
-//        System.out.println(username);
-//         System.out.println(Role.valueOf(username));
         return userRepository.findByUsername(username);
     }
 

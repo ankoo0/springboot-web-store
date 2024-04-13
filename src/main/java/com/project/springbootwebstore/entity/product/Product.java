@@ -2,6 +2,8 @@ package com.project.springbootwebstore.entity.product;
 
 import com.project.springbootwebstore.entity.order.Order;
 import com.project.springbootwebstore.entity.users.Review;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.Hibernate;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,6 +19,8 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Getter
+@Setter
 public class Product {
 
     @Id
@@ -60,103 +64,6 @@ public class Product {
     public Product() {
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getFullDescription() {
-        return fullDescription;
-    }
-
-    public void setFullDescription(String fullDescription) {
-        this.fullDescription = fullDescription;
-    }
-
-    public String getMainThumbnailPath() {
-        return mainThumbnailPath;
-    }
-
-    public void setMainThumbnailPath(String mainThumbnailPath) {
-        this.mainThumbnailPath = mainThumbnailPath;
-    }
-
-    public List<ProductImagePath> getProductImagesPaths() {
-        return productImagesPaths;
-    }
-
-    public void setProductImagesPaths(List<ProductImagePath> productImagesPaths) {
-
-        this.productImagesPaths = productImagesPaths;
-    }
-
-    public List<ProductAttribute> getProductAttributes() {
-        return productAttributes;
-    }
-
-    public void setProductAttributes(List<ProductAttribute> productAttributes) {
-        this.productAttributes = productAttributes;
-    }
-
-    public LocalDateTime getCreationTime() {
-        return creationTime;
-    }
-
-    public void setCreationTime(LocalDateTime creationTime) {
-        this.creationTime = creationTime;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public ProductCategory getCategory() {
-        return category;
-    }
-
-    public void setCategory(ProductCategory category) {
-        this.category = category;
-    }
-
-    public ProductSubcategory getSubcategory() {
-        return subcategory;
-    }
-
-    public void setSubcategory(ProductSubcategory subcategory) {
-        this.subcategory = subcategory;
-    }
-
-    public ProductDiscount getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(ProductDiscount discount) {
-        this.discount = discount;
-    }
-
-    public Double getRating() {
-        return rating;
-    }
-
-    public void setRating(Double rating) {
-        this.rating = rating;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -183,13 +90,4 @@ public class Product {
                 "discount = " + discount + ")";
     }
 
-
-
-    public Long getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Long quantity) {
-        this.quantity = quantity;
-    }
 }

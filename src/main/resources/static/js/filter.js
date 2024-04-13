@@ -50,7 +50,7 @@ fetch('/main/filter', {
     // add query if present
 
 }).then(res => res.json()).then(res => {
-    // console.log(res)
+    console.log(res)
 
     createFilter(res)
 
@@ -82,15 +82,25 @@ fetch('/main/filter', {
 
 function createFilter(attrJSON) {
     let filter = ``;
-    filter += `<div style="display: flex; flex-direction: row; justify-content: space-between"><h3>Apply filters:</h3> <span class="material-symbols-outlined">filter_alt</span></div>`
-    const hiddenPagination = `<input name="page" value="1" class="checkbox" checked type="hidden"/>`
-    filter += hiddenPagination
+    filter += `<div style="display: flex; flex-direction: row; justify-content: space-between; position: sticky"><h3>Apply filters:</h3> <span class="material-symbols-outlined">filter_alt</span></div>`;
+    const hiddenPagination = `<input name="page" value="1" class="checkbox" checked type="hidden"/>`;
+    filter += hiddenPagination;
+
+
+    // Iterate over attributes and create a single div element to contain all attributes
+    const allAttributesDiv = document.createElement('div');
     for (const attr in attrJSON) {
-        filter += createAttributesContainer(attrJSON[attr])
+        const attrHtml = createAttributesContainer(attrJSON[attr]);
+        allAttributesDiv.innerHTML += attrHtml // Assuming createAttributesContainer returns HTML content
     }
 
-    filter += createSubmitBtn()
-    filterForm.innerHTML = filter
+    const wrapper = document.createElement('div');
+    wrapper.append(allAttributesDiv)
+
+    filter += wrapper.innerHTML; // Append the HTML content of the parametersWrapper
+
+    filter += createSubmitBtn();
+    filterForm.innerHTML = filter;
 }
 
 function createSubmitBtn() {
@@ -107,24 +117,10 @@ function createAttributesContainer(attribute) {
     const header = createHeader(attribute)
     const attributeValueSet = createAttributeValueSet(attribute);
 
-    // if (attributeValueSet.length < 6) {
         attributeValuesContainer.innerHTML=attributeValueSet.join('');
 
         attrContainer.innerHTML = header + attributeValuesContainer.outerHTML
 
-    // } else {
-        // const expandAttrBtn =   `<div class="check-set-btn">All ${attributeValueSet.length} variants</div>`
-
-        // const attrMenu = createAttributeMenu(attributeValueSet)
-        // const expandAttrBtn = createExpandBtn(attrMenu, attributeValueSet.length)
-        // expandAttrBtn attrMenu
-        // const firstAttributes = attributeValueSet.join('')
-        // alert(firstAttributes)
-        //.slice(0, 6)
-        // attrContainer.innerHTML = header + firstAttributes
-        // + expandAttrBtn
-        // return attrContainer.outerHTML
-    // }
     return attrContainer.outerHTML
 }
 
@@ -135,22 +131,6 @@ function createHeader(attribute) {
     }
     return `<div class="attribute-header"><h4>${attribute.name}</h4><div class="attribute-info-badge">?<div class="attribute-info"><p>${attribute.data.description}</p></div></div></div>`
 }
-
-// function createExpandBtn(attrMenu, length) {
-//     const expandBtn = document.createElement('div')
-//     expandBtn.innerHTML = `All ${length} variants` + attrMenu
-//     expandBtn.classList.add('check-set-btn')
-//     return expandBtn.outerHTML
-// }
-
-
-// function createAttributeMenu(attributeValueSet) {
-//     const attrMenu = document.createElement('div')
-//     // attrMenu.style.visibility = 'hidden'
-//     attrMenu.innerHTML = attributeValueSet.join('')
-//     attrMenu.classList.add('check-div')
-//     return attrMenu.outerHTML
-// }
 
 function createAttributeValueSet(attribute) {
 

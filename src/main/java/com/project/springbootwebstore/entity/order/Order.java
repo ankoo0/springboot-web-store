@@ -13,9 +13,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Order {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne
     private User orderedUser;
     private LocalDateTime orderTime;
@@ -26,7 +28,6 @@ public class Order {
     @Embedded
     private UserOrderInfo userOrderInfo;
 
-//    @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "character varying")
     private String orderedProducts;
 

@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface AttributeRepository extends JpaRepository<ProductAttribute,Long> {
 
-    List<ProductAttribute> findAllByProductSubcategorySubcategoryName(String subcategoryName);
+    List<ProductAttribute> findDistinctByProductSubcategorySubcategoryName(String subcategoryName);
 }
