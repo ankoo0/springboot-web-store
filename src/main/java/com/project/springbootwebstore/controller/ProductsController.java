@@ -1,9 +1,10 @@
 package com.project.springbootwebstore.controller;
 
 import com.project.springbootwebstore.dto.AttributeResponse;
-import com.project.springbootwebstore.dto.ProductToListViewDto;
-import com.project.springbootwebstore.dto.ProductToProductViewDto;
+import com.project.springbootwebstore.dto.product.ProductShortInfoResponse;
+import com.project.springbootwebstore.dto.product.ProductFullInfoResponse;
 import com.project.springbootwebstore.service.*;
+import com.project.springbootwebstore.service.impl.ProductServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -59,19 +60,17 @@ public class ProductsController {
      */
 
 
-    private final ProductService productService;
+    private final ProductServiceImpl productService;
     private final ProductCategoryService categoryService;
-    private final ProductSubcategoryService subcategoryService;
     private final ProductAttributeService attributeService;
-    private final UserService userService;
     private final ReviewService reviewService;
 
     @GetMapping("/all")
     public ModelAndView allSearchResults(@RequestParam(name = "q", required = false) Optional<String> query, @RequestParam(name = "page", defaultValue = "1") int page, HttpServletRequest servletRequest) {
         ModelAndView modelAndView = new ModelAndView(PRODUCTS);
 
-        Page<ProductToListViewDto> productPages = productService.search(query.orElse(""), PageRequest.of(page - 1, 2));
-        List<ProductToListViewDto> products = productPages.getContent();
+        Page<ProductShortInfoResponse> productPages = productService.search(query.orElse(""), PageRequest.of(page - 1, 2));
+        List<ProductShortInfoResponse> products = productPages.getContent();
         modelAndView.addObject("query", query.orElse(""));
         modelAndView.addObject("currentPage", page);
         modelAndView.addObject("products", products);
@@ -83,7 +82,7 @@ public class ProductsController {
     }
 
     @PostMapping("/filter")
-    public @ResponseBody List<AttributeResponse> getFilter(@RequestBody String subcategory) {
+    public @ResponseBody List<AttributeResponse> getProductFilter(@RequestBody String subcategory) {
         return attributeService.getAttributesBySubcategory(subcategory);
     }
 
@@ -105,34 +104,34 @@ public class ProductsController {
             @PathVariable(name = "category") String category,
             @PathVariable(name = "subcategory") String subcategoryName,
             HttpServletRequest servletRequest) {
-        Page<ProductToListViewDto> productPages;
+
 
         Map<String, String[]> map = params.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e2 -> e2.getValue().toArray(new String[0])));
         String parameters = getFilterParamsString(map);
-        productPages = productService.getProductPages(map, subcategoryName);
-        List<ProductToListViewDto> products = productPages.getContent();
+        Page<ProductShortInfoResponse> productPages = productService.getProductPage(map, subcategoryName);
+        List<ProductShortInfoResponse> products = productPages.getContent();
 
         query = query == null ? "" : query;
         int totalPages = productPages.getTotalPages();
         int paginationStart = getPaginationStart(page);
         int paginationEnd = getPaginationEnd(page, totalPages);
 
-        ModelAndView mov = new ModelAndView(PRODUCTS);
-        mov.addObject("parameters", parameters);
-        mov.addObject("sortBy", sortBy);
-        mov.addObject("order", order);
-        mov.addObject("query", query);
-        mov.addObject("currentPage", page);
-        mov.addObject("totalPages", totalPages);
-        mov.addObject("products", products);
-        mov.addObject("subcategory", StringUtils.capitalize(subcategoryName));
-        mov.addObject("paginationStart", paginationStart);
-        mov.addObject("paginationEnd", paginationEnd);
-        mov.addObject("totalProducts", productPages.getTotalElements());
-        mov.addObject("categories", categoryService.getAllCategories());
-        mov.addObject("contextPath", servletRequest.getContextPath());
+        ModelAndView mav = new ModelAndView(PRODUCTS);
+        mav.addObject("parameters", parameters);
+        mav.addObject("sortBy", sortBy);
+        mav.addObject("order", order);
+        mav.addObject("query", query);
+        mav.addObject("currentPage", page);
+        mav.addObject("totalPages", totalPages);
+        mav.addObject("products", products);
+        mav.addObject("subcategory", StringUtils.capitalize(subcategoryName));
+        mav.addObject("paginationStart", paginationStart);
+        mav.addObject("paginationEnd", paginationEnd);
+        mav.addObject("totalProducts", productPages.getTotalElements());
+        mav.addObject("categories", categoryService.getAllCategories());
+        mav.addObject("contextPath", servletRequest.getContextPath());
 
-        return mov;
+        return mav;
 
     }
 
@@ -168,7 +167,7 @@ public class ProductsController {
 
     @GetMapping("/{category}/{subcategory}/{productId}")
     public ModelAndView productView(@PathVariable(name = "category") String category, @PathVariable(name = "subcategory") String subcategory, @PathVariable(name = "productId") Long productId, HttpServletRequest servletRequest) {
-        ProductToProductViewDto product = productService.getProductById(productId);
+        ProductFullInfoResponse product = productService.getProductById(productId);
         Long productReviewsCount = reviewService.getProductReviewsCount(productId);
         ModelAndView mov = new ModelAndView(PRODUCT_VIEW);
         mov.addObject("product", product);

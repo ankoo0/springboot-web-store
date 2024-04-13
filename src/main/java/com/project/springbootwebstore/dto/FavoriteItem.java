@@ -5,13 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public final class FavoriteItem {
 
-    private final int id;
+    private final long id;
     @JsonCreator
     public FavoriteItem( @JsonProperty(value = "id") int id) {
         this.id = id;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 }

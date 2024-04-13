@@ -14,13 +14,12 @@ public class ProductSubcategoryService {
 
     private final ProductSubcategoryRepository subcategoryRepository;
 
-
     public List<ProductSubcategory> getAllSubcategories(){
         return subcategoryRepository.findAll();
     }
 
     public ProductSubcategory getSubcategoryByName(String subcategoryName){
-        return subcategoryRepository.findBySubcategoryNameContainingIgnoreCase(subcategoryName);
+        return subcategoryRepository.findByNameContainingIgnoreCase(subcategoryName);
 
     }
 

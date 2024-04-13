@@ -1,6 +1,7 @@
 package com.project.springbootwebstore.security;
 
 import com.project.springbootwebstore.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,8 +25,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = (User) CustomUserDetails.mapUserDetails(userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("No Such User")));
-        System.out.println(user.getUsername() + "===========" + user.getPassword());
+//        User user = (User) CustomUserDetails.mapUserDetails(userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("No Such User")));
+//        System.out.println(user.getUsername() + "===========" + user.getPassword());
         return CustomUserDetails.mapUserDetails(userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("No Such User")));
     }
 }

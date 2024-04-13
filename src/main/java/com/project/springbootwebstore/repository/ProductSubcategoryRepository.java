@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductSubcategoryRepository extends JpaRepository<ProductSubcategory, Long> {
 
-    ProductSubcategory findBySubcategoryNameContainingIgnoreCase(String subcategoryName);
+    ProductSubcategory findByNameContainingIgnoreCase(String subcategoryName);
 }

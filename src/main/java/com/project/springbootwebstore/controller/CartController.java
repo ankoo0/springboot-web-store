@@ -1,10 +1,10 @@
 package com.project.springbootwebstore.controller;
 
 import com.project.springbootwebstore.dto.CartItem;
-import com.project.springbootwebstore.dto.ProductToListViewDto;
+import com.project.springbootwebstore.dto.product.ProductShortInfoResponse;
 import com.project.springbootwebstore.service.EmailService;
 import com.project.springbootwebstore.service.ProductCategoryService;
-import com.project.springbootwebstore.service.ProductService;
+import com.project.springbootwebstore.service.impl.ProductServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -18,16 +18,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CartController {
 
-    private final ProductService productService;
+    private final ProductServiceImpl productService;
     private final ProductCategoryService categoryService;
     private final EmailService emailService;
 
     @PostMapping("/items")
-    public @ResponseBody List<ProductToListViewDto> cartItems(@RequestBody List<CartItem> items) {
+    public @ResponseBody List<ProductShortInfoResponse> cartItems(@RequestBody List<CartItem> items) {
 
-        List<ProductToListViewDto> responseProducts = new ArrayList<>();
+        List<ProductShortInfoResponse> responseProducts = new ArrayList<>();
         for (CartItem item : items) {
-            ProductToListViewDto product = productService.getSingleCartProduct(item);
+            ProductShortInfoResponse product = productService.getSingleCartProduct(item);
             responseProducts.add(product);
         }
         return responseProducts;

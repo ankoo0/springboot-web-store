@@ -1,9 +1,10 @@
 package com.project.springbootwebstore.entity.users;
 
-
-//import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
 import com.project.springbootwebstore.entity.order.Order;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import jakarta.persistence.*;
@@ -12,7 +13,12 @@ import java.util.List;
 
 @Entity
 @Table(name = "_user")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -47,109 +53,6 @@ public class User {
 
     public User(Long id) {
         this.id = id;
-    }
-
-    public User() {
-
-    }
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getAvatarPath() {
-        return avatarPath;
-    }
-
-    public void setAvatarPath(String avatarPath) {
-        this.avatarPath = avatarPath;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public boolean isEnabled() {
-        return isEnabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        isEnabled = enabled;
-    }
-
-
-
-    public List<Review> getUserReviews() {
-        return userReviews;
-    }
-
-    public void setUserReviews(List<Review> userReviews) {
-        this.userReviews = userReviews;
-    }
-
-    public List<Order> getUserOrders() {
-        return userOrders;
-    }
-
-    public void setUserOrders(List<Order> userOrders) {
-        this.userOrders = userOrders;
-    }
-
-    public List<Review> getLikedReviews() {
-        return likedReviews;
-    }
-
-    public void setLikedReviews(List<Review> likedReviews) {
-        this.likedReviews = likedReviews;
-    }
-
-    public List<Review> getDislikedReviews() {
-        return dislikedReviews;
-    }
-
-    public void setDislikedReviews(List<Review> dislikedReviews) {
-        this.dislikedReviews = dislikedReviews;
     }
 
     public List<SimpleGrantedAuthority> getAuthorities(){

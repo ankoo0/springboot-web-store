@@ -1,5 +1,6 @@
 package com.project.springbootwebstore.security;
 
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,19 +9,13 @@ import com.project.springbootwebstore.entity.users.User;
 import java.util.Collection;
 import java.util.List;
 
+@AllArgsConstructor
 public class CustomUserDetails implements UserDetails {
 
     private String username;
     private String password;
     private boolean isEnabled;
     private List<SimpleGrantedAuthority> grantedAuthorities;
-
-    public CustomUserDetails(String username, String password, boolean isEnabled, List<SimpleGrantedAuthority> grantedAuthorities) {
-        this.username = username;
-        this.password = password;
-        this.isEnabled = isEnabled;
-        this.grantedAuthorities = grantedAuthorities;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

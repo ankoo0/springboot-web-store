@@ -41,7 +41,7 @@
         <label for="quantity">Quantity</label>
         <input name="quantity" id="quantity" class="product-input">
         <select class="category-select">
-            <option th:value="${category.categoryName}" th:attr="data-id=${category.id}" th:each="category : ${categories}" th:text="${category.categoryName}"></option>
+            <option th:value="${category.name}" th:attr="data-id=${category.id}" th:each="category : ${categories}" th:text="${category.name}"></option>
         </select>
         <div class="subcategory-container">
             <select class="subcategory-select" th:attr="data-id=${category.id}" th:each="category : ${categories}">

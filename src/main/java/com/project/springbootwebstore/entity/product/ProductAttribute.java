@@ -13,14 +13,19 @@ public class ProductAttribute {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "value")
     private String value;
+
     @ManyToOne
     private Product product;
+
     @ManyToOne
     private ProductSubcategory productSubcategory;
+
     @ManyToOne
     @JoinColumn
     private ProductAttributeDescription description;

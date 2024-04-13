@@ -1,5 +1,6 @@
-package com.project.springbootwebstore.service;
+package com.project.springbootwebstore.service.impl;
 
+import com.project.springbootwebstore.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;

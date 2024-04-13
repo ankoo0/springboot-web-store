@@ -131,7 +131,7 @@
                         </div>
 
                         <div class="attributes">
-                            <div class="attribute-entry" th:each="attribute,iStat : ${product.productAttributes}">
+                            <div class="attribute-entry" th:each="attribute,iStat : ${product.attributes}">
                                 <p th:if="${iStat.index <3}" th:text="${attribute.key}"></p>
                                 <p th:if="${iStat.index <3}" th:text="${attribute.value}"></p>
                             </div>
