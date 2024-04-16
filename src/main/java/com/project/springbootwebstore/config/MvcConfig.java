@@ -1,4 +1,4 @@
-package com.project.springbootwebstore.mvc;
+package com.project.springbootwebstore.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

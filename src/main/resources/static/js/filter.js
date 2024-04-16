@@ -40,7 +40,7 @@ function decodeURL() {
     return map;
 }
 
-fetch('/main/filter', {
+fetch('/catalog/filter', {
     method: 'post',
     headers: {
         'Accept': 'application/json',
@@ -76,7 +76,7 @@ fetch('/main/filter', {
 
 
     checkboxes.forEach(ch => {
-        ch.addEventListener('click', {})
+        ch.addEventListener('click', ()=>{})
     })
 })
 

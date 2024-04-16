@@ -132,8 +132,8 @@
 
                         <div class="attributes">
                             <div class="attribute-entry" th:each="attribute,iStat : ${product.attributes}">
-                                <p th:if="${iStat.index <3}" th:text="${attribute.key}"></p>
-                                <p th:if="${iStat.index <3}" th:text="${attribute.value}"></p>
+                                <p style="color:#515151" th:if="${iStat.index <3}" th:text="'&bull;&nbsp;' + ${attribute.key} + ':&nbsp;'"></p>
+                                <p style="font-weight: bold" th:if="${iStat.index <3}" th:text="${attribute.value}"></p>
                             </div>
                         </div>
 

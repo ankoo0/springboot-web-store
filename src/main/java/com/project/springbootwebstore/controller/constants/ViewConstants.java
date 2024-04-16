@@ -1,9 +1,9 @@
-package com.project.springbootwebstore.controller;
+package com.project.springbootwebstore.controller.constants;
 
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class Views {
+public class ViewConstants {
 
     public static final String ACCOUNT = "account";
     public static final String CART = "cart";

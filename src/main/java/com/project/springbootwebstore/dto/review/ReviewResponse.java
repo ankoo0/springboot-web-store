@@ -1,9 +1,8 @@
-package com.project.springbootwebstore.dto;
+package com.project.springbootwebstore.dto.review;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
-public record ReviewDto
+public record ReviewResponse
 
     (Long id,
     String username,

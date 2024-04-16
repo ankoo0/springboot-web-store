@@ -4,17 +4,17 @@ const searchBtn = document.querySelector(".search-btn");
 const searchModal = document.querySelector(".search-modal");
 const searchContainer = document.querySelector('.header-search-container')
 
-let typingTimer;                //timer identifier
-let doneTypingInterval = 500;  //time in ms (5 seconds)
+let typingTimer;
+let doneTypingInterval = 500;
 
 
-searchContainer.addEventListener('focusin', function() {
+searchContainer.addEventListener('focusin', () => {
     searchModal.style.display='flex'
     searchModal.style.maxHeight = '500px';
 
 });
 
-searchContainer.addEventListener('focusout', function(e) {
+searchContainer.addEventListener('focusout', e => {
     const target = e.relatedTarget || document.activeElement;
     if (!searchModal.contains(target)) {
         searchModal.style.display = 'none';

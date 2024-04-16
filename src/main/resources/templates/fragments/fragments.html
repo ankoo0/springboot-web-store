@@ -15,7 +15,7 @@
         </div>
 
         <div class="header-logo-container">
-            <a class="header-logo" th:href="@{/main}"><img th:src="@{/images/Logo_v3.svg}" class="main-logo"/></a>
+            <a class="header-logo" th:href="@{/}"><img th:src="@{/images/Logo_v3.svg}" class="main-logo"/></a>
 
         </div>
         <div class="header-search-container">
@@ -86,7 +86,7 @@
             <div class="dropdown-description" ><div style="height: 30px; width: 30px" class="category-icon-container"><img style="width:100%; height:auto;"  th:src="|/images/categories/${category.imagePath}|"></div><h4 th:text="${category.name}"></h4><span class="dropdown-arrow">&gt;</span></div>
             <div class="dropdown-content">
                 <div class="dropdown-subcategory" th:each="subcategory : ${category.subcategories}">
-                    <a th:href="'/main/' + ${#strings.toLowerCase(category.name)} +'/' +${#strings.toLowerCase(subcategory)} +'?page=1'"
+                    <a th:href="${basePath} + '/' + ${#strings.toLowerCase(category.name)} + '/' + ${#strings.toLowerCase(subcategory)} + '?page=1'"
                        th:text="${subcategory}"/>
                 </div>
             </div>
@@ -106,7 +106,6 @@
     <ul class="mobile-categories">
         <li class="mobile-category-item" th:each="category : ${categories}">
             <div class="mobile-category-main">
-<!--                <img th:src="|/images/categories/${category.categoryImage}|">-->
                 <div style="height: 30px; width: 30px" class="category-icon-container"><img style="width:100%; height:auto;"  th:src="|/images/categories/${category.imagePath}|"></div>
                 <div th:text="${category.name}"></div>
                 <span class="material-symbols-outlined">expand_more</span>
@@ -125,7 +124,7 @@
 
 <nav class="mobile-bottom-menu" th:fragment="mobile-bottom-menu">
     <div class="bottom-link-wrapper">
-        <a class="bottom-link" th:href="@{/main}"><span class="material-symbols-outlined">home</span>
+        <a class="bottom-link" th:href="@{/}"><span class="material-symbols-outlined">home</span>
             <p>Home</p>
         </a>
     </div>

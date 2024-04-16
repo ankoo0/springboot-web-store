@@ -5,11 +5,13 @@ import com.project.springbootwebstore.dto.product.ProductShortInfoResponse;
 import com.project.springbootwebstore.service.EmailService;
 import com.project.springbootwebstore.service.ProductCategoryService;
 import com.project.springbootwebstore.service.impl.ProductServiceImpl;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +36,7 @@ public class CartController {
     }
 
     @GetMapping
-    public ModelAndView cartView() {
+    public ModelAndView cartView() throws MessagingException, IOException {
         ModelAndView modelAndView = new ModelAndView("cart");
         modelAndView.addObject("categories", categoryService.getAllCategories());
         emailService.sendSimpleMessage("an516293@gmail.com","Test", "Hello World");

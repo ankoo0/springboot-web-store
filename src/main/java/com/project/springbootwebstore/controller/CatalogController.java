@@ -20,12 +20,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.project.springbootwebstore.controller.Views.*;
+import static com.project.springbootwebstore.controller.constants.CatalogUrlConstants.*;
+import static com.project.springbootwebstore.controller.constants.ViewConstants.*;
 
 @Controller
-@RequestMapping("/main")
+@RequestMapping(CATALOG)
 @RequiredArgsConstructor
-public class ProductsController {
+public class CatalogController {
 
     /**
      * Fix Form and Sorting
@@ -86,20 +87,14 @@ public class ProductsController {
         return attributeService.getAttributesBySubcategory(subcategory);
     }
 
-    @GetMapping
-    public ModelAndView mainView() {
-        ModelAndView modelAndView = new ModelAndView("index");
-        modelAndView.addObject("categories", categoryService.getAllCategories());
-        modelAndView.addObject("name", "Aliaksandr");
-        return modelAndView;
-    }
 
-    @GetMapping("/{category}/{subcategory}")
+
+    @GetMapping(GET_PRODUCTS)
     public ModelAndView subcategoryView(
             @RequestParam MultiValueMap<String, String> params,
             @RequestParam(name = "order", required = false) String order,
             @RequestParam(name = "sortBy", required = false) String sortBy,
-            @RequestParam(name = "q", required = false) String query,
+            @RequestParam(name = "q", required = false, defaultValue = "") String query,
             @RequestParam(name = "page") int page,
             @PathVariable(name = "category") String category,
             @PathVariable(name = "subcategory") String subcategoryName,
@@ -111,10 +106,10 @@ public class ProductsController {
         Page<ProductShortInfoResponse> productPages = productService.getProductPage(map, subcategoryName);
         List<ProductShortInfoResponse> products = productPages.getContent();
 
-        query = query == null ? "" : query;
         int totalPages = productPages.getTotalPages();
         int paginationStart = getPaginationStart(page);
         int paginationEnd = getPaginationEnd(page, totalPages);
+
 
         ModelAndView mav = new ModelAndView(PRODUCTS);
         mav.addObject("parameters", parameters);
@@ -129,6 +124,7 @@ public class ProductsController {
         mav.addObject("paginationEnd", paginationEnd);
         mav.addObject("totalProducts", productPages.getTotalElements());
         mav.addObject("categories", categoryService.getAllCategories());
+        mav.addObject("basePath", CATALOG);
         mav.addObject("contextPath", servletRequest.getContextPath());
 
         return mav;
@@ -165,7 +161,7 @@ public class ProductsController {
 
     }
 
-    @GetMapping("/{category}/{subcategory}/{productId}")
+    @GetMapping(GET_PRODUCT)
     public ModelAndView productView(@PathVariable(name = "category") String category, @PathVariable(name = "subcategory") String subcategory, @PathVariable(name = "productId") Long productId, HttpServletRequest servletRequest) {
         ProductFullInfoResponse product = productService.getProductById(productId);
         Long productReviewsCount = reviewService.getProductReviewsCount(productId);

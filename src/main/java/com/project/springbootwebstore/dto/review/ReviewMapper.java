@@ -1,5 +1,4 @@
-package com.project.springbootwebstore.dto;
-
+package com.project.springbootwebstore.dto.review;
 
 import com.project.springbootwebstore.entity.users.Review;
 import com.project.springbootwebstore.entity.users.ReviewImagePath;
@@ -7,7 +6,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
-
 import java.util.List;
 
 @Mapper
@@ -21,7 +19,7 @@ public interface ReviewMapper {
     @Mapping(target = "dislikes",  expression = "java((long) review.getDislikedUsers().size())")
     @Mapping(target = "dateTime",  source = "dateTime")
     @Mapping(target = "reviewImagePaths",  source = "reviewImagesPaths", qualifiedByName ="mapReviewImagesPaths" )
-    ReviewDto toReviewResponse(Review review);
+    ReviewResponse toReviewResponse(Review review);
 
     @Named("mapReviewImagesPaths")
     default List<String> mapReviewImagesPaths(List<ReviewImagePath> reviewImagesPaths){
