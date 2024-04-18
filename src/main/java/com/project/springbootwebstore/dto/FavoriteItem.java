@@ -2,7 +2,9 @@ package com.project.springbootwebstore.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
+@Getter
 public final class FavoriteItem {
 
     private final long id;
@@ -11,7 +13,4 @@ public final class FavoriteItem {
         this.id = id;
     }
 
-    public long getId() {
-        return id;
-    }
 }

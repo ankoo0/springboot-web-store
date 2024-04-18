@@ -1,6 +1,7 @@
 package com.project.springbootwebstore.controller;
 
 import com.project.springbootwebstore.service.ProductCategoryService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
@@ -12,14 +13,10 @@ import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
+@RequiredArgsConstructor
 public class CustomErrorController implements ErrorController {
 
     private final ProductCategoryService categoryService;
-
-    @Autowired
-    public CustomErrorController(ProductCategoryService categoryService) {
-        this.categoryService = categoryService;
-    }
 
     @RequestMapping("/error")
     public ModelAndView handleError(HttpServletRequest request, Model model) {

@@ -17,18 +17,20 @@ public class AdminController {
 
     @GetMapping
     public ModelAndView admin(){
-        ModelAndView modelAndView = new ModelAndView("admin");
-        modelAndView.addObject("categories", categoryService.getAllCategories());
 
-        return modelAndView;
+        ModelAndView mav = new ModelAndView("admin");
+        mav.addObject("categories", categoryService.getAllCategories());
+
+        return mav;
     }
 
     @GetMapping("/add-product")
     public ModelAndView addProduct(){
-        ModelAndView modelAndView = new ModelAndView("add-product");
-        modelAndView.addObject("categories", categoryService.getAllCategories());
 
-        return modelAndView;
+        ModelAndView mav = new ModelAndView("add-product");
+        mav.addObject("categories", categoryService.getAllCategories());
+
+        return mav;
     }
 
 }

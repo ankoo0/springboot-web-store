@@ -180,13 +180,9 @@
                             th:text="${reviewCount>0 ? reviewCount + ' reviews' : 'no reviews, be first!'}"></span>
                     </button>
 
-                    <button sec:authorize="isAuthenticated()" data-auth="true"
-                            class="open-rating-btn">Leave Review
-                    </button>
-
-                    <button sec:authorize="!isAuthenticated()" data-auth="false"
-                            class="open-rating-btn">Leave Review
-                    </button>
+                    <button th:if="${reviewCount>0}"  class="open-rating-btn">Leave Review</button>
+<!--sec:authorize="isAuthenticated()" data-auth="true" -->
+<!--                    <button sec:authorize="!isAuthenticated()" data-auth="false" class="open-rating-btn">Leave Review</button>-->
                 </div>
 
                 <div class="product-actions">
@@ -341,6 +337,8 @@
 <script type="text/javascript" th:src="@{/js/notify-modal.js}"></script>
 <script type="text/javascript" th:src="@{/js/rate-modal.js}"></script>
 <script type="text/javascript" th:src="@{/js/header.js}"></script>
+<script type="text/javascript" th:src="@{/js/add-to-cart.js}"></script>
+
 
 <script>
     const thumbnails = new Splide('#thumbnail-slider', {

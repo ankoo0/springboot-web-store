@@ -9,7 +9,6 @@ import com.project.springbootwebstore.entity.order.UserOrderInfo;
 import com.project.springbootwebstore.repository.OrderRepository;
 import com.project.springbootwebstore.service.impl.ProductServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;

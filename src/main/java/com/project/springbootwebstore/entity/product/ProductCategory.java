@@ -3,16 +3,16 @@ package com.project.springbootwebstore.entity.product;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.util.ArrayList;
 import java.util.List;
-
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class ProductCategory {
 
     @Id
@@ -34,10 +34,6 @@ public class ProductCategory {
         this.id = id;
         this.name = name;
         this.subcategories = subcategories;
-    }
-
-    public ProductCategory() {
-
     }
 
     @Override

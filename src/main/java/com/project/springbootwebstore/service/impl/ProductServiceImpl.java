@@ -11,6 +11,7 @@ import com.project.springbootwebstore.repository.ProductRepository;
 import com.project.springbootwebstore.repository.specification.ProductSpecification;
 import com.project.springbootwebstore.service.ProductService;
 import com.project.springbootwebstore.service.ProductSubcategoryService;
+import com.project.springbootwebstore.service.UrlAttributesConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,13 +19,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MultiValueMap;
+
 import java.text.DecimalFormat;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.project.springbootwebstore.dto.product.ProductMapper.PRODUCT_MAPPER;
+import static com.project.springbootwebstore.service.UrlAttributesConstants.*;
 
 @Service
 @RequiredArgsConstructor
@@ -83,23 +88,65 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public String getFilterParamsString(Map<String, String[]> params) {
+        return params.entrySet()
+                .stream()
+                .filter(e ->
+                        !e.getKey().equals(PAGE) &&
+                                !e.getKey().equals(SORT_BY) &&
+                                !e.getKey().equals(ORDER) &&
+                                !e.getKey().equals(QUERY))
+                .map(e -> Arrays.stream(e.getValue()).map(val -> e.getKey() + "=" + val).toList())
+                .map(param -> String.join("&", param))
+                .collect(Collectors.joining("&"));
+    }
+
+
+    @Override
+    public int getPaginationStart(int currentPage) {
+        return switch (currentPage) {
+            case (1), (2) -> 1;
+            default -> currentPage - 2;
+        };
+
+    }
+    @Override
+    public int getPaginationEnd(int currentPage, int totalPages) {
+        int result = totalPages - currentPage;
+        return switch (result) {
+            case (0), (1) -> totalPages;
+            default -> currentPage + 2;
+        };
+
+    }
+
+    @Override
+    public Map<String, String[]> getParametersMap(MultiValueMap<String, String> params) {
+        return params
+                .entrySet()
+                .stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, e2 -> e2.getValue().toArray(new String[0])));
+    }
+
+
+    @Override
     public Page<ProductShortInfoResponse> getProductPage(Map<String, String[]> parameters, String subcategoryName) {
 
         Map<String, String[]> filter = parameters.entrySet()
                 .stream()
-                .filter(e -> !e.getKey().equals("page") &&
-                        !e.getKey().equals("sortBy") &&
-                        !e.getKey().equals("order") &&
-                        !e.getKey().equals("q"))
+                .filter(e -> !e.getKey().equals(PAGE) &&
+                        !e.getKey().equals(SORT_BY) &&
+                        !e.getKey().equals(ORDER) &&
+                        !e.getKey().equals(QUERY))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
 
         Specification<Product> spec = Specification.where(null);
-        Sort sort = Sort.unsorted();
+        Sort sort = Sort.by("rating").descending();
 
-        boolean hasOrder = parameters.containsKey("order");
-        boolean hasSorting = parameters.containsKey("sortBy");
-        boolean hasQuery = parameters.containsKey("q");
+        boolean hasOrder = parameters.containsKey(ORDER);
+        boolean hasSorting = parameters.containsKey(SORT_BY);
+        boolean hasQuery = parameters.containsKey(QUERY);
         boolean hasFilter = !filter.isEmpty();
 
 
@@ -108,21 +155,20 @@ public class ProductServiceImpl implements ProductService {
 
         }
         if (hasSorting) {
-            String sortBy = parameters.get("sortBy")[0];
-            String order = hasOrder ? parameters.get("order")[0] : "";
+            String sortBy = parameters.get(SORT_BY)[0];
+            String order = hasOrder ? parameters.get(ORDER)[0] : "";
             sort = ProductSpecification.sort(sortBy, order);
 
         }
         if (hasQuery) {
-            String query = parameters.get("q")[0];
+            String query = parameters.get(QUERY)[0];
             spec = spec.and(ProductSpecification.hasQuery(query));
 
         }
 
         spec = spec.and(ProductSpecification.hasSubcategory(subcategoryName));
 
-
-        int page = Integer.parseInt(parameters.get("page")[0]);
+        int page = Integer.parseInt(parameters.get(PAGE)[0]);
         Pageable pageable = PageRequest.of(page - 1, 10, sort);
 
         Page<Product> productPage = productRepository.findAll(spec, pageable);

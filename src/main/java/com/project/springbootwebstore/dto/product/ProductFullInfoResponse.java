@@ -23,5 +23,4 @@ public final class ProductFullInfoResponse {
     private final Long discount;
     private final Map<String, String> attributes;
 
-
 }

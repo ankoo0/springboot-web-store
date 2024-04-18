@@ -8,24 +8,29 @@ import com.project.springbootwebstore.dto.product.ProductShortInfoResponse;
 import com.project.springbootwebstore.entity.product.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
+import org.springframework.util.MultiValueMap;
 import java.util.List;
 import java.util.Map;
 
 public interface ProductService {
 
-
     ProductFullInfoResponse getProductById(Long id);
 
     ProductShortInfoResponse getSingleCartProduct(CartItem item);
 
-
     ProductShortInfoResponse getSingleFavoriteProduct(FavoriteItem item);
-
 
     Page<Product> filter(Map<String, String[]> filteringAttributes, String subcategory);
 
     Map<Long, ProductSubcategoryResponse> countProductOccurrences(String query);
+
+    String getFilterParamsString(Map<String, String[]> params);
+
+    int getPaginationStart(int currentPage);
+
+    Map<String, String[]> getParametersMap(MultiValueMap<String, String> params);
+
+    int getPaginationEnd(int currentPage, int totalPages);
 
     Page<ProductShortInfoResponse> getProductPage(Map<String, String[]> parameters, String subcategoryName);
 

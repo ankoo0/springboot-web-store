@@ -99,13 +99,9 @@ function createRemoveButtons() {
                     const itemCard = document.getElementById(itemId.toString());
 
                     itemCard.classList.add('removing')
-                    // itemCard.parentNode.removeChild(itemCard);
                     itemCard.addEventListener('transitionend', () => {
                         itemCard.remove();
-                        // setTimeout(()=>{},30)
-                        // cards.forEach(card => {
-                        //     card.style.width = `calc(${100 / cards.length}% - 10px)`;
-                        // });
+
                     });
                     console.log(itemId)
                     console.log(items)

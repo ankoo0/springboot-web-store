@@ -1,10 +1,12 @@
 package com.project.springbootwebstore.config;
 
+import com.nimbusds.jose.util.StandardCharset;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -21,9 +23,9 @@ import java.util.Properties;
 public class EmailConfig {
 
     @Value("${spring.mail.username}")
-    String username;
+    private String username;
     @Value("#{environment.EMAIL_PASSWORD}")
-    String password;
+    private String password;
 
     @Bean
     public JavaMailSender getJavaMailSender() {
@@ -43,32 +45,25 @@ public class EmailConfig {
         return mailSender;
     }
 
-
     @Bean
-    public ResourceBundleMessageSource emailMessageSource() {
-        final ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasename("mail/MailMessages");
-        return messageSource;
-    }
-
-    @Bean
+    @Primary
     public TemplateEngine emailTemplateEngine() {
         final SpringTemplateEngine templateEngine = new SpringTemplateEngine();
-
+        // Resolver for HTML emails (except the editable one)
         templateEngine.addTemplateResolver(htmlTemplateResolver());
-        templateEngine.setTemplateEngineMessageSource(emailMessageSource());
+
         return templateEngine;
     }
 
     private ITemplateResolver htmlTemplateResolver() {
         final ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
-        templateResolver.setOrder(2);
-        templateResolver.setResolvablePatterns(Collections.singleton("html/*"));
-        templateResolver.setPrefix("/mail/");
+        templateResolver.setResolvablePatterns(Collections.singleton("*"));
+        templateResolver.setPrefix("/templates/");
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode(TemplateMode.HTML);
-        templateResolver.setCharacterEncoding("UTF-8");
+        templateResolver.setCharacterEncoding(StandardCharset.UTF_8.displayName());
         templateResolver.setCacheable(false);
+
         return templateResolver;
     }
 

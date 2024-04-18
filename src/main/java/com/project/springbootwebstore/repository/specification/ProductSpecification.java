@@ -37,7 +37,7 @@ public final class ProductSpecification {
 
     public static Sort sort(String sorting, String order) {
         if (sorting == null && order.isEmpty()) {
-            return Sort.unsorted();
+            return Sort.by("rating").descending();
         } else if (order.isEmpty()){
             return Sort.by(sorting);
         } else {

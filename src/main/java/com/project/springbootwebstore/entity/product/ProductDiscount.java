@@ -2,9 +2,18 @@ package com.project.springbootwebstore.entity.product;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.util.List;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class ProductDiscount {
 
     @Id
@@ -17,27 +26,4 @@ public class ProductDiscount {
 //    private Product product;
 
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getDiscountPercent() {
-        return discountPercent;
-    }
-
-    public void setDiscountPercent(Long discountPercent) {
-        this.discountPercent = discountPercent;
-    }
-
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
 }

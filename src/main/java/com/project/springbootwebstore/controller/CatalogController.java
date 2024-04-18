@@ -14,12 +14,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
 import static com.project.springbootwebstore.controller.constants.CatalogUrlConstants.*;
 import static com.project.springbootwebstore.controller.constants.ViewConstants.*;
 
@@ -29,6 +26,8 @@ import static com.project.springbootwebstore.controller.constants.ViewConstants.
 public class CatalogController {
 
     /**
+     * Default page sorting is rating - not implemented actually
+     * Finish email service
      * Fix Form and Sorting
      * Add Review modal
      * Refactor CSS
@@ -45,7 +44,6 @@ public class CatalogController {
      * User Reselling with WebSocket Chat
      * RWD
      * Detect Offensive Words
-     * Email Notifications
      * User Verification
      * Transitions on Page Load
      * You May Also Like
@@ -60,34 +58,36 @@ public class CatalogController {
      * Why init cascade animation works differently depending on placement?
      */
 
-
     private final ProductServiceImpl productService;
     private final ProductCategoryService categoryService;
     private final ProductAttributeService attributeService;
     private final ReviewService reviewService;
 
     @GetMapping("/all")
-    public ModelAndView allSearchResults(@RequestParam(name = "q", required = false) Optional<String> query, @RequestParam(name = "page", defaultValue = "1") int page, HttpServletRequest servletRequest) {
-        ModelAndView modelAndView = new ModelAndView(PRODUCTS);
+    public ModelAndView allSearchResults(
+            @RequestParam(name = "q", required = false) Optional<String> query,
+            @RequestParam(name = "page", defaultValue = "1") int page,
+            HttpServletRequest servletRequest
+    ) {
 
         Page<ProductShortInfoResponse> productPages = productService.search(query.orElse(""), PageRequest.of(page - 1, 2));
         List<ProductShortInfoResponse> products = productPages.getContent();
-        modelAndView.addObject("query", query.orElse(""));
-        modelAndView.addObject("currentPage", page);
-        modelAndView.addObject("products", products);
-        modelAndView.addObject("totalPages", productPages.getTotalPages());
-        modelAndView.addObject("totalProducts", productPages.getTotalElements());
-        modelAndView.addObject("categories", categoryService.getAllCategories());
-        modelAndView.addObject("contextPath", servletRequest.getContextPath());
-        return modelAndView;
+
+        ModelAndView mav = new ModelAndView(PRODUCTS);
+        mav.addObject("query", query.orElse(""));
+        mav.addObject("currentPage", page);
+        mav.addObject("products", products);
+        mav.addObject("totalPages", productPages.getTotalPages());
+        mav.addObject("totalProducts", productPages.getTotalElements());
+        mav.addObject("categories", categoryService.getAllCategories());
+        mav.addObject("contextPath", servletRequest.getContextPath());
+        return mav;
     }
 
     @PostMapping("/filter")
     public @ResponseBody List<AttributeResponse> getProductFilter(@RequestBody String subcategory) {
         return attributeService.getAttributesBySubcategory(subcategory);
     }
-
-
 
     @GetMapping(GET_PRODUCTS)
     public ModelAndView subcategoryView(
@@ -98,18 +98,17 @@ public class CatalogController {
             @RequestParam(name = "page") int page,
             @PathVariable(name = "category") String category,
             @PathVariable(name = "subcategory") String subcategoryName,
-            HttpServletRequest servletRequest) {
+            HttpServletRequest servletRequest
+    ) {
 
-
-        Map<String, String[]> map = params.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e2 -> e2.getValue().toArray(new String[0])));
-        String parameters = getFilterParamsString(map);
+        Map<String, String[]> map = productService.getParametersMap(params);
+        String parameters = productService.getFilterParamsString(map);
         Page<ProductShortInfoResponse> productPages = productService.getProductPage(map, subcategoryName);
         List<ProductShortInfoResponse> products = productPages.getContent();
 
         int totalPages = productPages.getTotalPages();
-        int paginationStart = getPaginationStart(page);
-        int paginationEnd = getPaginationEnd(page, totalPages);
-
+        int paginationStart = productService.getPaginationStart(page);
+        int paginationEnd = productService.getPaginationEnd(page, totalPages);
 
         ModelAndView mav = new ModelAndView(PRODUCTS);
         mav.addObject("parameters", parameters);
@@ -128,50 +127,26 @@ public class CatalogController {
         mav.addObject("contextPath", servletRequest.getContextPath());
 
         return mav;
-
-    }
-
-    private String getFilterParamsString(Map<String, String[]> params) {
-        return params.entrySet()
-                .stream()
-                .filter(e ->
-                        !e.getKey().equals("page") &&
-                        !e.getKey().equals("sortBy") &&
-                        !e.getKey().equals("order") &&
-                        !e.getKey().equals("q"))
-                .map(e -> Arrays.stream(e.getValue()).map(val -> e.getKey() + "=" + val).toList())
-                .map(param -> String.join("&", param))
-                .collect(Collectors.joining("&"));
-    }
-
-    private int getPaginationStart(int currentPage) {
-        return switch (currentPage) {
-            case (1), (2) -> 1;
-            default -> currentPage - 2;
-        };
-
-    }
-
-    private int getPaginationEnd(int currentPage, int totalPages) {
-        int result = totalPages - currentPage;
-        return switch (result) {
-            case (0), (1) -> totalPages;
-            default -> currentPage + 2;
-        };
-
     }
 
     @GetMapping(GET_PRODUCT)
-    public ModelAndView productView(@PathVariable(name = "category") String category, @PathVariable(name = "subcategory") String subcategory, @PathVariable(name = "productId") Long productId, HttpServletRequest servletRequest) {
+    public ModelAndView productView(
+            @PathVariable(name = "category") String category,
+            @PathVariable(name = "subcategory") String subcategory,
+            @PathVariable(name = "productId") Long productId,
+            HttpServletRequest servletRequest
+    ) {
         ProductFullInfoResponse product = productService.getProductById(productId);
         Long productReviewsCount = reviewService.getProductReviewsCount(productId);
-        ModelAndView mov = new ModelAndView(PRODUCT_VIEW);
-        mov.addObject("product", product);
-        mov.addObject("categories", categoryService.getAllCategories());
-        mov.addObject("reviewCount", productReviewsCount);
-        mov.addObject("contextPath", servletRequest.getContextPath());
 
-        return mov;
+        ModelAndView mav = new ModelAndView(PRODUCT_VIEW);
+        mav.addObject("product", product);
+        mav.addObject("categories", categoryService.getAllCategories());
+        mav.addObject("reviewCount", productReviewsCount);
+        mav.addObject("basePath", CATALOG);
+        mav.addObject("contextPath", servletRequest.getContextPath());
+
+        return mav;
     }
 
 }

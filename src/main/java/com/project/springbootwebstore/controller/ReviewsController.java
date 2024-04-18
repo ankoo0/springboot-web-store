@@ -1,7 +1,7 @@
 package com.project.springbootwebstore.controller;
 
 import com.project.springbootwebstore.dto.review.ReviewResponse;
-import com.project.springbootwebstore.dto.ReviewRequestDto;
+import com.project.springbootwebstore.dto.review.ReviewRequest;
 import com.project.springbootwebstore.service.ReviewService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class ReviewsController {
 
     @PostMapping(value = "/save", consumes ="multipart/form-data")
     public String saveReview(@AuthenticationPrincipal User user,
-                             @ModelAttribute ReviewRequestDto reviewDto,
+                             @ModelAttribute ReviewRequest reviewDto,
                              HttpServletRequest request){
 
         reviewService.saveReview(reviewDto,user);

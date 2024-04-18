@@ -2,6 +2,7 @@ package com.project.springbootwebstore.controller;
 
 import com.project.springbootwebstore.dto.CartItem;
 import com.project.springbootwebstore.dto.product.ProductShortInfoResponse;
+import com.project.springbootwebstore.service.Email;
 import com.project.springbootwebstore.service.EmailService;
 import com.project.springbootwebstore.service.ProductCategoryService;
 import com.project.springbootwebstore.service.impl.ProductServiceImpl;
@@ -14,6 +15,8 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.project.springbootwebstore.controller.constants.ViewConstants.CART;
 
 @Controller
 @RequestMapping("/cart")
@@ -37,9 +40,9 @@ public class CartController {
 
     @GetMapping
     public ModelAndView cartView() throws MessagingException, IOException {
-        ModelAndView modelAndView = new ModelAndView("cart");
+        ModelAndView modelAndView = new ModelAndView(CART);
         modelAndView.addObject("categories", categoryService.getAllCategories());
-        emailService.sendSimpleMessage("an516293@gmail.com","Test", "Hello World");
+//        emailService.send(new Email());
         return modelAndView;
     }
 

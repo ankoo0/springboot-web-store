@@ -4,9 +4,7 @@ import com.project.springbootwebstore.service.ProductCategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-
 import static com.project.springbootwebstore.controller.constants.CatalogUrlConstants.CATALOG;
 
 @Controller("/")
@@ -17,10 +15,10 @@ public class IndexController {
 
     @GetMapping
     public ModelAndView mainView() {
-        ModelAndView modelAndView = new ModelAndView("index");
-        modelAndView.addObject("categories", categoryService.getAllCategories());
-        modelAndView.addObject("name", "Aliaksandr");
-        modelAndView.addObject("basePath", CATALOG);
-        return modelAndView;
+        ModelAndView mav = new ModelAndView("index");
+        mav.addObject("categories", categoryService.getAllCategories());
+        mav.addObject("name", "Aliaksandr");
+        mav.addObject("basePath", CATALOG);
+        return mav;
     }
 }

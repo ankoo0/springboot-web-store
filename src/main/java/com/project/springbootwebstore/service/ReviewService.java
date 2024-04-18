@@ -1,7 +1,7 @@
 package com.project.springbootwebstore.service;
 
 import com.project.springbootwebstore.dto.review.ReviewResponse;
-import com.project.springbootwebstore.dto.ReviewRequestDto;
+import com.project.springbootwebstore.dto.review.ReviewRequest;
 import com.project.springbootwebstore.entity.users.Review;
 import com.project.springbootwebstore.repository.ProductRepository;
 import com.project.springbootwebstore.repository.ReviewRepository;
@@ -42,14 +42,14 @@ public class ReviewService {
     }
 
 
-    public Review saveReview(ReviewRequestDto reviewDto, User user) {
-        Long productId = reviewDto.getProductId();
+    public Review saveReview(ReviewRequest reviewDto, User user) {
+        Long productId = reviewDto.productId();
 
         Review review = new Review(
-                reviewDto.getTitle(),
+                reviewDto.title(),
                 new com.project.springbootwebstore.entity.users.User(userRepository.findByUsername(user.getUsername()).get().getId()),
-                reviewDto.getRating(),
-                reviewDto.getReview(),
+                reviewDto.rating(),
+                reviewDto.review(),
                 LocalDateTime.now(),
                 productRepository.getReferenceById(productId)
         );
@@ -58,7 +58,7 @@ public class ReviewService {
 
 
         AtomicInteger counter = new AtomicInteger(1);
-        reviewDto.getReviewImages().forEach(img -> {
+        reviewDto.reviewImages().forEach(img -> {
             try {
                 String imgCount = counter.get() > 10 ? String.valueOf(counter.get()) : "0" + counter;
                 String filename = user.getUsername() + "_" + imgCount + "." + Objects.requireNonNull(img.getOriginalFilename()).substring(img.getOriginalFilename().lastIndexOf(".") + 1);
